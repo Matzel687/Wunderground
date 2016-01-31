@@ -49,7 +49,7 @@
 			$this->RegisterVariableString("System_Info","System Informationen","HTMLBox",11);
             
 		        //Timer erstellen
-		$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
+		$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"));
 
 		
         
@@ -120,6 +120,7 @@ SetValue($this->GetIDForIdent("System_Info"), $html);
 
 
         }
+        
 public function uptime()
 {
 $upSeconds = exec("/usr/bin/cut -d. -f1 /proc/uptime");
@@ -130,6 +131,30 @@ $uptime = " $uptimeDays Tag(e) $uptimeHours Stunde(n) $uptimeMin Minute(n)";
 
 return $uptime;
 }       
+    
+    protected function SetTimerInterval($Name, $Interval)
+    {
+        $id = @IPS_GetObjectIDByIdent($Name, $this->InstanceID);
+        if ($id === false)
+            throw new Exception('Timer not present', E_USER_WARNING);
+        if (!IPS_EventExists($id))
+            throw new Exception('Timer not present', E_USER_WARNING);
 
+        $Event = IPS_GetEvent($id);
+
+        if ($Interval < 1)
+        {
+            if ($Event['EventActive'])
+                IPS_SetEventActive($id, false);
+        }
+        else
+        {
+            if ($Event['CyclicTimeValue'] <> $Interval)
+                IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, $Interval);
+            if (!$Event['EventActive'])
+                IPS_SetEventActive($id, true);
+        }
+    }
+    
     }
 ?>
