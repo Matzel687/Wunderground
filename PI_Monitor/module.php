@@ -49,7 +49,7 @@
 			$this->RegisterVariableString("System_Info","System Informationen","HTMLBox",11);
             
 		        //Timer erstellen
-		$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"));
+		$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
 
 		
         
