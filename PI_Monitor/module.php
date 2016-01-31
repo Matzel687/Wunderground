@@ -60,5 +60,71 @@
 				$this->SetStatus(104);
 			}
         }		
+        
+        public function Update() {
+        $CPU_idle =exec("mpstat| grep all| awk '{print $12}'"); // CPU Auslastung %idle
+        $CPU_temp = substr(exec('vcgencmd measure_temp'), 5, 4); //Temperatur CPU
+        $CPU_volts = substr(exec("vcgencmd measure_volts"),5,4); //CPU Spannung 
+        $RAM_total = exec("free -m| grep Mem | awk '{print $2}'"); //Freier RAM
+        $RAM_used = exec("free -m| grep Mem | awk '{print $3}'"); //Benutzer RAM 
+        $HDD_total = exec("df -m | grep /dev/root | awk '{print $2}'"); // Gesamt Speicherplatz SD-Karte
+        $HDD_used = substr(exec("df -m | grep /dev/root | awk '{print $5}'"),-3,2); // Belegter Speicherplatz SD-Karte
+        $HDD_percent = exec("df -m | grep /dev/root | awk '{print $5}'"); // Belegter Speicherplatz in % SD-Karte
+        $HDD_syncom = exec("du -sh -m $IPS_directory| awk '{print $1}'"); // Verzeichnissgröße IPS
+        $LAN_IP = substr(exec("/sbin/ifconfig $networkcard | grep 'inet Adresse'| awk '{print $2}'"),8); // IP Adresse
+        $Linux_Vers = exec('uname -snr'); // Linux Version
+        $SSH_Log = substr(exec("who -q | grep '#' | awk '{print $2}'"),6); // Anzahl SSH Verbindungen
+        $SSH_Connection = substr(exec("who -s"),14); // // SSH Verbindungen von Client xy
+
+$html = ' <table width="100%" border="0" cellpadding="0" cellspacing="2" align="center" valign="top" >
+ <tr >
+<td align="center" valign="top"  width="100px"; rowspan="6">
+<img src="user/Raspi-PGB001.png" style="float:left"; width="110px">
+ </tr>
+ <tr>
+  <td align="left" valign="top">IP Adresse:</td>
+  <td align="right" valign="top">'.$LAN_IP.'</td>
+ </tr>
+ <tr>
+  <td align="left" valign="top">System Online seit:</td>
+  <td align="right" valign="top">'.uptime().'</td>
+ </tr>
+ <tr>
+  <td align="left" valign="top">Linux Version:</td>
+  <td align="right" valign="top">'.$Linux_Vers.'</td>
+ </tr>
+  <tr>
+  <td align="left" valign="top">SSH Verbindung:</td>
+  <td align="right" valign="top">'.$SSH_Connection.'</td>
+ </tr>
+   <tr>
+  <td align="left" valign="top">IPS Version:</td>
+  <td align="right" valign="top">'.IPS_GetKernelVersion().'</td>
+ </tr>
+</table>';
+
+SetValue($this->GetIDForIdent("CPU_idle"), 100 - $CPU_idle);
+SetValue($this->GetIDForIdent("CPU_volts"), $CPU_volts);
+SetValue($this->GetIDForIdent("CPU_temp"), $CPU_temp);
+SetValue($this->GetIDForIdent("HDD_total"), $HDD_total);
+SetValue($this->GetIDForIdent("HDD_used"), $HDD_used);
+SetValue($this->GetIDForIdent("HDD_used"), $HDD_percent);
+SetValue($this->GetIDForIdent("HDD_syncom"), $HDD_syncom);
+SetValue($this->GetIDForIdent("RAM_total"), $RAM_total);
+SetValue($this->GetIDForIdent("RAM_used"), $RAM_used);
+SetValue($this->GetIDForIdent("RAM_percent"),($RAM_used/$RAM_total)*100);
+SetValue($this->GetIDForIdent("System_Info"), $html);
+        }
+        
+private function uptime()
+{
+$upSeconds = exec("/usr/bin/cut -d. -f1 /proc/uptime");
+$uptimeDays = floor($upSeconds /86400);
+$uptimeHours = $upSeconds /3600 % 24;
+$uptimeMin = $upSeconds /60 % 60;
+$uptime = " $uptimeDays Tag(e) $uptimeHours Stunde(n) $uptimeMin Minute(n)";
+
+return $uptime;
+}
     }
 ?>
