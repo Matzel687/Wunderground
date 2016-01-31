@@ -49,8 +49,8 @@
 			$this->RegisterVariableString("System_Info","System Informationen","HTMLBox",11);
             
 		        //Timer erstellen
-		$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"));
-		IPS_SetHidden($this->GetIDForIdent("Update"), true);
+		//$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"));
+		//IPS_SetHidden($this->GetIDForIdent("Update"), true);
 		
         
 			}
