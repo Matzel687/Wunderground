@@ -1,0 +1,11 @@
+{
+  "id": "{9D009150-9FA2-4520-A2D4-7D483197ABF1}",
+  "name": "PI_Monitor",
+  "type": 3,
+  "vendor": "Marcel Lanfermann",
+  "aliases": ["PI_Monitor"],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "ML"
+}

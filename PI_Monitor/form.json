@@ -1,0 +1,17 @@
+{
+    "elements":
+    [
+        { "type": "ValidationTextBox", "name": "IPS_Pfad", "caption": "IPS Installationsverzeichnis" },
+        { "type": "ValidationTextBox", "name": "Netzwerkkarte", "caption": "Netzwerkkarte" },
+		{ "type": "IntervalBox", "name": "UpdateInterval", "caption": "Sekunden" }
+    ],
+    "actions":
+    [ ],
+    "status":
+    [
+		{ "code": 101, "icon": "active", "caption": "Instanz wird erstellt!" },
+        { "code": 102, "icon": "active", "caption": "Instanz ist aktiv!" },
+		{ "code": 104, "icon": "inactive", "caption": "Instanz ist inaktiv!" }
+        { "code": >=200, "icon": "error", "caption": "Instanz ist fehlerhaft" }
+	]
+}
