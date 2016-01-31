@@ -118,7 +118,7 @@ SetValue($this->GetIDForIdent("RAM_percent"),($RAM_used/$RAM_total)*100);
 SetValue($this->GetIDForIdent("System_Info"), $html);
         }
         
-private function uptime()
+ public function uptime()
 {
 $upSeconds = exec("/usr/bin/cut -d. -f1 /proc/uptime");
 $uptimeDays = floor($upSeconds /86400);
