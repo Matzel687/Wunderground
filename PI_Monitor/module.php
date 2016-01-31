@@ -49,8 +49,8 @@
 			$this->RegisterVariableString("System_Info","System Informationen","HTMLBox",11);
             
 		        //Timer erstellen
-		//$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"));
-		//IPS_SetHidden($this->GetIDForIdent("Update"), true);
+		$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"));
+
 		
         
 			}
@@ -117,7 +117,7 @@ SetValue($this->GetIDForIdent("RAM_used"), $RAM_used);
 SetValue($this->GetIDForIdent("RAM_percent"),($RAM_used/$RAM_total)*100);
 SetValue($this->GetIDForIdent("System_Info"), $html);
 
-$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"));
+
 
         }
 public function uptime()
