@@ -117,7 +117,7 @@ SetValue($this->GetIDForIdent("RAM_used"), $RAM_used);
 SetValue($this->GetIDForIdent("RAM_percent"),($RAM_used/$RAM_total)*100);
 SetValue($this->GetIDForIdent("System_Info"), $html);
 
-
+$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"));
 
         }
 public function uptime()
