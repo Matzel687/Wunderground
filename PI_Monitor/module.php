@@ -17,7 +17,7 @@
 			$this->RegisterPropertyString("IPS_Pfad", "/usr/share/symcon");
 			$this->RegisterPropertyString("Netzwerkkarte", "eth0");
 			$this->RegisterPropertyInteger("UpdateInterval", 20);
-            $this->RegisterTimer("Update", 0, 'PI_Monitor_Update($_IPS["TARGET"]);');
+            $this->RegisterTimer("Update", 0, 'PIMonitor_Update($_IPS["TARGET"]);');
 
         }
  
