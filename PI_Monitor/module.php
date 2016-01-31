@@ -36,7 +36,7 @@
 			{
             
 			//Variablen erstellen
-			$this->RegisterVariableFloat("CPU_idle","CPU-Auslastung","Temperature",1);
+			$this->RegisterVariableFloat("CPU_idle","CPU-Auslastung","Humidity.F",1);
 			$this->RegisterVariableFloat("CPU_volts","CPU-Spannung","Volt",2);
 			$this->RegisterVariableFloat("CPU_temp","CPU-Temperatur","Temperature",3);
 			$this->RegisterVariableFloat("HDD_total","Gesamt Speicherplatz","Megabyte",4);
