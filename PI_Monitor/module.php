@@ -110,7 +110,7 @@ SetValue($this->GetIDForIdent("CPU_volts"), $CPU_volts);
 SetValue($this->GetIDForIdent("CPU_temp"), $CPU_temp);
 SetValue($this->GetIDForIdent("HDD_total"), $HDD_total);
 SetValue($this->GetIDForIdent("HDD_used"), $HDD_used);
-SetValue($this->GetIDForIdent("HDD_used"), $HDD_percent);
+SetValue($this->GetIDForIdent("HDD_percent"), $HDD_percent);
 SetValue($this->GetIDForIdent("HDD_syncom"), $HDD_syncom);
 SetValue($this->GetIDForIdent("RAM_total"), $RAM_total);
 SetValue($this->GetIDForIdent("RAM_used"), $RAM_used);
