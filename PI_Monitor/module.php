@@ -17,7 +17,8 @@
 			$this->RegisterPropertyString("IPS_Pfad", "/usr/share/symcon");
 			$this->RegisterPropertyString("Netzwerkkarte", "eth0");
 			$this->RegisterPropertyInteger("UpdateInterval", 20);
-            $this->RegisterTimer("Update", 0, "echo 'Hallo Welt';");
+            $this->RegisterTimer("Update", 0, 'PI_Monitor_Update($_IPS[\'TARGET\']);');
+            
         }
  
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
@@ -50,7 +51,7 @@
 			$this->RegisterVariableString("System_Info","System Informationen","HTMLBox",11);
             
 		        //Timer erstellen
-		$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"));
+		$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval"*1000));
 
 		
         
