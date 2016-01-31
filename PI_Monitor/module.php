@@ -70,8 +70,8 @@
         $RAM_total = exec("free -m| grep Mem | awk '{print $2}'"); //Freier RAM
         $RAM_used = exec("free -m| grep Mem | awk '{print $3}'"); //Benutzer RAM 
         $HDD_total = exec("df -m | grep /dev/root | awk '{print $2}'"); // Gesamt Speicherplatz SD-Karte
-        $HDD_used = substr(exec("df -m | grep /dev/root | awk '{print $5}'"),-3,2); // Belegter Speicherplatz SD-Karte
-        $HDD_percent = exec("df -m | grep /dev/root | awk '{print $5}'"); // Belegter Speicherplatz in % SD-Karte
+        $HDD_used = exec("df -m | grep /dev/root | awk '{print $1}'"); // Belegter Speicherplatz SD-Karte
+        $HDD_percent = substr(exec("df -m | grep /dev/root | awk '{print $5}'"),-3,2); // Belegter Speicherplatz in % SD-Karte
         $HDD_syncom = exec("du -sh -m $IPS_directory| awk '{print $1}'"); // Verzeichnissgröße IPS
         $LAN_IP = substr(exec("/sbin/ifconfig $networkcard | grep 'inet Adresse'| awk '{print $2}'"),8); // IP Adresse
         $Linux_Vers = exec('uname -snr'); // Linux Version
