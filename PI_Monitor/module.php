@@ -62,6 +62,8 @@
         }		
         
         public function Update() {
+        $IPS_directory = $this->ReadPropertyString("IPS_Pfad");
+        $networkcard = $this->ReadPropertyString("Netzwerkkarte");
         $CPU_idle =exec("mpstat| grep all| awk '{print $12}'"); // CPU Auslastung %idle
         $CPU_temp = substr(exec('vcgencmd measure_temp'), 5, 4); //Temperatur CPU
         $CPU_volts = substr(exec("vcgencmd measure_volts"),5,4); //CPU Spannung 
