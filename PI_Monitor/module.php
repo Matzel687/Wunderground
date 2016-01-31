@@ -89,7 +89,7 @@ $html = ' <table width="100%" border="0" cellpadding="0" cellspacing="2" align="
  </tr>
  <tr>
   <td align="left" valign="top">System Online seit:</td>
-  <td align="right" valign="top">'.uptime().'</td>
+  <td align="right" valign="top">'.$this->uptime().'</td>
  </tr>
  <tr>
   <td align="left" valign="top">Linux Version:</td>
@@ -117,7 +117,10 @@ SetValue($this->GetIDForIdent("RAM_used"), $RAM_used);
 SetValue($this->GetIDForIdent("RAM_percent"),($RAM_used/$RAM_total)*100);
 SetValue($this->GetIDForIdent("System_Info"), $html);
 
-function uptime()
+
+
+        }
+public function uptime()
 {
 $upSeconds = exec("/usr/bin/cut -d. -f1 /proc/uptime");
 $uptimeDays = floor($upSeconds /86400);
@@ -126,10 +129,7 @@ $uptimeMin = $upSeconds /60 % 60;
 $uptime = " $uptimeDays Tag(e) $uptimeHours Stunde(n) $uptimeMin Minute(n)";
 
 return $uptime;
-}
-
-        }
-        
+}       
 
     }
 ?>
