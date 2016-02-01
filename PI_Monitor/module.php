@@ -71,7 +71,7 @@ class PI_Monitor extends IPSModule
 				}
                 
 
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_idle"), $this->ReadPropertyBoolean("LogCPU_idle"));
+            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_idle"), $this->ReadPropertyBoolean("logCPU_idle"));
             IPS_ApplyChanges(25836 /*[Archive]*/);
 
    	}
