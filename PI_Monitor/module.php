@@ -58,6 +58,15 @@ class PI_Monitor extends IPSModule
 				//Instanz ist inaktiv
 				$this->SetStatus(104);
 				}
+                
+            if ($this->ReadPropertyBoolean("logCPU_idle") == true){
+            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_idle"), true);
+            IPS_ApplyChanges(25836 /*[Archive]*/);
+            }
+            if ($this->ReadPropertyBoolean("logCPU_idle") == false){
+            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_idle"), false);
+            IPS_ApplyChanges(25836 /*[Archive]*/);
+            }
    	}
 
    public function Update()

@@ -3,7 +3,20 @@
     [
         { "type": "ValidationTextBox", "name": "IPS_Pfad", "caption": "IPS Installationsverzeichnis" },
         { "type": "ValidationTextBox", "name": "Netzwerkkarte", "caption": "Netzwerkkarte" },
-		{ "type": "IntervalBox", "name": "UpdateInterval", "caption": "Sekunden" }
+		{ "type": "IntervalBox", "name": "UpdateInterval", "caption": "Sekunden" },
+        { "type": "Label", "label": "Variable Änderungen aufzeichnen" },
+        { "type": "CheckBox", "name": "logCPU_idle", "caption": "CPU-Auslastung" },
+        { "type": "CheckBox", "name": "logCPU_volts", "caption": "CPU-Spannung" },
+        { "type": "CheckBox", "name": "logCPU_temp", "caption": "CPU-Temperatur" },
+        { "type": "CheckBox", "name": "logHDD_total", "caption": "Gesamt Speicherplatz" },
+        { "type": "CheckBox", "name": "logHDD_used", "caption": "Belegter Speicherplatz" },
+        { "type": "CheckBox", "name": "logHDD_percent", "caption": "HDD-Belegung %" },
+        { "type": "CheckBox", "name": "logHDD_syncom", "caption": "IPS-Speicherbelegung" },
+        { "type": "CheckBox", "name": "logRAM_total", "caption": "Gesamt RAM" },
+        { "type": "CheckBox", "name": "logRAM_used", "caption": "Benutzer RAM" },
+        { "type": "CheckBox", "name": "logRAM_percent", "caption": "RAM-Auslastung %" }
+
+
     ],
     "actions":
     [ ],
