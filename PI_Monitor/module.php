@@ -70,17 +70,18 @@ class PI_Monitor extends IPSModule
 				$this->SetStatus(104);
 				}
             //Variablen Logging Aktivieren / Deaktivieren
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_idle"), $this->ReadPropertyBoolean("logCPU_idle"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_volts"), $this->ReadPropertyBoolean("logCPU_volts"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_temp"), $this->ReadPropertyBoolean("logCPU_temp"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("HDD_total"), $this->ReadPropertyBoolean("logHDD_total"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("HDD_used"), $this->ReadPropertyBoolean("logHDD_used"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("HDD_percent"), $this->ReadPropertyBoolean("logHDD_percent"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("HDD_symcon"), $this->ReadPropertyBoolean("logHDD_symcon"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("RAM_total"), $this->ReadPropertyBoolean("logRAM_total"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("RAM_used"), $this->ReadPropertyBoolean("logRAM_used"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("RAM_percent"), $this->ReadPropertyBoolean("logRAM_percent"));
-            IPS_ApplyChanges(25836 /*[Archive]*/);
+            $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("CPU_idle"), $this->ReadPropertyBoolean("logCPU_idle"));
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("CPU_volts"), $this->ReadPropertyBoolean("logCPU_volts"));
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("CPU_temp"), $this->ReadPropertyBoolean("logCPU_temp"));
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("HDD_total"), $this->ReadPropertyBoolean("logHDD_total"));
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("HDD_used"), $this->ReadPropertyBoolean("logHDD_used"));
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("HDD_percent"), $this->ReadPropertyBoolean("logHDD_percent"));
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("HDD_symcon"), $this->ReadPropertyBoolean("logHDD_symcon"));
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("RAM_total"), $this->ReadPropertyBoolean("logRAM_total"));
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("RAM_used"), $this->ReadPropertyBoolean("logRAM_used"));
+            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("RAM_percent"), $this->ReadPropertyBoolean("logRAM_percent"));
+            IPS_ApplyChanges($archiveHandlerID);
 
    	}
 
