@@ -77,7 +77,7 @@ class PI_Monitor extends IPSModule
 				$Linux_Vers = exec('uname -snr'); // Linux Version
 				$SSH_Log = substr(exec("who -q | grep '#' | awk '{print $2}'"),6); // Anzahl SSH Verbindungen
 				$SSH_Connection = substr(exec("who -s"),14); // // SSH Verbindungen von Client xy
-				$image = file_get_contents(__DIR__ . "/Raspi-PGB001.png");
+				//$image = file_get_contents(__DIR__ . "/Raspi-PGB001.png");
 				$html = ' <table width="100%" border="0" cellpadding="0" cellspacing="2" align="center" valign="top" >
 							<<tr >
 							<td align="center" valign="top"  width="100px"; rowspan="6">
