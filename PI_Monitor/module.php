@@ -53,7 +53,6 @@ class PI_Monitor extends IPSModule
 					$this->RegisterVariableString("System_Info","System Informationen","HTMLBox",11);
 		        //Timer zeit setzen
 					$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
-					$this->SetStatus(102); //Instanz ist aktiv
 				}
 			else
 				{
