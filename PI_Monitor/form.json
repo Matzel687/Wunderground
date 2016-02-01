@@ -11,7 +11,7 @@
         { "type": "CheckBox", "name": "logHDD_total", "caption": "Gesamt Speicherplatz" },
         { "type": "CheckBox", "name": "logHDD_used", "caption": "Belegter Speicherplatz" },
         { "type": "CheckBox", "name": "logHDD_percent", "caption": "HDD-Belegung %" },
-        { "type": "CheckBox", "name": "logHDD_symcom", "caption": "IPS-Speicherbelegung" },
+        { "type": "CheckBox", "name": "logHDD_symcon", "caption": "IPS-Speicherbelegung" },
         { "type": "CheckBox", "name": "logRAM_total", "caption": "Gesamt RAM" },
         { "type": "CheckBox", "name": "logRAM_used", "caption": "Benutzer RAM" },
         { "type": "CheckBox", "name": "logRAM_percent", "caption": "RAM-Auslastung %" }
