@@ -20,6 +20,7 @@ class PI_Monitor extends IPSModule
 			$this->RegisterPropertyString("Netzwerkkarte", "eth0");
 			$this->RegisterPropertyInteger("UpdateInterval", 20);
      		 $this->RegisterTimer("Update", 0, 'PIMonitor_Update($_IPS["TARGET"]);');
+             $this->RegisterPropertyBoolean("logCPU_idle", false);
   		 }
 
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
