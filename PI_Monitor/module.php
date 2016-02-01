@@ -26,8 +26,8 @@ class PI_Monitor extends IPSModule
             $this->RegisterPropertyBoolean("logCPU_temp", false);
             $this->RegisterPropertyBoolean("logHDD_total", false);
             $this->RegisterPropertyBoolean("logHDD_used", false);
-            $this->RegisterPropertyBoolean("logHDD_percen", false);
-            $this->RegisterPropertyBoolean("logHDD_syncom", false);
+            $this->RegisterPropertyBoolean("logHDD_percent", false);
+            $this->RegisterPropertyBoolean("logHDD_symcom", false);
             $this->RegisterPropertyBoolean("logRAM_total", false);
             $this->RegisterPropertyBoolean("logRAM_used", false);
             $this->RegisterPropertyBoolean("logRAM_percent", false);
@@ -56,7 +56,7 @@ class PI_Monitor extends IPSModule
 					$this->RegisterVariableFloat("HDD_total","Gesamt Speicherplatz","Megabyte",4);
 					$this->RegisterVariableFloat("HDD_used","Belegter Speicherplatz","Megabyte",5);
 					$this->RegisterVariableFloat("HDD_percent","HDD-Belegung","Humidity.F",6);
-					$this->RegisterVariableFloat("HDD_syncom","IPS-Speicherbelegung","Megabyte",7);
+					$this->RegisterVariableFloat("HDD_symcom","IPS-Speicherbelegung","Megabyte",7);
 					$this->RegisterVariableFloat("RAM_total","Gesamt RAM","Megabyte",8);
 					$this->RegisterVariableFloat("RAM_used","Benutzer RAM","Megabyte",9);
 					$this->RegisterVariableFloat("RAM_percent","RAM-Auslastung","Humidity.F",10);
@@ -76,7 +76,7 @@ class PI_Monitor extends IPSModule
             AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("HDD_total"), $this->ReadPropertyBoolean("logHDD_total"));
             AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("HDD_used"), $this->ReadPropertyBoolean("logHDD_used"));
             AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("HDD_percent"), $this->ReadPropertyBoolean("logHDD_percent"));
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("HDD_syncom"), $this->ReadPropertyBoolean("logHDD_symcon"));
+            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("HDD_symcom"), $this->ReadPropertyBoolean("logHDD_symcon"));
             AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("RAM_total"), $this->ReadPropertyBoolean("logRAM_total"));
             AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("RAM_used"), $this->ReadPropertyBoolean("logRAM_used"));
             AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("RAM_percent"), $this->ReadPropertyBoolean("logRAM_percent"));
@@ -96,7 +96,7 @@ class PI_Monitor extends IPSModule
         		$HDD_total = exec("df -m | grep /dev/root | awk '{print $2}'"); // Gesamt Speicherplatz SD-Karte
         		$HDD_used = exec("df -m | grep /dev/root | awk '{print $3}'"); // Belegter Speicherplatz SD-Karte
         		$HDD_percent = substr(exec("df -m | grep /dev/root | awk '{print $5}'"),-3,2); // Belegter Speicherplatz in % SD-Karte
-        		$HDD_syncom = exec("du -sh -m $IPS_directory| awk '{print $1}'"); // Verzeichnissgröße IPS
+        		$HDD_symcom = exec("du -sh -m $IPS_directory| awk '{print $1}'"); // Verzeichnissgröße IPS
         		$LAN_IP = substr(exec("/sbin/ifconfig $networkcard | grep 'inet Adresse'| awk '{print $2}'"),8); // IP Adresse
         		$Linux_Vers = exec('uname -snr'); // Linux Version
         		$SSH_Log = substr(exec("who -q | grep '#' | awk '{print $2}'"),6); // Anzahl SSH Verbindungen
@@ -136,7 +136,7 @@ class PI_Monitor extends IPSModule
 							SetValue($this->GetIDForIdent("HDD_total"), $HDD_total);
 							SetValue($this->GetIDForIdent("HDD_used"), $HDD_used);
 							SetValue($this->GetIDForIdent("HDD_percent"), $HDD_percent);
-							SetValue($this->GetIDForIdent("HDD_syncom"), $HDD_syncom);
+							SetValue($this->GetIDForIdent("HDD_symcom"), $HDD_symcom);
 							SetValue($this->GetIDForIdent("RAM_total"), $RAM_total);
 							SetValue($this->GetIDForIdent("RAM_used"), $RAM_used);
 							SetValue($this->GetIDForIdent("RAM_percent"),($RAM_used/$RAM_total)*100);
