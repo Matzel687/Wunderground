@@ -1,4 +1,4 @@
- <?
+<?
     // Klassendefinition
 class PI_Monitor extends IPSModule
 {
