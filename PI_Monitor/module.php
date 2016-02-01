@@ -105,11 +105,11 @@ class PI_Monitor extends IPSModule
         		$Linux_Vers = exec('uname -snr'); // Linux Version
         		$SSH_Log = substr(exec("who -q | grep '#' | awk '{print $2}'"),6); // Anzahl SSH Verbindungen
         		$SSH_Connection = substr(exec("who -s"),14); // // SSH Verbindungen von Client xy
-			    $image = "/Raspi-PGB001.png";
+
 				$html = ' <table width="100%" border="0" cellpadding="0" cellspacing="2" align="center" valign="top" >
  							<tr >
 							<td align="center" valign="top"  width="100px"; rowspan="6">
-							<img src="'.$image.'" style="float:left"; width="110px">
+							<img src="user/Raspi-PGB001.png" style="float:left"; width="110px">
 							</tr>
  							<tr>
  							<td align="left" valign="top">IP Adresse:</td>
