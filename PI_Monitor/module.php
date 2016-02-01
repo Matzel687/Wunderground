@@ -82,6 +82,13 @@ class PI_Monitor extends IPSModule
             AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("RAM_used"), $this->ReadPropertyBoolean("logRAM_used"));
             AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("RAM_percent"), $this->ReadPropertyBoolean("logRAM_percent"));
             IPS_ApplyChanges($archiveHandlerID);
+            
+                    $sid = $this->RegisterScript("WebHooPNG", "WebHookPNG", '
+                    $file=___DIR___."/".$_GET["png"]; 
+                    readfile($file);', -99);
+                    IPS_SetHidden($sid, true);
+                    $this->RegisterHook('/hook/PI_Monitor' . $this->InstanceID, $sid);
+            
 
    	}
 
