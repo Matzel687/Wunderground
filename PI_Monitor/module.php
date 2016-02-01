@@ -19,8 +19,18 @@ class PI_Monitor extends IPSModule
 			$this->RegisterPropertyString("IPS_Pfad", "/usr/share/symcon");
 			$this->RegisterPropertyString("Netzwerkkarte", "eth0");
 			$this->RegisterPropertyInteger("UpdateInterval", 20);
-     		 $this->RegisterTimer("Update", 0, 'PIMonitor_Update($_IPS["TARGET"]);');
-             $this->RegisterPropertyBoolean("logCPU_idle", false);
+     		$this->RegisterTimer("Update", 0, 'PIMonitor_Update($_IPS["TARGET"]);');
+            //Variable Änderungen aufzeichnen
+            $this->RegisterPropertyBoolean("logCPU_idle", false);
+            $this->RegisterPropertyBoolean("logCPU_volts", false);
+            $this->RegisterPropertyBoolean("logCPU_temp", false);
+            $this->RegisterPropertyBoolean("logHDD_total", false);
+            $this->RegisterPropertyBoolean("logHDD_used", false);
+            $this->RegisterPropertyBoolean("logHDD_percen", false);
+            $this->RegisterPropertyBoolean("logHDD_syncom", false);
+            $this->RegisterPropertyBoolean("logRAM_total", false);
+            $this->RegisterPropertyBoolean("logRAM_used", false);
+            $this->RegisterPropertyBoolean("logRAM_percent", false);
   		 }
 
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
@@ -60,14 +70,10 @@ class PI_Monitor extends IPSModule
 				$this->SetStatus(104);
 				}
                 
-            if ($this->ReadPropertyBoolean("logCPU_idle") == true){
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_idle"), true);
+
+            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_idle"), $this->ReadPropertyBoolean("CPU_idle"));
             IPS_ApplyChanges(25836 /*[Archive]*/);
-            }
-            if ($this->ReadPropertyBoolean("logCPU_idle") == false){
-            AC_SetLoggingStatus(25836 /*[Archive]*/, $this->GetIDForIdent("CPU_idle"), false);
-            IPS_ApplyChanges(25836 /*[Archive]*/);
-            }
+
    	}
 
    public function Update()
