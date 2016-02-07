@@ -41,7 +41,19 @@ class WundergroundWetter extends IPSModule
             $this->Var_Pro_Erstellen("WD_Sichtweite",2,"km",0,0,0,2,"");
             $this->Var_Pro_WD_WindSpeedkmh();
             $this->Var_Pro_WD_UVIndex();
-            //Variablen erstellen Wetter jetzt
+
+
+  		 }
+
+        // Überschreibt die intere IPS_ApplyChanges($id) Funktion
+   public function ApplyChanges()
+		{
+         // Diese Zeile nicht löschen
+         parent::ApplyChanges();
+
+			if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != ""))
+				{
+                            //Variablen erstellen Wetter jetzt
             $this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
 			$this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
 			$this->RegisterVariableFloat("Temp_feel","Temperatur gefühlt","Temperature",2);
@@ -64,17 +76,7 @@ class WundergroundWetter extends IPSModule
 			$this->RegisterVariableFloat("Temp_low_morgen","Temperatur Nacht morgen","Temperature",18);
             $this->RegisterVariableFloat("Rain_morgen","Niederschlag/h morgen","WD_Niederschlag",19);
             $this->RegisterVariableString("Wettervorhersage_html","Wettervorhersage","HTMLBox",20);
-
-  		 }
-
-        // Überschreibt die intere IPS_ApplyChanges($id) Funktion
-   public function ApplyChanges()
-		{
-         // Diese Zeile nicht löschen
-         parent::ApplyChanges();
-
-			if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != ""))
-				{
+                
 		        //Timer zeit setzen
 					$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
 
