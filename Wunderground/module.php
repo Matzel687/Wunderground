@@ -184,4 +184,5 @@ private function Var_Pro_WD_UV_Index()
         IPS_SetVariableProfileAssociation("WD_UV_Index", 11, "%.1f","",0xA80080);
 	}
 }
+}
 ?>
