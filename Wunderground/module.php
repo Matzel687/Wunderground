@@ -98,6 +98,16 @@ class WundergroundWetter extends IPSModule
                 $this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
 		        //Timer zeit setzen
 					$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
+
+                //Instanz ist aktiv
+				$this->SetStatus(102);
+				}
+			else
+				{
+				//Instanz ist inaktiv
+				$this->SetStatus(104);
+				}
+                
                 // Variable Logging Aktivieren/Deaktivieren
                 if ($this->ReadPropertyBoolean("logTemp_now") === true)
                     $this-> VarLogging("Temp_now","logTemp_now",0);
@@ -125,14 +135,6 @@ class WundergroundWetter extends IPSModule
                     $this-> VarLogging("Vis_now","logVis_now",0);
                 if ($this->ReadPropertyBoolean("logUV_now") === true)
                     $this-> VarLogging("UV_now","logUV_now",0);
-                //Instanz ist aktiv
-				$this->SetStatus(102);
-				}
-			else
-				{
-				//Instanz ist inaktiv
-				$this->SetStatus(104);
-				}
    	}
 
    public function Update()
@@ -246,7 +248,7 @@ protected function VarLogging($VarName,$LogStatus,$Type)
     $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
     AC_SetAggregationType($archiveHandlerID, $this->GetIDForIdent($VarName), $Type);
     AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent($VarName), $this->ReadPropertyBoolean($LogStatus));
-    //IPS_ApplyChanges($archiveHandlerID);
+    IPS_ApplyChanges($archiveHandlerID);
 }
 
 protected function CreateDummyByName ($parentID, $name)
