@@ -152,9 +152,9 @@ private function Var_Pro_ersellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue
     	IPS_SetVariableProfileIcon($name,$Icon);
 	}
 }
-private function Var_Pro_WD_WindSpeed.kmh()
+private function Var_Pro_WD_WindSpeed_kmh()
 
-	if (IPS_VariableProfileExists("WD_WindSpeed.kmh") == false)
+	if (IPS_VariableProfileExists("WD_WindSpeed_kmh") == false)
 {
 	{
         IPS_CreateVariableProfile("WD_WindSpeed_kmh", 2);
