@@ -169,12 +169,12 @@ $contentNextD = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/f
 $jsonNextD = json_decode($contentNextD);
 $Temp_now = $jsonNow->$aktuell->temp_c;
 
-$Temp_high_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->high->celsius
-$Temp_low_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->low->celsius
-$Rain_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->mm
-$Temp_high_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius
-$Temp_low_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius
-$Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm
+$Temp_high_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->high->celsius;
+$Temp_low_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->low->celsius;
+$Rain_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->mm;
+$Temp_high_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius;
+$Temp_low_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius;
+$Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm;
 
 
 
