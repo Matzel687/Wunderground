@@ -141,8 +141,9 @@ $jsonNextD = json_decode($contentNextD);
 }
 
 private function Var_Pro_ersellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
+{
 
-	if (IPS_VariableProfileExists($name) === false)
+	if (IPS_VariableProfileExists($name) == false)
 	{
     	IPS_CreateVariableProfile($name, $ProfileType);
     	IPS_SetVariableProfileText($name, "", $Suffix);
@@ -150,35 +151,37 @@ private function Var_Pro_ersellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue
     	IPS_SetVariableProfileDigits($name, $Digits);
     	IPS_SetVariableProfileIcon($name,$Icon);
 	}
-
+}
 private function Var_Pro_WD_WindSpeed.kmh()
 
-	if (IPS_VariableProfileExists("WD_WindSpeed.kmh") === false)
+	if (IPS_VariableProfileExists("WD_WindSpeed.kmh") == false)
+{
 	{
-IPS_CreateVariableProfile("WD_WindSpeed_kmh", 2);
-IPS_SetVariableProfileText("WD_WindSpeed_kmh", "", "km/h");
-IPS_SetVariableProfileValues("WD_WindSpeed_kmh", 0, 200, 0);
-IPS_SetVariableProfileDigits("WD_WindSpeed_kmh", 1);
-IPS_SetVariableProfileIcon("WD_WindSpeed_kmh", "WindSpeed");
-IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 0, "%.1f", "WindSpeed", 16776960);
-IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 2, "%.1f", "WindSpeed", 6736947);
-IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 4, "%.1f", "WindSpeed", 16737894);
-IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 6, "%.1f", "WindSpeed", 3381504);
-IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 10, "%.1f", "WindSpeed", 52428);
-IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 20, "%.1f", "WindSpeed", 16724940);
-IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 36, "%.1f", "WindSpeed", 16764159);
+        IPS_CreateVariableProfile("WD_WindSpeed_kmh", 2);
+        IPS_SetVariableProfileText("WD_WindSpeed_kmh", "", "km/h");
+        IPS_SetVariableProfileValues("WD_WindSpeed_kmh", 0, 200, 0);
+        IPS_SetVariableProfileDigits("WD_WindSpeed_kmh", 1);
+        IPS_SetVariableProfileIcon("WD_WindSpeed_kmh", "WindSpeed");
+        IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 0, "%.1f", "WindSpeed", 16776960);
+        IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 2, "%.1f", "WindSpeed", 6736947);
+        IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 4, "%.1f", "WindSpeed", 16737894);
+        IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 6, "%.1f", "WindSpeed", 3381504);
+        IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 10, "%.1f", "WindSpeed", 52428);
+        IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 20, "%.1f", "WindSpeed", 16724940);
+        IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 36, "%.1f", "WindSpeed", 16764159);
 	}
+}
 private function Var_Pro_WD_UV_Index()
-
-	if (IPS_VariableProfileExists("WD_UV_Index") === false)
+{
+	if (IPS_VariableProfileExists("WD_UV_Index") == false)
 	{
-IPS_CreateVariableProfile("WD_UV_Index", 1);
-IPS_SetVariableProfileValues("WD_UV_Index", 0, 12, 0);
-IPS_SetVariableProfileAssociation("WD_UV_Index", 0, "%.1f", , 0xC0FFA0);
-IPS_SetVariableProfileAssociation("WD_UV_Index", 3, "%.1f", , 0xF8F040);
-IPS_SetVariableProfileAssociation("WD_UV_Index", 6, "%.1f", , 0xF87820);
-IPS_SetVariableProfileAssociation("WD_UV_Index", 8, "%.1f", , 0xD80020);
-IPS_SetVariableProfileAssociation("WD_UV_Index", 11, "%.1f", , 0xA80080);
+        IPS_CreateVariableProfile("WD_UV_Index", 1);
+        IPS_SetVariableProfileValues("WD_UV_Index", 0, 12, 0);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 0, "%.1f", , 0xC0FFA0);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 3, "%.1f", , 0xF8F040);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 6, "%.1f", , 0xF87820);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 8, "%.1f", , 0xD80020);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 11, "%.1f", , 0xA80080);
 	}
-
+}
 ?>
