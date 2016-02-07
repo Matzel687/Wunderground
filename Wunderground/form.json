@@ -1,0 +1,31 @@
+{
+    "elements":
+    [
+        { "type": "ValidationTextBox", "name": "Wetterstation", "caption": "Wetterstation ID pws:INORDR..." },
+        { "type": "ValidationTextBox", "name": "API_Key", "caption": "API Key" },
+		{ "type": "IntervalBox", "name": "UpdateInterval", "caption": "Update alle X Minuten" },
+        { "type": "Label", "label": "Variable Änderungen aufzeichnen" },
+        { "type": "CheckBox", "name": "logTemp_now", "caption": "Temperatur" },
+        { "type": "CheckBox", "name": "logTemp_feel", "caption": "Temperatur gefühlt" },
+        { "type": "CheckBox", "name": "logTemp_dewpoint", "caption": "Temperatur Taupunkt" },
+        { "type": "CheckBox", "name": "logHum_now", "caption": "Luftfeuchtigkeit" },
+        { "type": "CheckBox", "name": "logPres_now", "caption": "Luftdruck" },
+        { "type": "CheckBox", "name": "logWind_deg", "caption": "Windrichtung °" },
+        { "type": "CheckBox", "name": "logWind_now", "caption": "Windgeschwindigkeit" },
+        { "type": "CheckBox", "name": "logWind_gust", "caption": "Windböe" },
+        { "type": "CheckBox", "name": "logRain_now", "caption": "Niederschlag/h" },
+        { "type": "CheckBox", "name": "logRain_today", "caption": "Niederschlag Tag" },
+        { "type": "CheckBox", "name": "logSolar_now", "caption": "Sonnenstrahlung" },
+        { "type": "CheckBox", "name": "logVis_now", "caption": "Sichtweite" },
+        { "type": "CheckBox", "name": "logUV_now", "caption": "UV Strahlung" }
+
+    ],
+    "actions":
+    [ ],
+    "status":
+    [
+		{ "code": 101, "icon": "active", "caption": "Instanz wird erstellt!" },
+        { "code": 102, "icon": "active", "caption": "Instanz ist aktiv!" },
+		{ "code": 104, "icon": "inactive", "caption": "Instanz ist inaktiv!" }
+	]
+}

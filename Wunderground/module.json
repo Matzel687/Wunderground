@@ -1,0 +1,11 @@
+{
+  "id": "{EDF6BF77-0E16-4FCD-90E4-9E5C0F91B81F}}",
+  "name": "Wunderground Wetter",
+  "type": 3,
+  "vendor": "Wunderground",
+  "aliases": ["Wunderground_Wetter"],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "WD"
+}
