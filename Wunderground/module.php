@@ -70,13 +70,14 @@ class WundergroundWetter extends IPSModule
                     $InstanceID = $this->CreateDummyByName ($this->InstanceID,"Wettervorhersage");
                     
                     $this->RegisterVariableFloat("Temp_high_heute","Temperatur Tag Heute","Temperature",1);
+                    IPS_SetParent($this->GetIDForIdent("Temp_high_heute"), $InstanceID);
 					$this->RegisterVariableFloat("Temp_low_heute","Temperatur Nacht Heute","Temperature",2);
                     $this->RegisterVariableFloat("Rain_heute","Niederschlag/h Heute","WD_Niederschlag",3);
                     $this->RegisterVariableFloat("Temp_high_morgen","Temperatur Tag morgen","Temperature",4);
 					$this->RegisterVariableFloat("Temp_low_morgen","Temperatur Nacht morgen","Temperature",5);
                     $this->RegisterVariableFloat("Rain_morgen","Niederschlag/h morgen","WD_Niederschlag",6);
                     
-                    
+                    IPS_SetParent($VarID_Raumtemperatur, 12345); 
                     
                     
                     
