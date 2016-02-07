@@ -44,7 +44,7 @@ class WundergroundWetter extends IPSModule
             //Variablen erstellen Wetter jetzt
             $InstanceID = $this->CreateDummyByName ($this->InstanceID,"Wetter_jetzt");
 			$this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
-            IPS_SetParent($this->GetIDForIdent("Temp_now"), $InstanceID);
+            //IPS_SetParent($this->GetIDForIdent("Temp_now"), $InstanceID);
 			$this->RegisterVariableFloat("Temp_feel","Temperatur gefühlt","Temperature",2);
             IPS_SetParent($this->GetIDForIdent("Temp_feel"), $InstanceID);
 			$this->RegisterVariableFloat("Temp_dewpoint","Temperatur Taupunkt","Temperature",3);
@@ -172,9 +172,6 @@ $Rain_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->
 $Temp_high_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius;
 $Temp_low_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius;
 $Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm;
-
-
-
 
 							SetValue($this->GetIDForIdent("Temp_now"),$Temp_now);
 							SetValue($this->GetIDForIdent("Temp_feel"), $Temp_feel);
