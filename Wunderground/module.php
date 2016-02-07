@@ -229,7 +229,7 @@ private function VarLogging($VarName,$LogStatus,$Type)
     $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
     AC_SetAggregationType($archiveHandlerID, $this->GetIDForIdent($VarName), $Type);
     AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent($VarName), $this->ReadPropertyBoolean($LogStatus));
-    //IPS_ApplyChanges($archiveHandlerID);
+    $this->IPS_ApplyChanges($archiveHandlerID);
 }
 
 
