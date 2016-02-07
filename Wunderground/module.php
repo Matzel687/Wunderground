@@ -177,11 +177,11 @@ private function Var_Pro_WD_UV_Index()
 	{
         IPS_CreateVariableProfile("WD_UV_Index", 1);
         IPS_SetVariableProfileValues("WD_UV_Index", 0, 12, 0);
-        IPS_SetVariableProfileAssociation("WD_UV_Index", 0, "%.1f", , 0xC0FFA0);
-        IPS_SetVariableProfileAssociation("WD_UV_Index", 3, "%.1f", , 0xF8F040);
-        IPS_SetVariableProfileAssociation("WD_UV_Index", 6, "%.1f", , 0xF87820);
-        IPS_SetVariableProfileAssociation("WD_UV_Index", 8, "%.1f", , 0xD80020);
-        IPS_SetVariableProfileAssociation("WD_UV_Index", 11, "%.1f", , 0xA80080);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 0, "%.1f","",0xC0FFA0);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 3, "%.1f","",0xF8F040);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 6, "%.1f","",0xF87820);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 8, "%.1f","",0xD80020);
+        IPS_SetVariableProfileAssociation("WD_UV_Index", 11, "%.1f","",0xA80080);
 	}
 }
 ?>
