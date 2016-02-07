@@ -1,6 +1,6 @@
 <?
     // Klassendefinition
-class PI_Monitor extends IPSModule
+class WundergroundWetter extends IPSModule
 {
    // Der Konstruktor des Moduls
    // Überschreibt den Standard Kontruktor von IPS
