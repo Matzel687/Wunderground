@@ -224,7 +224,7 @@ protected function Var_Pro_WD_UVIndex()
 	}
 }
 
-protected function VarLogging($VarName,$LogStatus,$Type)
+private function VarLogging($VarName,$LogStatus,$Type)
 {
     $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
     AC_SetAggregationType($archiveHandlerID, $this->GetIDForIdent($VarName), $Type);
