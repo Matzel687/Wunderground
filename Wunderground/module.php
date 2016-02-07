@@ -67,7 +67,7 @@ class WundergroundWetter extends IPSModule
 					$this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
                     //Variablen erstellen Wettervorhersage
-                    $InstanceID = $this->CreateDummyByName ($this->InstanceID,"Wettervorhersage")
+                    $InstanceID = $this->CreateDummyByName ($this->InstanceID,"Wettervorhersage");
                     
                     $this->RegisterVariableFloat("Temp_high_heute","Temperatur Tag Heute","Temperature",1);
 					$this->RegisterVariableFloat("Temp_low_heute","Temperatur Nacht Heute","Temperature",2);
