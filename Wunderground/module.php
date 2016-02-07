@@ -140,7 +140,7 @@ $jsonNextD = json_decode($contentNextD);
 
 }
 
-private function Var_Pro_ersellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
+protected function Var_Pro_ersellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
 {
 
 	if (IPS_VariableProfileExists($name) == false)
@@ -152,7 +152,7 @@ private function Var_Pro_ersellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue
     	IPS_SetVariableProfileIcon($name,$Icon);
 	}
 }
-private function Var_Pro_WD_WindSpeed_kmh()
+protected function Var_Pro_WD_WindSpeed_kmh()
 {
 	if (IPS_VariableProfileExists("WD_WindSpeed_kmh") == false)
 
@@ -171,7 +171,7 @@ private function Var_Pro_WD_WindSpeed_kmh()
         IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 36, "%.1f", "WindSpeed", 16764159);
 	}
 }
-private function Var_Pro_WD_UV_Index()
+protected function Var_Pro_WD_UV_Index()
 {
 	if (IPS_VariableProfileExists("WD_UV_Index") == false)
 	{
