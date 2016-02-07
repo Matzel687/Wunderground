@@ -53,7 +53,7 @@ class WundergroundWetter extends IPSModule
 			if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != ""))
 				{
 					//Variablen erstellen Wetter jetzt
-                    $InstanceID = $this->CreateDummyByName ($this->InstanceID,"Wetterjetzt");
+                    $InstanceID = $this->CreateDummyByName ($this->InstanceID,"Wetter_jetzt");
 					$this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
                     IPS_SetParent($this->GetIDForIdent("Temp_now"), $InstanceID);
 					$this->RegisterVariableFloat("Temp_feel","Temperatur gefühlt","Temperature",2);
@@ -61,7 +61,7 @@ class WundergroundWetter extends IPSModule
 					$this->RegisterVariableFloat("Temp_dewpoint","Temperatur Taupunkt","Temperature",3);
                     IPS_SetParent($this->GetIDForIdent("Temp_dewpoint"), $InstanceID);
 					$this->RegisterVariableFloat("Hum_now","Luftfeuchtigkeit","Humidity.F",4);
-                    IPS_SetParent($this->GetIDForIdent("THum_now"), $InstanceID);
+                    IPS_SetParent($this->GetIDForIdent("Hum_now"), $InstanceID);
 					$this->RegisterVariableFloat("Pres_now","Luftdruck","AirPressure.F",5);
                     IPS_SetParent($this->GetIDForIdent("Pres_now"), $InstanceID);
 					$this->RegisterVariableFloat("Wind_deg","Windrichtung","WindDirection.Text",6);
@@ -94,12 +94,8 @@ class WundergroundWetter extends IPSModule
                     IPS_SetParent($this->GetIDForIdent("Temp_low_morgen"), $InstanceID);
                     $this->RegisterVariableFloat("Rain_morgen","Niederschlag/h morgen","WD_Niederschlag",6);
                     IPS_SetParent($this->GetIDForIdent("Rain_morgen"), $InstanceID);
-                    
-                    
-                    
-                    
-                    
-                    
+                    $this->RegisterVariableString("Wettervorhersage_html","Wettervorhersage","HTMLBox",7);
+                    IPS_SetParent($this->GetIDForIdent("Wettervorhersage_html"), $InstanceID);
 		        //Timer zeit setzen
 					$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
                 // Variable Logging Aktivieren/Deaktivieren
@@ -171,6 +167,17 @@ $UV_now = $jsonNow->$aktuell->UV;
 
 $contentNextD = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/forecast/q/".$locationID.".json");
 $jsonNextD = json_decode($contentNextD);
+$Temp_now = $jsonNow->$aktuell->temp_c;
+
+$Temp_high_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->high->celsius
+$Temp_low_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->low->celsius
+$Rain_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->mm
+$Temp_high_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius
+$Temp_low_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius
+$Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm
+
+
+
 
 							SetValue($this->GetIDForIdent("Temp_now"),$Temp_now);
 							SetValue($this->GetIDForIdent("Temp_feel"), $Temp_feel);
@@ -184,6 +191,12 @@ $jsonNextD = json_decode($contentNextD);
 							SetValue($this->GetIDForIdent("Solar_now"), $Solar_now);
 							SetValue($this->GetIDForIdent("Vis_now"), $Vis_now);
                             SetValue($this->GetIDForIdent("UV_now"), $UV_now);
+                            SetValue($this->GetIDForIdent("Temp_high_heute"), $Temp_high_heute);
+                            SetValue($this->GetIDForIdent("Temp_low_heute"), $Temp_low_heute);
+                            SetValue($this->GetIDForIdent("Rain_heute"), $Rain_heute);
+                            SetValue($this->GetIDForIdent("Temp_high_morgen"), $Temp_high_morgen);
+                            SetValue($this->GetIDForIdent("Temp_low_morgen"), $Temp_low_morgen);
+                            SetValue($this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
 
 
 }
