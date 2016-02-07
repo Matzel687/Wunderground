@@ -52,7 +52,7 @@ class WundergroundWetter extends IPSModule
 
 			if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != ""))
 				{
-					//Variablen erstellen
+					//Variablen erstellen Wetter jetzt
 					$this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
 					$this->RegisterVariableFloat("Temp_feel","Temperatur gefühlt","Temperature",2);
 					$this->RegisterVariableFloat("Temp_dewpoint","Temperatur Taupunkt","Temperature",3);
@@ -66,6 +66,21 @@ class WundergroundWetter extends IPSModule
 					$this->RegisterVariableFloat("Solar_now","Sonnenstrahlung","WD_Sonnenstrahlung",11);
 					$this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
+                    //Variablen erstellen Wettervorhersage
+                    $InstanceID = $this->CreateDummyByName ($this->InstanceID,"Wettervorhersage")
+                    
+                    $this->RegisterVariableFloat("Temp_high_heute","Temperatur Tag Heute","Temperature",1);
+					$this->RegisterVariableFloat("Temp_low_heute","Temperatur Nacht Heute","Temperature",2);
+                    $this->RegisterVariableFloat("Rain_heute","Niederschlag/h Heute","WD_Niederschlag",3);
+                    $this->RegisterVariableFloat("Temp_high_morgen","Temperatur Tag morgen","Temperature",4);
+					$this->RegisterVariableFloat("Temp_low_morgen","Temperatur Nacht morgen","Temperature",5);
+                    $this->RegisterVariableFloat("Rain_morgen","Niederschlag/h morgen","WD_Niederschlag",6);
+                    
+                    
+                    
+                    
+                    
+                    
 		        //Timer zeit setzen
 					$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
                 // Variable Logging Aktivieren/Deaktivieren
@@ -140,8 +155,8 @@ $jsonNextD = json_decode($contentNextD);
 
 							SetValue($this->GetIDForIdent("Temp_now"),$Temp_now);
 							SetValue($this->GetIDForIdent("Temp_feel"), $Temp_feel);
-							SetValue($this->GetIDForIdent("Temp_dewpoint"), $emp_dewpoint);
-							SetValue($this->GetIDForIdent("Hum_now"), $Hum_now);
+							SetValue($this->GetIDForIdent("Temp_dewpoint"), $Temp_dewpoint);
+							SetValue($this->GetIDForIdent("Hum_now"), substr($Hum_now, 0, -1));
 							SetValue($this->GetIDForIdent("Pres_now"), $Pres_now);
 							SetValue($this->GetIDForIdent("Wind_deg"), $Wind_deg);
 							SetValue($this->GetIDForIdent("Wind_gust"), $Wind_gust);
@@ -205,6 +220,19 @@ protected function VarLogging($VarName,$LogStatus,$Type)
     AC_SetAggregationType($archiveHandlerID, $this->GetIDForIdent($VarName), $Type);
     AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent($VarName), $this->ReadPropertyBoolean($LogStatus));
     IPS_ApplyChanges($archiveHandlerID);
+}
+
+protected function CreateDummyByName ($parentID, $name)
+{
+
+$InsID = @IPS_GetInstanceIDByName($name, $parentID);
+if ($InsID === false) {
+		$InsID = IPS_CreateInstance("{485D0419-BE97-4548-AA9C-C083EB82E61E}");
+		IPS_SetName($InsID, $name);
+		IPS_SetParent($InsID, $parentID);
+		}
+    return $InsID;
+
 }
 
 }
