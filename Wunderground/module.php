@@ -53,31 +53,49 @@ class WundergroundWetter extends IPSModule
 			if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != ""))
 				{
 					//Variablen erstellen Wetter jetzt
+                    $InstanceID = $this->CreateDummyByName ($this->InstanceID,"Wetterjetzt");
 					$this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
+                    IPS_SetParent($this->GetIDForIdent("Temp_now"), $InstanceID);
 					$this->RegisterVariableFloat("Temp_feel","Temperatur gefühlt","Temperature",2);
+                    IPS_SetParent($this->GetIDForIdent("Temp_feel"), $InstanceID);
 					$this->RegisterVariableFloat("Temp_dewpoint","Temperatur Taupunkt","Temperature",3);
+                    IPS_SetParent($this->GetIDForIdent("Temp_dewpoint"), $InstanceID);
 					$this->RegisterVariableFloat("Hum_now","Luftfeuchtigkeit","Humidity.F",4);
+                    IPS_SetParent($this->GetIDForIdent("THum_now"), $InstanceID);
 					$this->RegisterVariableFloat("Pres_now","Luftdruck","AirPressure.F",5);
+                    IPS_SetParent($this->GetIDForIdent("Pres_now"), $InstanceID);
 					$this->RegisterVariableFloat("Wind_deg","Windrichtung","WindDirection.Text",6);
+                    IPS_SetParent($this->GetIDForIdent("Wind_deg"), $InstanceID);
 					$this->RegisterVariableFloat("Wind_now","Windgeschwindigkeit","WD_WindSpeed_kmh",7);
+                    IPS_SetParent($this->GetIDForIdent("Wind_now"), $InstanceID);
 					$this->RegisterVariableFloat("Wind_gust","Windböe","WD_WindSpeed_kmh",8);
+                    IPS_SetParent($this->GetIDForIdent("Wind_gust"), $InstanceID);
 					$this->RegisterVariableFloat("Rain_now","Niederschlag/h","WD_Niederschlag",9);
+                    IPS_SetParent($this->GetIDForIdent("Rain_now"), $InstanceID);
 					$this->RegisterVariableFloat("Rain_today","Niederschlag Tag","WD_Niederschlag",10);
+                    IPS_SetParent($this->GetIDForIdent("Rain_today"), $InstanceID);
 					$this->RegisterVariableFloat("Solar_now","Sonnenstrahlung","WD_Sonnenstrahlung",11);
+                    IPS_SetParent($this->GetIDForIdent("Solar_now"), $InstanceID);
 					$this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
+                    IPS_SetParent($this->GetIDForIdent("Vis_now"), $InstanceID);
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
+                    IPS_SetParent($this->GetIDForIdent("UV_now"), $InstanceID);
                     //Variablen erstellen Wettervorhersage
                     $InstanceID = $this->CreateDummyByName ($this->InstanceID,"Wettervorhersage");
-                    
-                    $this->RegisterVariableFloat("Temp_high_heute","Temperatur Tag Heute","Temperature",1);
+                    $this->RegisterVariableFloat("Temp_high_heute","Temperatur/Tag heute","Temperature",1);
                     IPS_SetParent($this->GetIDForIdent("Temp_high_heute"), $InstanceID);
-					$this->RegisterVariableFloat("Temp_low_heute","Temperatur Nacht Heute","Temperature",2);
-                    $this->RegisterVariableFloat("Rain_heute","Niederschlag/h Heute","WD_Niederschlag",3);
+					$this->RegisterVariableFloat("Temp_low_heute","Temperatur/Nacht heute","Temperature",2);
+                    IPS_SetParent($this->GetIDForIdent("Temp_low_heute"), $InstanceID);
+                    $this->RegisterVariableFloat("Rain_heute","Niederschlag/h heute","WD_Niederschlag",3);
+                    IPS_SetParent($this->GetIDForIdent("Rain_heute"), $InstanceID);
                     $this->RegisterVariableFloat("Temp_high_morgen","Temperatur Tag morgen","Temperature",4);
+                    IPS_SetParent($this->GetIDForIdent("Temp_high_morgen"), $InstanceID);
 					$this->RegisterVariableFloat("Temp_low_morgen","Temperatur Nacht morgen","Temperature",5);
+                    IPS_SetParent($this->GetIDForIdent("Temp_low_morgen"), $InstanceID);
                     $this->RegisterVariableFloat("Rain_morgen","Niederschlag/h morgen","WD_Niederschlag",6);
+                    IPS_SetParent($this->GetIDForIdent("Rain_morgen"), $InstanceID);
                     
-                    IPS_SetParent($VarID_Raumtemperatur, 12345); 
+                    
                     
                     
                     
@@ -235,6 +253,10 @@ if ($InsID === false) {
     return $InsID;
 
 }
+
+
+
+
 
 }
 ?>
