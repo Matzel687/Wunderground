@@ -68,7 +68,8 @@ class WundergroundWetter extends IPSModule
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",12);
 		        //Timer zeit setzen
 					$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
-
+                //Instanz ist aktiv
+				$this->SetStatus(102);
 
 				}
 			else
