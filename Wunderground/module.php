@@ -95,6 +95,7 @@ class WundergroundWetter extends IPSModule
 
 			if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != ""))
 				{
+                $this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
 		        //Timer zeit setzen
 					$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
                 // Variable Logging Aktivieren/Deaktivieren
@@ -260,10 +261,6 @@ if ($InsID === false) {
     return $InsID;
 
 }
-
-
-
-
 
 }
 ?>
