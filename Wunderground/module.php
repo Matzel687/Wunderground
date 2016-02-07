@@ -133,7 +133,7 @@ $jsonNextD = json_decode($contentNextD);
 							SetValue($this->GetIDForIdent("Wind_gust"), $Wind_gust);
 							SetValue($this->GetIDForIdent("Rain_now "), $Rain_now );
 							SetValue($this->GetIDForIdent("Rain_today"), $Rain_today);
-							SetValue($this->GetIDForIdent("Solar_now"),($Solar_now);
+							SetValue($this->GetIDForIdent("Solar_now"), $Solar_now);
 							SetValue($this->GetIDForIdent("Vis_now"), $Vis_now);
                             SetValue($this->GetIDForIdent("UV_now"), $UV_now);
 
