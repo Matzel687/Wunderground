@@ -46,7 +46,7 @@ class WundergroundWetter extends IPSModule
 			//Variablenprofil anlegen
                 $this->VarProErstellen("WD_Niederschlag",2,"Liter/m²",0,10,0,2,"Rainfall");
                 $this->VarProErstellen("WD_Sonnenstrahlung",2,"W/m²",0,2000,0,2,"Sun");
-                $this->VarProErstellen("WD_Sichtweite",2,"km",0,0,0,2);
+                $this->VarProErstellen("WD_Sichtweite",2,"km",0,0,0,2,"");
                 $this->VarProWDWindSpeedkmh();
                 $this->VarProWDUVIndex();
                 
