@@ -35,6 +35,13 @@ class WundergroundWetter extends IPSModule
             $this->RegisterPropertyBoolean("logSolar_now", false);
             $this->RegisterPropertyBoolean("logVis_now", false);
             $this->RegisterPropertyBoolean("logUV_now", false);
+            
+            //Variablenprofil anlegen
+            $this->Var_Pro_Erstellen("WD_Niederschlag",2,"Liter/m²",0,10,0,2,"Rainfall");
+            $this->Var_Pro_Erstellen("WD_Sonnenstrahlung",2,"W/m²",0,2000,0,2,"Sun");
+            $this->Var_Pro_Erstellen("WD_Sichtweite",2,"km",0,0,0,2,"");
+            $this->Var_Pro_WD_WindSpeedkmh();
+            $this->Var_Pro_WD_UVIndex();
   		 }
 
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
@@ -43,13 +50,6 @@ class WundergroundWetter extends IPSModule
          // Diese Zeile nicht löschen
          parent::ApplyChanges();
 
-			//Variablenprofil anlegen
-                $this->VarProErstellen("WD_Niederschlag",2,"Liter/m²",0,10,0,2,"Rainfall");
-                $this->VarProErstellen("WD_Sonnenstrahlung",2,"W/m²",0,2000,0,2,"Sun");
-                $this->VarProErstellen("WD_Sichtweite",2,"km",0,0,0,2,"");
-                $this->VarProWDWindSpeedkmh();
-                $this->VarProWDUVIndex();
-                
 			if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != ""))
 				{
 					//Variablen erstellen
@@ -61,13 +61,40 @@ class WundergroundWetter extends IPSModule
 					$this->RegisterVariableFloat("Wind_deg","Windrichtung","WindDirection.Text",6);
 					$this->RegisterVariableFloat("Wind_now","Windgeschwindigkeit","WD_WindSpeed_kmh",7);
 					$this->RegisterVariableFloat("Wind_gust","Windböe","WD_WindSpeed_kmh",8);
-					$this->RegisterVariableFloat("Rain_now","Niederschlag/h","WD_Niederschlag",8);
-					$this->RegisterVariableFloat("Rain_today","Niederschlag Tag","WD_Niederschlag",9);
-					$this->RegisterVariableFloat("Solar_now","Sonnenstrahlung","WD_Sonnenstrahlung",10);
-					$this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",11);
-                    $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",12);
+					$this->RegisterVariableFloat("Rain_now","Niederschlag/h","WD_Niederschlag",9);
+					$this->RegisterVariableFloat("Rain_today","Niederschlag Tag","WD_Niederschlag",10);
+					$this->RegisterVariableFloat("Solar_now","Sonnenstrahlung","WD_Sonnenstrahlung",11);
+					$this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
+                    $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
 		        //Timer zeit setzen
 					$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
+                // Variable Logging Aktivieren/Deaktivieren
+                if ($this->ReadPropertyBoolean("logTemp_now") === true)
+                    $this-> VarLogging("Temp_now","logTemp_now",0);
+                if ($this->ReadPropertyBoolean("logTemp_feel") === true)
+                    $this-> VarLogging("Temp_feel","logTemp_feel",0);
+                if ($this->ReadPropertyBoolean("logTemp_dewpoint") === true)
+                    $this-> VarLogging("Temp_dewpoint","logTemp_dewpoint",0);
+                if ($this->ReadPropertyBoolean("logHum_now") === true)
+                    $this-> VarLogging("Hum_now","logHum_now",0);
+                if ($this->ReadPropertyBoolean("logPres_now") === true)
+                    $this-> VarLogging("Pres_now","logPres_now",0);
+                if ($this->ReadPropertyBoolean("logWind_deg") === true)
+                    $this-> VarLogging("Wind_deg","logWind_deg",0);
+                if ($this->ReadPropertyBoolean("logWind_now") === true)
+                    $this-> VarLogging("Wind_now","logWind_now",0);
+                if ($this->ReadPropertyBoolean("logWind_gust") === true)
+                    $this-> VarLogging("Wind_gust","logWind_gust",0);
+                if ($this->ReadPropertyBoolean("logRain_now") === true)
+                    $this-> VarLogging("Rain_now","logRain_now",1);
+                if ($this->ReadPropertyBoolean("logRain_today") === true)
+                    $this-> VarLogging("Rain_today","logRain_today",1);
+                if ($this->ReadPropertyBoolean("logSolar_now") === true)
+                    $this-> VarLogging("Solar_now","logSolar_now",1);
+                if ($this->ReadPropertyBoolean("logVis_now") === true)
+                    $this-> VarLogging("Vis_now","logVis_now",0);
+                if ($this->ReadPropertyBoolean("logUV_now") === true)
+                    $this-> VarLogging("UV_now","logUV_now",0);
                 //Instanz ist aktiv
 				$this->SetStatus(102);
 
@@ -77,20 +104,6 @@ class WundergroundWetter extends IPSModule
 				//Instanz ist inaktiv
 				$this->SetStatus(104);
 				}
-            /*Variablen Logging Aktivieren / Deaktivieren
-            $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("CPU_idle"), $this->ReadPropertyBoolean("logCPU_idle"));
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("CPU_volts"), $this->ReadPropertyBoolean("logCPU_volts"));
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("CPU_temp"), $this->ReadPropertyBoolean("logCPU_temp"));
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("HDD_total"), $this->ReadPropertyBoolean("logHDD_total"));
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("HDD_used"), $this->ReadPropertyBoolean("logHDD_used"));
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("HDD_percent"), $this->ReadPropertyBoolean("logHDD_percent"));
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("HDD_symcon"), $this->ReadPropertyBoolean("logHDD_symcon"));
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("RAM_total"), $this->ReadPropertyBoolean("logRAM_total"));
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("RAM_used"), $this->ReadPropertyBoolean("logRAM_used"));
-            AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent("RAM_percent"), $this->ReadPropertyBoolean("logRAM_percent"));
-            IPS_ApplyChanges($archiveHandlerID);
-*/
 
    	}
 
@@ -141,7 +154,7 @@ $jsonNextD = json_decode($contentNextD);
 
 }
 
-protected function VarProErstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
+protected function Var_Pro_Erstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
 {
 
 	if (IPS_VariableProfileExists($name) == false)
@@ -153,7 +166,7 @@ protected function VarProErstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValu
     	IPS_SetVariableProfileIcon($name,$Icon);
 	}
 }
-protected function VarProWDWindSpeedKmh()
+protected function Var_Pro_WD_WindSpeedKmh()
 {
 	if (IPS_VariableProfileExists("WD_WindSpeed_kmh") == false)
 
@@ -172,7 +185,7 @@ protected function VarProWDWindSpeedKmh()
         IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 36, "%.1f", "WindSpeed", 16764159);
 	}
 }
-protected function VarProWDUVIndex()
+protected function Var_Pro_WD_UVIndex()
 {
 	if (IPS_VariableProfileExists("WD_UV_Index") == false)
 	{
@@ -185,5 +198,14 @@ protected function VarProWDUVIndex()
         IPS_SetVariableProfileAssociation("WD_UV_Index", 11, "%.1f","",0xA80080);
 	}
 }
+
+protected function VarLogging($VarName,$LogStatus,$Type)
+{
+    $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
+    AC_SetAggregationType($archiveHandlerID, $this->GetIDForIdent($VarName), $Type);
+    AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent($VarName), $this->ReadPropertyBoolean($LogStatus));
+    IPS_ApplyChanges($archiveHandlerID);
+}
+
 }
 ?>
