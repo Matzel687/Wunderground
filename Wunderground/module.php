@@ -44,11 +44,11 @@ class WundergroundWetter extends IPSModule
          parent::ApplyChanges();
 
 			//Variablenprofil anlegen
-                Var_Pro_ersellen("WD_Niederschlag",2,"Liter/m²",0,10,0,2,"Rainfall");
-                Var_Pro_ersellen("WD_Sonnenstrahlung",2,"W/m²",0,2000,0,2,"Sun");
-                Var_Pro_ersellen("WD_Sichtweite",2,"km",0,0,0,2);
-                Var_Pro_WD_WindSpeed_kmh();
-                Var_Pro_WD_UV_Index();
+                VarProErstellen("WD_Niederschlag",2,"Liter/m²",0,10,0,2,"Rainfall");
+                VarProErstellen("WD_Sonnenstrahlung",2,"W/m²",0,2000,0,2,"Sun");
+                VarProErstellen("WD_Sichtweite",2,"km",0,0,0,2);
+                VarProWDWindSpeedkmh();
+                VarProWDUVIndex();
                 
 			if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != ""))
 				{
@@ -140,7 +140,7 @@ $jsonNextD = json_decode($contentNextD);
 
 }
 
-protected function Var_Pro_ersellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
+protected function VarProErstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
 {
 
 	if (IPS_VariableProfileExists($name) == false)
@@ -152,7 +152,7 @@ protected function Var_Pro_ersellen($name,$ProfileType,$Suffix,$MinValue,$MaxVal
     	IPS_SetVariableProfileIcon($name,$Icon);
 	}
 }
-protected function Var_Pro_WD_WindSpeed_kmh()
+protected function VarProWDWindSpeedKmh()
 {
 	if (IPS_VariableProfileExists("WD_WindSpeed_kmh") == false)
 
@@ -171,7 +171,7 @@ protected function Var_Pro_WD_WindSpeed_kmh()
         IPS_SetVariableProfileAssociation("WD_WindSpeed_kmh", 36, "%.1f", "WindSpeed", 16764159);
 	}
 }
-protected function Var_Pro_WD_UV_Index()
+protected function VarProWDUVIndex()
 {
 	if (IPS_VariableProfileExists("WD_UV_Index") == false)
 	{
