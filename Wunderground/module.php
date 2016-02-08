@@ -130,6 +130,7 @@ $jsonNow = json_decode($WetterJetzt);
 
 $aktuell = "current_observation"; // Aktuelle Wetter daten holen
 
+$icon = $jsonNow->$aktuell->icon_url;
 $Temp_now = $jsonNow->$aktuell->temp_c;
 $Temp_feel = $jsonNow->$aktuell->feelslike_c;
 $Temp_dewpoint = $jsonNow->$aktuell->dewpoint_c;
@@ -163,6 +164,7 @@ $Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday-
 							SetValue($this->GetIDForIdent("Hum_now"), substr($Hum_now, 0, -1));
 							SetValue($this->GetIDForIdent("Pres_now"), $Pres_now);
 							SetValue($this->GetIDForIdent("Wind_deg"), $Wind_deg);
+                            SetValue($this->GetIDForIdent("Wind_now"), $Wind_now);
 							SetValue($this->GetIDForIdent("Wind_gust"), $Wind_gust);
 							SetValue($this->GetIDForIdent("Rain_now "), $Rain_now );
 							SetValue($this->GetIDForIdent("Rain_today"), $Rain_today);
@@ -176,6 +178,48 @@ $Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday-
                             SetValue($this->GetIDForIdent("Temp_low_morgen"), $Temp_low_morgen);
                             SetValue($this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
 
+
+$html = '<table >
+                <tr>
+					<td align="center" valign="top"  style="width:130px;padding-left:20px;">
+                    Aktuell<br>
+                    <img src="'.$icon.'" style="float:left;">
+                    <div style="float:right">
+                    '.$Temp_now.' °C<br>
+                    '.$Tum_now.'<br>
+
+                    </div>
+                   <div style="clear:both; font-size: 10px;">Ø Wind: '.$Tind_now.' km/h<br>
+                   '.$Temp_feel.' °C gefühlt<br>
+                   '.$Pres_now.' hPa<br>
+                		Regen 1h: '.$Rain_now.' Liter/m²<br>
+                		Sichtweite '.$Vis_now.' km
+                    </div>
+                </td>';
+
+ foreach($jsonNextD->forecast->simpleforecast->forecastday as $name=> $day){
+        if( $this->isToday($day->date->epoch)){
+            $Wochentag = "Heute";
+        } else {
+				$tag = array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
+            $Wochentag =$tag[date("w",intval($day->date->epoch))];
+        }
+        $html.= '<td align="center" valign="top"  style="width:130px;padding-left:20px;">
+                        '.$Wochentag.'<br>
+                        <img src="'.$day->icon_url.'" style="float:left;">
+                        <div style="float:right">
+                        '.$day->low->celsius.' °C<br>
+                        '.$day->high->celsius.' °C
+                        </div>
+                        <div style="clear:both; font-size: 10px;">Ø Wind: '.$day->avewind->kph.' km/h<br>
+                        Niederschlag: '.($day->qpf_allday->mm).' Liter/m²
+                        </div>
+                    </td>';
+    }
+    $html .= "</tr>
+                </table>";
+                
+                            SetValue($this->GetIDForIdent("Wettervorhersage_html"), $html);
 
 }
 
@@ -232,6 +276,18 @@ private function VarLogging($VarName,$LogStatus,$Type)
     IPS_ApplyChanges($archiveHandlerID);
 }
 
+private function isToday($time)
+{
+  $begin = mktime(0, 0, 0);
+  $end = mktime(23, 59, 59);
+  // check if given time is between begin and end
+  if($time >= $begin && $time <= $end)
+  {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 }
 ?>
