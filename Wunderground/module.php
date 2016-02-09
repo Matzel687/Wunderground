@@ -166,7 +166,7 @@ $Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday-
 							SetValue($this->GetIDForIdent("Wind_deg"), $Wind_deg);
                             SetValue($this->GetIDForIdent("Wind_now"), $Wind_now);
 							SetValue($this->GetIDForIdent("Wind_gust"), $Wind_gust);
-							SetValue($this->GetIDForIdent("Rain_now "), $Rain_now );
+							SetValue($this->GetIDForIdent("Rain_now"), $Rain_now);
 							SetValue($this->GetIDForIdent("Rain_today"), $Rain_today);
 							SetValue($this->GetIDForIdent("Solar_now"), $Solar_now);
 							SetValue($this->GetIDForIdent("Vis_now"), $Vis_now);
