@@ -186,10 +186,10 @@ $html = '<table >
                     <img src="'.$icon.'" style="float:left;">
                     <div style="float:right">
                     '.$Temp_now.' °C<br>
-                    '.$Tum_now.'<br>
+                    '.$Hum_now.'<br>
 
                     </div>
-                   <div style="clear:both; font-size: 10px;">Ø Wind: '.$Tind_now.' km/h<br>
+                   <div style="clear:both; font-size: 10px;">Ø Wind: '.$Wind_now.' km/h<br>
                    '.$Temp_feel.' °C gefühlt<br>
                    '.$Pres_now.' hPa<br>
                 		Regen 1h: '.$Rain_now.' Liter/m²<br>
