@@ -218,7 +218,7 @@ $html = '<table >
                             $this->SetValueByID($this->GetIDForIdent("Rain_heute"), $Rain_heute);
                             $this->SetValueByID($this->GetIDForIdent("Temp_high_morgen"), $Temp_high_morgen);
                             $this->SetValueByID($this->GetIDForIdent("Temp_low_morgen"), $Temp_low_morgen);
-                            $this->SetValueByID$this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
+                            $this->SetValueByID($this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
                             SetValue($this->GetIDForIdent("Wettervorhersage_html"), $html);
 
 }
