@@ -200,25 +200,25 @@ $html = '<table >
     $html .= "</tr>
                 </table>";
                 
-							SetValue($this->GetIDForIdent("Temp_now"),$Temp_now);
-							SetValue($this->GetIDForIdent("Temp_feel"), $Temp_feel);
-							SetValue($this->GetIDForIdent("Temp_dewpoint"), $Temp_dewpoint);
-							SetValue($this->GetIDForIdent("Hum_now"), substr($Hum_now, 0, -1));
-							SetValue($this->GetIDForIdent("Pres_now"), $Pres_now);
-							SetValue($this->GetIDForIdent("Wind_deg"), $Wind_deg);
-                            SetValue($this->GetIDForIdent("Wind_now"), $Wind_now);
-							SetValue($this->GetIDForIdent("Wind_gust"), $Wind_gust);
-							SetValue($this->GetIDForIdent("Rain_now"), $Rain_now);
-							SetValue($this->GetIDForIdent("Rain_today"), $Rain_today);
-							SetValue($this->GetIDForIdent("Solar_now"), $Solar_now);
-							SetValue($this->GetIDForIdent("Vis_now"), $Vis_now);
-                            SetValue($this->GetIDForIdent("UV_now"), $UV_now);
-                            SetValue($this->GetIDForIdent("Temp_high_heute"), $Temp_high_heute);
-                            SetValue($this->GetIDForIdent("Temp_low_heute"), $Temp_low_heute);
-                            SetValue($this->GetIDForIdent("Rain_heute"), $Rain_heute);
-                            SetValue($this->GetIDForIdent("Temp_high_morgen"), $Temp_high_morgen);
-                            SetValue($this->GetIDForIdent("Temp_low_morgen"), $Temp_low_morgen);
-                            SetValue($this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
+							$this->SetValueByID($this->GetIDForIdent("Temp_now"),$Temp_now);
+							$this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Temp_feel);
+							$this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Temp_dewpoint);
+							$this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($Hum_now, 0, -1));
+							$this->SetValueByID($this->GetIDForIdent("Pres_now"), $Pres_now);
+							$this->SetValueByID($this->GetIDForIdent("Wind_deg"), $Wind_deg);
+                            $this->SetValueByID($this->GetIDForIdent("Wind_now"), $Wind_now);
+							$this->SetValueByID($this->GetIDForIdent("Wind_gust"), $Wind_gust);
+							$this->SetValueByID($this->GetIDForIdent("Rain_now"), $Rain_now);
+							$this->SetValueByID($this->GetIDForIdent("Rain_today"), $Rain_today);
+							$this->SetValueByID($this->GetIDForIdent("Solar_now"), $Solar_now);
+							$this->SetValueByID($this->GetIDForIdent("Vis_now"), $Vis_now);
+                            $this->SetValueByID($this->GetIDForIdent("UV_now"), $UV_now);
+                            $this->SetValueByID($this->GetIDForIdent("Temp_high_heute"), $Temp_high_heute);
+                            $this->SetValueByID($this->GetIDForIdent("Temp_low_heute"), $Temp_low_heute);
+                            $this->SetValueByID($this->GetIDForIdent("Rain_heute"), $Rain_heute);
+                            $this->SetValueByID($this->GetIDForIdent("Temp_high_morgen"), $Temp_high_morgen);
+                            $this->SetValueByID($this->GetIDForIdent("Temp_low_morgen"), $Temp_low_morgen);
+                            $this->SetValueByID$this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
                             SetValue($this->GetIDForIdent("Wettervorhersage_html"), $html);
 
 }
@@ -275,6 +275,7 @@ private function VarLogging($VarName,$LogStatus,$Type)
     AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent($VarName), $this->ReadPropertyBoolean($LogStatus));
     IPS_ApplyChanges($archiveHandlerID);
 }
+//Timer erstllen alle X minuten 
 private function SetTimerMinutes($parentID, $name,$minutes)
     {
     $eid = @IPS_GetEventIDByName($name, $parentID);
@@ -306,6 +307,17 @@ private function isToday($time)
     return false;
   }
 }
+
+private function SetValueByID($VariablenID,$Wert)
+{
+    // Überprüfen ob $Wert eine Zahl ist
+    if (is_numeric($Wert))
+    SetValue($VariablenID,$Wert);
+    //Wenn $Wert keine Zahl ist setze den Wert auf 0
+    else 
+    SetValue($VariablenID,0);
+}
+
 
 }
 ?>
