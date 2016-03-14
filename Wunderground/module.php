@@ -18,8 +18,8 @@ class WundergroundWetter extends IPSModule
 
 			$this->RegisterPropertyString("Wetterstation", "");
 			$this->RegisterPropertyString("API_Key", "");
-			$this->RegisterPropertyInteger("UpdateInterval", 1800);
-     		$this->RegisterTimer("Update", 0, 'WD_Update($_IPS["TARGET"]);');
+			$this->RegisterPropertyInteger("UpdateInterval", 10);
+     		$this->SetTimerMinutes($this->InstanceID,"Update",$this->ReadPropertyInteger("UpdateInterval"));
             
             //Variable Änderungen aufzeichnen
             $this->RegisterPropertyBoolean("logTemp_now", false);
@@ -145,7 +145,7 @@ $Solar_now = $jsonNow->$aktuell->solarradiation;
 $Vis_now = $jsonNow->$aktuell->visibility_km;
 $UV_now = $jsonNow->$aktuell->UV;
 
-
+//Wetterdaten für die nächsten 2 Tage
 
 $contentNextD = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/forecast/q/".$locationID.".json");
 $jsonNextD = json_decode($contentNextD);
@@ -158,26 +158,7 @@ $Temp_high_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->high->
 $Temp_low_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius;
 $Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm;
 
-							SetValue($this->GetIDForIdent("Temp_now"),$Temp_now);
-							SetValue($this->GetIDForIdent("Temp_feel"), $Temp_feel);
-							SetValue($this->GetIDForIdent("Temp_dewpoint"), $Temp_dewpoint);
-							SetValue($this->GetIDForIdent("Hum_now"), substr($Hum_now, 0, -1));
-							SetValue($this->GetIDForIdent("Pres_now"), $Pres_now);
-							SetValue($this->GetIDForIdent("Wind_deg"), $Wind_deg);
-                            SetValue($this->GetIDForIdent("Wind_now"), $Wind_now);
-							SetValue($this->GetIDForIdent("Wind_gust"), $Wind_gust);
-							SetValue($this->GetIDForIdent("Rain_now"), $Rain_now);
-							SetValue($this->GetIDForIdent("Rain_today"), $Rain_today);
-							SetValue($this->GetIDForIdent("Solar_now"), $Solar_now);
-							SetValue($this->GetIDForIdent("Vis_now"), $Vis_now);
-                            SetValue($this->GetIDForIdent("UV_now"), $UV_now);
-                            SetValue($this->GetIDForIdent("Temp_high_heute"), $Temp_high_heute);
-                            SetValue($this->GetIDForIdent("Temp_low_heute"), $Temp_low_heute);
-                            SetValue($this->GetIDForIdent("Rain_heute"), $Rain_heute);
-                            SetValue($this->GetIDForIdent("Temp_high_morgen"), $Temp_high_morgen);
-                            SetValue($this->GetIDForIdent("Temp_low_morgen"), $Temp_low_morgen);
-                            SetValue($this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
-
+// Wettervorhersage String
 
 $html = '<table >
                 <tr>
@@ -219,6 +200,25 @@ $html = '<table >
     $html .= "</tr>
                 </table>";
                 
+							SetValue($this->GetIDForIdent("Temp_now"),$Temp_now);
+							SetValue($this->GetIDForIdent("Temp_feel"), $Temp_feel);
+							SetValue($this->GetIDForIdent("Temp_dewpoint"), $Temp_dewpoint);
+							SetValue($this->GetIDForIdent("Hum_now"), substr($Hum_now, 0, -1));
+							SetValue($this->GetIDForIdent("Pres_now"), $Pres_now);
+							SetValue($this->GetIDForIdent("Wind_deg"), $Wind_deg);
+                            SetValue($this->GetIDForIdent("Wind_now"), $Wind_now);
+							SetValue($this->GetIDForIdent("Wind_gust"), $Wind_gust);
+							SetValue($this->GetIDForIdent("Rain_now"), $Rain_now);
+							SetValue($this->GetIDForIdent("Rain_today"), $Rain_today);
+							SetValue($this->GetIDForIdent("Solar_now"), $Solar_now);
+							SetValue($this->GetIDForIdent("Vis_now"), $Vis_now);
+                            SetValue($this->GetIDForIdent("UV_now"), $UV_now);
+                            SetValue($this->GetIDForIdent("Temp_high_heute"), $Temp_high_heute);
+                            SetValue($this->GetIDForIdent("Temp_low_heute"), $Temp_low_heute);
+                            SetValue($this->GetIDForIdent("Rain_heute"), $Rain_heute);
+                            SetValue($this->GetIDForIdent("Temp_high_morgen"), $Temp_high_morgen);
+                            SetValue($this->GetIDForIdent("Temp_low_morgen"), $Temp_low_morgen);
+                            SetValue($this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
                             SetValue($this->GetIDForIdent("Wettervorhersage_html"), $html);
 
 }
@@ -275,7 +275,25 @@ private function VarLogging($VarName,$LogStatus,$Type)
     AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent($VarName), $this->ReadPropertyBoolean($LogStatus));
     IPS_ApplyChanges($archiveHandlerID);
 }
+private function SetTimerMinutes($parentID, $name,$minutes)
+    {
+    $eid = @IPS_GetEventIDByName($name, $parentID);
+        if($eid === false)
+	    {
+            $eid = IPS_CreateEvent(1);
+            IPS_SetParent($eid, $parentID);
+            IPS_SetName($eid, $name);
+        }
+        else
+        {
+            IPS_SetEventCyclic($eid, 0 /* Keine Datumsüberprüfung */, 0, 0, 2, 2 /* Minütlich */ , $minutes/* Alle XX Minuten */);
+            IPS_SetEventScript($eid, 'WD_Update($_IPS["TARGET"]);');
+		    IPS_SetEventActive($eid, true);
+            IPS_SetHidden($eid, true);
+        }
 
+    }
+    
 private function isToday($time)
 {
   $begin = mktime(0, 0, 0);
