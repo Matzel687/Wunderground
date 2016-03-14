@@ -1,7 +1,7 @@
 {
     "elements":
     [
-        { "type": "ValidationTextBox", "name": "Wetterstation", "caption": "Wetterstation ID pws:INORDR..." },
+        { "type": "ValidationTextBox", "name": "Wetterstation", "caption": "Wetterstation ID" },
         { "type": "ValidationTextBox", "name": "API_Key", "caption": "API Key" },
 		{ "type": "IntervalBox", "name": "UpdateInterval", "caption": "Update alle X Minuten" },
         { "type": "Label", "label": "Variable Änderungen aufzeichnen" },
