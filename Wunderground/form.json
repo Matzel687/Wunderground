@@ -21,7 +21,9 @@
 
     ],
     "actions":
-    [ ],
+    [ 
+            { "type": "Button", "label": "Update", "onClick": "WD_Update($id);" } 
+    ],
     "status":
     [
 		{ "code": 101, "icon": "active", "caption": "Instanz wird erstellt!" },

@@ -19,7 +19,7 @@ class WundergroundWetter extends IPSModule
 			$this->RegisterPropertyString("Wetterstation", "");
 			$this->RegisterPropertyString("API_Key", "");
 			$this->RegisterPropertyInteger("UpdateInterval", 10);
-     		$this->SetTimerMinutes($this->InstanceID,"Update",$this->ReadPropertyInteger("UpdateInterval"));
+     		
             
             //Variable Änderungen aufzeichnen
             $this->RegisterPropertyBoolean("logTemp_now", false);
@@ -78,7 +78,7 @@ class WundergroundWetter extends IPSModule
             $this->RegisterVariableString("Wettervorhersage_html","Wettervorhersage","HTMLBox",20);
                 
 		        //Timer zeit setzen
-					$this->SetTimerInterval("Update", $this->ReadPropertyInteger("UpdateInterval")*1000);
+				$this->SetTimerMinutes($this->InstanceID,"Update",$this->ReadPropertyInteger("UpdateInterval"));
 
                 //Instanz ist aktiv
 				$this->SetStatus(102);
