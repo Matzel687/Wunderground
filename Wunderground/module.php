@@ -121,7 +121,7 @@
                 $WetterJetzt = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/conditions/q/CA/".$locationID.".json"); //Seite öffnen
                 $jsonNow = json_decode($WetterJetzt); //json in String speichern
                 //Wetterdaten in Variable speichern
-                $icon = $jsonNow-current_observation->icon_url;
+                $icon = $jsonNow->current_observation->icon_url;
                 $Temp_now = $jsonNow->current_observation->temp_c;
                 $Temp_feel = $jsonNow->current_observation->feelslike_c;
                 $Temp_dewpoint = $jsonNow->current_observation->dewpoint_c;
