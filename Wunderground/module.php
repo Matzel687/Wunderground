@@ -72,7 +72,8 @@
                     $this->RegisterVariableFloat("Temp_high_morgen","Temperatur Tag morgen","Temperature",17);
                     $this->RegisterVariableFloat("Temp_low_morgen","Temperatur Nacht morgen","Temperature",18);
                     $this->RegisterVariableFloat("Rain_morgen","Niederschlag/h morgen","WD_Niederschlag",19);
-                    $this->RegisterVariableString("Wettervorhersage_html","Wettervorhersage","HTMLBox",20);
+                    $this->RegisterVariableString("Wettervorhersage_Woche","Wettervorhersage Woche","HTMLBox",20);
+                     $this->RegisterVariableString("Wettervorhersage_Stunden","Wettervorhersage Stunden","HTMLBox",20);
                     //Timer zeit setzen
                     $this->SetTimerMinutes($this->InstanceID,"Update",$this->ReadPropertyInteger("UpdateInterval"));
                     //Instanz ist aktiv
@@ -123,56 +124,54 @@
                 //Wetterdaten für die nächsten  Tage
                 $contentNextD = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/forecast/q/".$locationID.".json"); //Seite öffnen
                 $jsonNextD = json_decode($contentNextD);
+                //Wetterdaten für die nächsten  Stunden
+                $contentNextH = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json");
+                $jsonNextH = json_decode($contentNextH);
+                //Wetter Warnung
+                $contentWarnung = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json");
+                $jsonWarnung = json_decode($contentWarnung);
+                
                 //Wetterdaten in Variable speichern
-                $Temp_now = $jsonNow->current_observation->temp_c;
-                $Temp_feel = $jsonNow->current_observation->feelslike_c;
-                $Temp_dewpoint = $jsonNow->current_observation->dewpoint_c;
-                $Hum_now = $jsonNow->current_observation->relative_humidity;
-                $Pres_now = $jsonNow->current_observation->pressure_mb;
-                $Wind_deg = $jsonNow->current_observation->wind_degrees;
-                $Wind_now = $jsonNow->current_observation->wind_kph;
-                $Wind_gust = $jsonNow->current_observation->wind_gust_kph;
-                $Rain_now = $jsonNow->current_observation->precip_1hr_metric;
-                $Rain_today = $jsonNow->current_observation->precip_today_metric;
-                $Solar_now = $jsonNow->current_observation->solarradiation;
-                $Vis_now = $jsonNow->current_observation->visibility_km;
-                $UV_now = $jsonNow->current_observation->UV;
-
-                //Wetterdaten für diw nächsten 2 Tage in Variable speichern
-                $Temp_high_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->high->celsius;
-                $Temp_low_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->low->celsius;
-                $Rain_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->mm;
-                $Temp_high_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius;
-                $Temp_low_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius;
-                $Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm;
-
-                  $this->SetValueByID($this->GetIDForIdent("Temp_now"),$jsonNow->current_observation->temp_c);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $jsonNow->current_observation->feelslike_c);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $jsonNow->current_observation->dewpoint_c);
-                  $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($jsonNow->current_observation->relative_humidity, 0, -1));
-                  $this->SetValueByID($this->GetIDForIdent("Pres_now"), $jsonNow->current_observation->pressure_mb);
-                  $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $jsonNow->current_observation->wind_degrees);
-                  $this->SetValueByID($this->GetIDForIdent("Wind_now"), $jsonNow->current_observation->wind_kph);
-                  $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $jsonNow->current_observation->wind_gust_kph);
-                  $this->SetValueByID($this->GetIDForIdent("Rain_now"), $jsonNow->current_observation->precip_1hr_metric);
-                  $this->SetValueByID($this->GetIDForIdent("Rain_today"), $jsonNow->current_observation->precip_today_metric);
-                  $this->SetValueByID($this->GetIDForIdent("Solar_now"), $jsonNow->current_observation->solarradiation);
-                  $this->SetValueByID($this->GetIDForIdent("Vis_now"), $jsonNow->current_observation->visibility_km);
-                  $this->SetValueByID($this->GetIDForIdent("UV_now"), $jsonNow->current_observation->UV);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_high_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->high->celsius);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_low_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->low->celsius);
-                  $this->SetValueByID($this->GetIDForIdent("Rain_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->mm);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_high_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_low_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius);
-                  $this->SetValueByID($this->GetIDForIdent("Rain_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm);
-                  SetValue($this->GetIDForIdent("Wettervorhersage_html"), $this->String_Wetter_Now_And_Next_Days($jsonNow ,$jsonNextD) );
+                $this->SetValueByID($this->GetIDForIdent("Temp_now"),$jsonNow->current_observation->temp_c);
+                $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $jsonNow->current_observation->feelslike_c);
+                $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $jsonNow->current_observation->dewpoint_c);
+                $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($jsonNow->current_observation->relative_humidity, 0, -1));
+                $this->SetValueByID($this->GetIDForIdent("Pres_now"), $jsonNow->current_observation->pressure_mb);
+                $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $jsonNow->current_observation->wind_degrees);
+                $this->SetValueByID($this->GetIDForIdent("Wind_now"), $jsonNow->current_observation->wind_kph);
+                $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $jsonNow->current_observation->wind_gust_kph);
+                $this->SetValueByID($this->GetIDForIdent("Rain_now"), $jsonNow->current_observation->precip_1hr_metric);
+                $this->SetValueByID($this->GetIDForIdent("Rain_today"), $jsonNow->current_observation->precip_today_metric);
+                $this->SetValueByID($this->GetIDForIdent("Solar_now"), $jsonNow->current_observation->solarradiation);
+                $this->SetValueByID($this->GetIDForIdent("Vis_now"), $jsonNow->current_observation->visibility_km);
+                $this->SetValueByID($this->GetIDForIdent("UV_now"), $jsonNow->current_observation->UV);
+                $this->SetValueByID($this->GetIDForIdent("Temp_high_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->high->celsius);
+                $this->SetValueByID($this->GetIDForIdent("Temp_low_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->low->celsius);
+                $this->SetValueByID($this->GetIDForIdent("Rain_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->mm);
+                $this->SetValueByID($this->GetIDForIdent("Temp_high_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius);
+                $this->SetValueByID($this->GetIDForIdent("Temp_low_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius);
+                $this->SetValueByID($this->GetIDForIdent("Rain_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm);
+                SetValue($this->GetIDForIdent("Wettervorhersage_Woche"), $this->String_Wetter_Now_And_Next_Days($jsonNow ,$jsonNextD,$jsonWarnung) );
+                SetValue($this->GetIDForIdent("Wettervorhersage_Stunden"), $this->String_Wetter_Heute_Stunden($jsonNextH) );
 
             }
 
-       public function String_Wetter_Now_And_Next_Days($WetterJetzt, $WetterNextDays)
+        protected function String_Wetter_Now_And_Next_Days($WetterJetzt, $WetterNextDays, $WetterWarnung)
             {           
-                $html = '<table >
-                            <tr>
+                $html = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+                            <table >';
+                           
+                            foreach($WetterWarnung->alerts as $Warnung=> $ID){
+                           $html.= ' <tr>
+                                <td style="color:'.$WetterWarnung->alerts[$ID]->level_meteoalarm_name.'" colspan="5"> <i class="fa fa-trash fa-2x"></i> bla
+                                 '.$jsonNextD->alerts[$ID]->description.'
+
+                                 </td>
+                               
+                              </tr>';
+                              }
+                              
+                        $html.= '<tr>
                                 <td align="center" valign="top"  style="width:130px;padding-left:20px;">
                                     Aktuell<br>
                                     <img src="'.$WetterJetzt->current_observation->icon_url.'" style="float:left;">
@@ -213,6 +212,34 @@
                 return $html;
             }
 
+        protected function String_Wetter_Heute_Stunden($WetterStunden)
+            {
+                  $html = '<table >
+                            <tr>';
+                for ($i=0; $i < 24; $i=$i+4) {
+                       $html.= '<td align="center" valign="top"  style="width:130px;padding-left:20px;">
+                                '.$WetterStunden->hourly_forecast[$i]->FCTTIME->weekday_name.' '.$WetterStunden->hourly_forecast[$i]->FCTTIME->hour.' Uhr <br>
+                                
+                                <img src="'.$WetterStunden->hourly_forecast[$i]->icon_url.'" style="float:left;">
+                                <div style="float:right">
+                                    '.$WetterStunden->hourly_forecast[$i]->temp->metric.' °C<br>
+                                    '.$WetterStunden->hourly_forecast[$i]->humidity.' %
+                                 </div>
+
+                                 <div style="clear:both; font-size: 10px;">
+                                    '.$WetterStunden->hourly_forecast[$i]->wx.'<br>
+                                    Ø Wind: '.$WetterStunden->hourly_forecast[$i]->wspd->metric.' km/h<br>
+                                    Niederschlag: '.$WetterStunden->hourly_forecast[$i]->qpf->metric.' Liter/m²
+                                  </div>
+                               </td>';
+                       }
+                $html .= "</tr>
+                           </table>";
+                return $html;  
+                }
+
+            
+            }
         protected function Var_Pro_Erstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
             {
                 if (IPS_VariableProfileExists($name) == false){
