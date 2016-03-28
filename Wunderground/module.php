@@ -163,7 +163,7 @@
                            
                             foreach($WetterWarnung->alerts as $Warnung=> $ID){
                                 $html.= '<tr>
-                                        <td style="color:"'.$ID->level_meteoalarm_name.'" colspan="5"> <i class="fa fa-trash fa-2x"></i>
+                                        <td style="color:'.$ID->level_meteoalarm_name.'" colspan="5"> <i class="fa fa-trash fa-2x"></i>
                                          '.$ID->description.'
                                          </td>                              
                                         </tr>';
