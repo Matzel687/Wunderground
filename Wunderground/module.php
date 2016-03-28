@@ -238,8 +238,6 @@
                 return $html;  
                 }
 
-            
-            }
         protected function Var_Pro_Erstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
             {
                 if (IPS_VariableProfileExists($name) == false){
