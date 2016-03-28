@@ -153,7 +153,7 @@
                   $this->SetValueByID($this->GetIDForIdent("Pres_now"), $jsonNow->current_observation->pressure_mb);
                   $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $jsonNow->current_observation->wind_degrees);
                   $this->SetValueByID($this->GetIDForIdent("Wind_now"), $jsonNow->current_observation->wind_kph);
-                  $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $jsonNow->current_observation->wind_gust_kph;);
+                  $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $jsonNow->current_observation->wind_gust_kph);
                   $this->SetValueByID($this->GetIDForIdent("Rain_now"), $jsonNow->current_observation->precip_1hr_metric);
                   $this->SetValueByID($this->GetIDForIdent("Rain_today"), $jsonNow->current_observation->precip_today_metric);
                   $this->SetValueByID($this->GetIDForIdent("Solar_now"), $jsonNow->current_observation->solarradiation);
