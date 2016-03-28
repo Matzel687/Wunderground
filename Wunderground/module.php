@@ -150,7 +150,7 @@
 
                 // Wettervorhersage String
 
-                $html = '<table >
+      /*          $html = '<table >
                             <tr>
                                 <td align="center" valign="top"  style="width:130px;padding-left:20px;">
                                     Aktuell<br>
@@ -159,7 +159,8 @@
                                          '.$Temp_now.' °C<br>
                                         '.$Hum_now.'<br>
                                      </div>
-                                    <div style="clear:both; font-size: 10px;">Ø Wind: '.$Wind_now.' km/h<br>
+                                    <div style="clear:both; font-size: 10px;">
+                                        Ø Wind: '.$Wind_now.' km/h<br>
                                         '.$Temp_feel.' °C gefühlt<br>
                                         '.$Pres_now.' hPa<br>
                                         Regen 1h: '.$Rain_now.' Liter/m²<br>
@@ -180,14 +181,15 @@
                                     '.$day->low->celsius.' °C<br>
                                     '.$day->high->celsius.' °C
                                  </div>
-                                 <div style="clear:both; font-size: 10px;">Ø Wind: '.$day->avewind->kph.' km/h<br>
+                                 <div style="clear:both; font-size: 10px;"> 
+                                    Ø Wind: '.$day->avewind->kph.' km/h<br>
                                     Niederschlag: '.($day->qpf_allday->mm).' Liter/m²
                                   </div>
                                </td>';
                        }
                  $html .= "</tr>
                            </table>";
-                
+                */
                   $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Temp_now);
                   $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Temp_feel);
                   $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Temp_dewpoint);
@@ -207,8 +209,52 @@
                   $this->SetValueByID($this->GetIDForIdent("Temp_high_morgen"), $Temp_high_morgen);
                   $this->SetValueByID($this->GetIDForIdent("Temp_low_morgen"), $Temp_low_morgen);
                   $this->SetValueByID($this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
-                  SetValue($this->GetIDForIdent("Wettervorhersage_html"), $html);
+                  SetValue($this->GetIDForIdent("Wettervorhersage_html"), $this->String_Wetter_Now_And_Next_Days($jsonNow ,$jsonNextD) );
 
+            }
+
+       public function String_Wetter_Now_And_Next_Days($WetterJetzt, $WetterNextDays)
+            {           
+                $html = '<table >
+                            <tr>
+                                <td align="center" valign="top"  style="width:130px;padding-left:20px;">
+                                    Aktuell<br>
+                                    <img src="'.$WetterJetzt->current_observation->icon_url.'" style="float:left;">
+                                    <div style="float:right">
+                                         '.$WetterJetzt->current_observation->temp_c.' °C<br>
+                                        '.$WetterJetzt->current_observation->relative_humidity.'<br>
+                                     </div>
+                                    <div style="clear:both; font-size: 10px;">
+                                        Ø Wind: '.$WetterJetzt->current_observation->wind_kph.' km/h<br>
+                                        '.$WetterJetzt->current_observation->feelslike_c.' °C gefühlt<br>
+                                        '.$WetterJetzt->current_observation->pressure_mb.' hPa<br>
+                                        Regen 1h: '.$WetterJetzt->current_observation->precip_1hr_metric.' Liter/m²<br>
+                                        Sichtweite '.$WetterJetzt->current_observation->visibility_km.' km
+                                     </div>
+                                 </td>';
+                foreach($WetterNextDays->forecast->simpleforecast->forecastday as $name=> $day){
+                    if( $this->isToday($day->date->epoch))
+                        $Wochentag = "Heute";
+                    else {
+                        $tag = array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
+                        $Wochentag =$tag[date("w",intval($day->date->epoch))];
+                         }
+                     $html.= '<td align="center" valign="top"  style="width:130px;padding-left:20px;">
+                                '.$Wochentag.'<br>
+                                <img src="'.$day->icon_url.'" style="float:left;">
+                                <div style="float:right">
+                                    '.$day->low->celsius.' °C<br>
+                                    '.$day->high->celsius.' °C
+                                 </div>
+                                 <div style="clear:both; font-size: 10px;"> 
+                                    Ø Wind: '.$day->avewind->kph.' km/h<br>
+                                    Niederschlag: '.($day->qpf_allday->mm).' Liter/m²
+                                  </div>
+                               </td>';
+                       }
+                $html .= "</tr>
+                           </table>";
+                return $html;
             }
 
         protected function Var_Pro_Erstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
