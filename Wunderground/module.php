@@ -151,7 +151,7 @@
                   $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $jsonNow->current_observation->dewpoint_c);
                   $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($jsonNow->current_observation->relative_humidity, 0, -1));
                   $this->SetValueByID($this->GetIDForIdent("Pres_now"), $jsonNow->current_observation->pressure_mb);
-                  $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $jsonNow->current_observation->wind_degrees;
+                  $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $jsonNow->current_observation->wind_degrees);
                   $this->SetValueByID($this->GetIDForIdent("Wind_now"), $jsonNow->current_observation->wind_kph);
                   $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $jsonNow->current_observation->wind_gust_kph;);
                   $this->SetValueByID($this->GetIDForIdent("Rain_now"), $jsonNow->current_observation->precip_1hr_metric);
