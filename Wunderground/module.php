@@ -120,8 +120,10 @@
                 //Wetterdaten vom aktuellen Wetter
                 $WetterJetzt = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/conditions/q/CA/".$locationID.".json"); //Seite öffnen
                 $jsonNow = json_decode($WetterJetzt); //json in String speichern
+                //Wetterdaten für die nächsten  Tage
+                $contentNextD = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/forecast/q/".$locationID.".json"); //Seite öffnen
+                $jsonNextD = json_decode($contentNextD);
                 //Wetterdaten in Variable speichern
-                $icon = $jsonNow->current_observation->icon_url;
                 $Temp_now = $jsonNow->current_observation->temp_c;
                 $Temp_feel = $jsonNow->current_observation->feelslike_c;
                 $Temp_dewpoint = $jsonNow->current_observation->dewpoint_c;
@@ -136,11 +138,7 @@
                 $Vis_now = $jsonNow->current_observation->visibility_km;
                 $UV_now = $jsonNow->current_observation->UV;
 
-                //Wetterdaten für die nächsten 2 Tage
-
-                $contentNextD = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/forecast/q/".$locationID.".json"); //Seite öffnen
-                $jsonNextD = json_decode($contentNextD);
-                //Wetterdaten in Variable speichern
+                //Wetterdaten für diw nächsten 2 Tage in Variable speichern
                 $Temp_high_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->high->celsius;
                 $Temp_low_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->low->celsius;
                 $Rain_heute = $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->mm;
@@ -148,67 +146,25 @@
                 $Temp_low_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius;
                 $Rain_morgen = $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm;
 
-                // Wettervorhersage String
-
-      /*          $html = '<table >
-                            <tr>
-                                <td align="center" valign="top"  style="width:130px;padding-left:20px;">
-                                    Aktuell<br>
-                                    <img src="'.$icon.'" style="float:left;">
-                                    <div style="float:right">
-                                         '.$Temp_now.' °C<br>
-                                        '.$Hum_now.'<br>
-                                     </div>
-                                    <div style="clear:both; font-size: 10px;">
-                                        Ø Wind: '.$Wind_now.' km/h<br>
-                                        '.$Temp_feel.' °C gefühlt<br>
-                                        '.$Pres_now.' hPa<br>
-                                        Regen 1h: '.$Rain_now.' Liter/m²<br>
-                                        Sichtweite '.$Vis_now.' km
-                                     </div>
-                                 </td>';
-                foreach($jsonNextD->forecast->simpleforecast->forecastday as $name=> $day){
-                    if( $this->isToday($day->date->epoch))
-                        $Wochentag = "Heute";
-                    else {
-                        $tag = array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
-                        $Wochentag =$tag[date("w",intval($day->date->epoch))];
-                         }
-                     $html.= '<td align="center" valign="top"  style="width:130px;padding-left:20px;">
-                                '.$Wochentag.'<br>
-                                <img src="'.$day->icon_url.'" style="float:left;">
-                                <div style="float:right">
-                                    '.$day->low->celsius.' °C<br>
-                                    '.$day->high->celsius.' °C
-                                 </div>
-                                 <div style="clear:both; font-size: 10px;"> 
-                                    Ø Wind: '.$day->avewind->kph.' km/h<br>
-                                    Niederschlag: '.($day->qpf_allday->mm).' Liter/m²
-                                  </div>
-                               </td>';
-                       }
-                 $html .= "</tr>
-                           </table>";
-                */
-                  $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Temp_now);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Temp_feel);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Temp_dewpoint);
-                  $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($Hum_now, 0, -1));
-                  $this->SetValueByID($this->GetIDForIdent("Pres_now"), $Pres_now);
-                  $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $Wind_deg);
-                  $this->SetValueByID($this->GetIDForIdent("Wind_now"), $Wind_now);
-                  $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $Wind_gust);
-                  $this->SetValueByID($this->GetIDForIdent("Rain_now"), $Rain_now);
-                  $this->SetValueByID($this->GetIDForIdent("Rain_today"), $Rain_today);
-                  $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Solar_now);
-                  $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Vis_now);
-                  $this->SetValueByID($this->GetIDForIdent("UV_now"), $UV_now);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_high_heute"), $Temp_high_heute);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_low_heute"), $Temp_low_heute);
-                  $this->SetValueByID($this->GetIDForIdent("Rain_heute"), $Rain_heute);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_high_morgen"), $Temp_high_morgen);
-                  $this->SetValueByID($this->GetIDForIdent("Temp_low_morgen"), $Temp_low_morgen);
-                  $this->SetValueByID($this->GetIDForIdent("Rain_morgen"), $Rain_morgen);
+                  $this->SetValueByID($this->GetIDForIdent("Temp_now"),$jsonNow->current_observation->temp_c);
+                  $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $jsonNow->current_observation->feelslike_c);
+                  $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $jsonNow->current_observation->dewpoint_c);
+                  $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($jsonNow->current_observation->relative_humidity, 0, -1));
+                  $this->SetValueByID($this->GetIDForIdent("Pres_now"), $jsonNow->current_observation->pressure_mb);
+                  $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $jsonNow->current_observation->wind_degrees;
+                  $this->SetValueByID($this->GetIDForIdent("Wind_now"), $jsonNow->current_observation->wind_kph);
+                  $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $jsonNow->current_observation->wind_gust_kph;);
+                  $this->SetValueByID($this->GetIDForIdent("Rain_now"), $jsonNow->current_observation->precip_1hr_metric);
+                  $this->SetValueByID($this->GetIDForIdent("Rain_today"), $jsonNow->current_observation->precip_today_metric);
+                  $this->SetValueByID($this->GetIDForIdent("Solar_now"), $jsonNow->current_observation->solarradiation);
+                  $this->SetValueByID($this->GetIDForIdent("Vis_now"), $jsonNow->current_observation->visibility_km);
+                  $this->SetValueByID($this->GetIDForIdent("UV_now"), $jsonNow->current_observation->UV);
+                  $this->SetValueByID($this->GetIDForIdent("Temp_high_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->high->celsius);
+                  $this->SetValueByID($this->GetIDForIdent("Temp_low_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->low->celsius);
+                  $this->SetValueByID($this->GetIDForIdent("Rain_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->mm);
+                  $this->SetValueByID($this->GetIDForIdent("Temp_high_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius);
+                  $this->SetValueByID($this->GetIDForIdent("Temp_low_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius);
+                  $this->SetValueByID($this->GetIDForIdent("Rain_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm);
                   SetValue($this->GetIDForIdent("Wettervorhersage_html"), $this->String_Wetter_Now_And_Next_Days($jsonNow ,$jsonNextD) );
 
             }
