@@ -117,7 +117,7 @@
                 $WetterJetzt = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten für die nächsten  Tage downloaden
 
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",__DIR__ . "/_WetterdatenNaechsteTage.json");
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json","_WetterdatenNaechsteTage.json");
                 //Wetterdaten für die nächsten  Stunden dowloaden 
                // $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", __DIR__."/WetterdatenNaechsteStunden.json");
              
@@ -253,12 +253,28 @@
               {
                   $GetURL = Sys_GetURLContent($URLString);  //Json Daten öfffen
                   if ($GetURL == false) {
-                      IPS_LogMessage("Wunderground", "FEHLER - Die Tankerkoenig-API konnte nicht abgefragt werden!");
+                      IPS_LogMessage("Wunderground", "FEHLER - Die Wunderground-API konnte nicht abgefragt werden!");
                       exit;
                   }
+                
+                $data = json_decode($GetURL);  //Json Daten in String speichern
+                
+				$UpdateWeatherScriptID = @$this->GetIDForIdent($file);
+				if ( $UpdateWeatherScriptID === false )
+				{
+				  $UpdateWeatherScriptID = $this->RegisterScript($file, $file, 99);
+				}
+				else
+				{
+				  IPS_SetScriptContent($UpdateWeatherScriptID, $data));
+				}
+				IPS_SetHidden($UpdateWeatherScriptID,true);
 
-                  $data = json_decode($GetURL);  //Json Daten in String speichern
- 						file_put_contents($file,json_encode($data)); //Json String in Datei speichern
+
+
+
+                
+ 						//file_put_contents($file,json_encode($data)); //Json String in Datei speichern
  						return true;
               }
 // Variablen profile erstellen        
