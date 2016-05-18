@@ -117,7 +117,7 @@
                 $WetterJetzt = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten für die nächsten  Tage downloaden
 
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json","WetterdatenNaechsteTage.json");
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",__DIR__."/WetterdatenNaechsteTage.json");
                 //Wetterdaten für die nächsten  Stunden dowloaden 
                 $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", __DIR__."/WetterdatenNaechsteStunden.json");
              
@@ -148,7 +148,7 @@
         
         public function WetterDatenTage($Tag,$Wert)
         {
-            $GetData = file_get_contents("WetterdatenNaechsteTage.json");
+            $GetData = file_get_contents(__DIR__."/WetterdatenNaechsteTage.json");
                 if ($GetData === false) {
        			        IPS_LogMessage("Wunderground", "FEHLER - Die WetterdatenNaechsteTage.json konnte nicht geladen werden!");
        				    exit;
