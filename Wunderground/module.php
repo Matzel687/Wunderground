@@ -116,9 +116,9 @@
                 //Wetterdaten vom aktuellen Wetter
                 $WetterJetzt = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten für die nächsten  Tage downloaden
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json","WetterdatenNaechsteTage.json");
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",__DIR__ . "/../WetterdatenNaechsteTage.json");
                 //Wetterdaten für die nächsten  Stunden dowloaden 
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json","WetterdatenNaechsteStunden.json");
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json",__DIR__ . "/../WetterdatenNaechsteStunden.json");
              
                 //Wetterdaten in Variable speichern
                 $this->SetValueByID($this->GetIDForIdent("Temp_now"),$WetterJetzt->current_observation->temp_c);
@@ -238,7 +238,7 @@
 
         protected function Json_String($URLString)
               {
-                  $GetURL = Sys_GetURLContent($URLString);  //Json DAtei öfffen 
+                  $GetURL = Sys_GetURLContent($URLString);  //Json Daten öfffen
                   if ($GetURL == false) {
                       IPS_LogMessage("Wunderground", "FEHLER - Die Wunderground-API konnte nicht abgefragt werden!");
                       exit;
@@ -249,7 +249,7 @@
               
         protected function Json_Download($URLString,$file)
               {
-                  $GetURL = Sys_GetURLContent($URLString);  //Json DAtei öfffen
+                  $GetURL = Sys_GetURLContent($URLString);  //Json Daten öfffen
                   if ($GetURL == false) {
                       IPS_LogMessage("Wunderground", "FEHLER - Die Tankerkoenig-API konnte nicht abgefragt werden!");
                       exit;
