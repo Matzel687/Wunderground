@@ -266,7 +266,7 @@
 				}
 				else
 				{
-				  IPS_SetScriptContent($UpdateWeatherScriptID, $data));
+				  IPS_SetScriptContent($UpdateWeatherScriptID, $data);
 				}
 				IPS_SetHidden($UpdateWeatherScriptID,true);
 
