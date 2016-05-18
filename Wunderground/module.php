@@ -134,12 +134,6 @@
                 $this->SetValueByID($this->GetIDForIdent("Solar_now"), $WetterJetzt->current_observation->solarradiation);
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $WetterJetzt->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $WetterJetzt->current_observation->UV);
-                $this->SetValueByID($this->GetIDForIdent("Temp_high_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->high->celsius);
-                $this->SetValueByID($this->GetIDForIdent("Temp_low_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->low->celsius);
-                $this->SetValueByID($this->GetIDForIdent("Rain_heute"), $jsonNextD->forecast->simpleforecast->forecastday[0]->qpf_allday->mm);
-                $this->SetValueByID($this->GetIDForIdent("Temp_high_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius);
-                $this->SetValueByID($this->GetIDForIdent("Temp_low_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius);
-                $this->SetValueByID($this->GetIDForIdent("Rain_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm);
                // SetValue($this->GetIDForIdent("Wettervorhersage_Woche"), $this->String_Wetter_Now_And_Next_Days($WetterJetzt ,$jsonNextD,$jsonWarnung) );
               //  SetValue($this->GetIDForIdent("Wettervorhersage_Stunden"), $this->String_Wetter_Heute_Stunden($jsonNextH) );
 
