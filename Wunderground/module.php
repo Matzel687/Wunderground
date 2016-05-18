@@ -249,7 +249,7 @@
                       IPS_LogMessage("Wunderground", "FEHLER - Die Wunderground-API konnte nicht abgefragt werden!");
                       exit;
                   }
-                  return = Json_Decode($GetURL);  //Json Daten in String speichern
+                  return json_decode($GetURL);  //Json Daten in String speichern
               }  
 
               
