@@ -117,7 +117,7 @@
                 $WetterJetzt = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten für die nächsten  Tage downloaden
 
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json","_WetterdatenNaechsteTage.json");
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
                 //Wetterdaten für die nächsten  Stunden dowloaden 
                // $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", __DIR__."/WetterdatenNaechsteStunden.json");
              
@@ -149,7 +149,7 @@
         
         public function WetterDatenTage($Tag,$Wert)
         {
-            $GetData = file_get_contents(__DIR__."/WetterdatenNaechsteTage.json");
+            $GetData = file_get_contents(IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
                 if ($GetData === false) {
        			        IPS_LogMessage("Wunderground", "FEHLER - Die WetterdatenNaechsteTage.json konnte nicht geladen werden!");
        				    exit;
@@ -257,24 +257,8 @@
                       exit;
                   }
                 
-                $data = json_decode($GetURL);  //Json Daten in String speichern
-                
-				$UpdateWeatherScriptID = @$this->GetIDForIdent($file);
-				if ( $UpdateWeatherScriptID === false )
-				{
-				  $UpdateWeatherScriptID = $this->RegisterScript($file, $file, 99);
-				}
-				else
-				{
-				  IPS_SetScriptContent($UpdateWeatherScriptID, $data);
-				}
-				IPS_SetHidden($UpdateWeatherScriptID,true);
-
-
-
-
-                
- 						//file_put_contents($file,json_encode($data)); //Json String in Datei speichern
+                        $data = json_decode($GetURL);  //Json Daten in String speichern
+ 						file_put_contents($file,json_encode($data)); //Json String in Datei speichern
  						return true;
               }
 // Variablen profile erstellen        
