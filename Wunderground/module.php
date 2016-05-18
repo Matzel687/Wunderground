@@ -1,4 +1,6 @@
 <?
+
+//require_once(__DIR__ . "/../OnkyoAVRClass.php");  // diverse Klassen
     // Klassendefinition
     class WundergroundWetter extends IPSModule
      {
@@ -52,7 +54,6 @@
                 if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != "")){
                     //Variablen erstellen Wetter jetzt
                     $this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
-                    $this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
                     $this->RegisterVariableFloat("Temp_feel","Temperatur gefühlt","Temperature",2);
                     $this->RegisterVariableFloat("Temp_dewpoint","Temperatur Taupunkt","Temperature",3);
                     $this->RegisterVariableFloat("Hum_now","Luftfeuchtigkeit","Humidity.F",4);
@@ -66,16 +67,10 @@
                     $this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
                     //Variablen erstellen Wettervorhersage
-                    $this->RegisterVariableFloat("Temp_high_heute","Temperatur/Tag heute","Temperature",14);
-                    $this->RegisterVariableFloat("Temp_low_heute","Temperatur/Nacht heute","Temperature",15);
-                    $this->RegisterVariableFloat("Rain_heute","Niederschlag/h heute","WD_Niederschlag",16);
-                    $this->RegisterVariableFloat("Temp_high_morgen","Temperatur Tag morgen","Temperature",17);
-                    $this->RegisterVariableFloat("Temp_low_morgen","Temperatur Nacht morgen","Temperature",18);
-                    $this->RegisterVariableFloat("Rain_morgen","Niederschlag/h morgen","WD_Niederschlag",19);
                     $this->RegisterVariableString("Wettervorhersage_Woche","Wettervorhersage Woche","HTMLBox",20);
-                     $this->RegisterVariableString("Wettervorhersage_Stunden","Wettervorhersage Stunden","HTMLBox",20);
+                    $this->RegisterVariableString("Wettervorhersage_Stunden","Wettervorhersage Stunden","HTMLBox",20);
                     //Timer zeit setzen
-                    $this->SetTimerMinutes($this->InstanceID,"Update",$this->ReadPropertyInteger("UpdateInterval"));
+                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateInterval"));
                     //Instanz ist aktiv
                     $this->SetStatus(102);
                 }
@@ -113,24 +108,18 @@
                     $this-> VarLogging("UV_now","logUV_now",0);
             }
 
-        public function Update()
-            {
+        public function UpdateWetterDaten()
+        {
                 $locationID =  $this->ReadPropertyString("Wetterstation");  // Location ID
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
 
                 //Wetterdaten vom aktuellen Wetter
-                $WetterJetzt = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/conditions/q/CA/".$locationID.".json"); //Seite öffnen
-                $jsonNow = json_decode($WetterJetzt); //json in String speichern
-                //Wetterdaten für die nächsten  Tage
-                $contentNextD = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/forecast/q/".$locationID.".json"); //Seite öffnen
-                $jsonNextD = json_decode($contentNextD);
-                //Wetterdaten für die nächsten  Stunden
-                $contentNextH = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json");
-                $jsonNextH = json_decode($contentNextH);
-                //Wetter Warnung
-                $contentWarnung = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json");
-                $jsonWarnung = json_decode($contentWarnung);
-                
+                $WetterJetzt = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json")
+                //Wetterdaten für die nächsten  Tage downloaden
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json","WetterdatenNaechsteTage.json")
+                //Wetterdaten für die nächsten  Stunden dowloaden 
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json","WetterdatenNaechsteStunden.json")
+             
                 //Wetterdaten in Variable speichern
                 $this->SetValueByID($this->GetIDForIdent("Temp_now"),$jsonNow->current_observation->temp_c);
                 $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $jsonNow->current_observation->feelslike_c);
@@ -151,11 +140,28 @@
                 $this->SetValueByID($this->GetIDForIdent("Temp_high_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->high->celsius);
                 $this->SetValueByID($this->GetIDForIdent("Temp_low_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->low->celsius);
                 $this->SetValueByID($this->GetIDForIdent("Rain_morgen"), $jsonNextD->forecast->simpleforecast->forecastday[1]->qpf_allday->mm);
-                SetValue($this->GetIDForIdent("Wettervorhersage_Woche"), $this->String_Wetter_Now_And_Next_Days($jsonNow ,$jsonNextD,$jsonWarnung) );
-                SetValue($this->GetIDForIdent("Wettervorhersage_Stunden"), $this->String_Wetter_Heute_Stunden($jsonNextH) );
+               // SetValue($this->GetIDForIdent("Wettervorhersage_Woche"), $this->String_Wetter_Now_And_Next_Days($jsonNow ,$jsonNextD,$jsonWarnung) );
+              //  SetValue($this->GetIDForIdent("Wettervorhersage_Stunden"), $this->String_Wetter_Heute_Stunden($jsonNextH) );
 
-            }
-
+        }
+        public function UpdateWetterWarnung()
+        {
+               //Wetter Warnung
+                $contentWarnung = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json");
+                $jsonWarnung = json_decode($contentWarnung);
+        }
+        
+        public function WetterDatenTage($Tag,$Wert)
+        {
+            $GetData = file_get_contents("WetterdatenNaechsteTage.json");
+                if ($GetData === false) {
+       			        IPS_LogMessage("Wunderground", "FEHLER - Die WetterdatenNaechsteTage.json konnte nicht geladen werden!");
+       				    exit;
+    						}
+            $jsonData = json_decode($GetData);
+            return $jsonData->forecast->simpleforecast->forecastday[$Tag]->low->celsius;
+            
+        }
         protected function String_Wetter_Now_And_Next_Days($WetterJetzt, $WetterNextDays, $WetterWarnung)
             {           
                 $html = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -236,6 +242,30 @@
                 return $html;  
                 }
 
+        protected function Json_String($URLString)
+              {
+                  $GetURL = Sys_GetURLContent($URLString);  //Json DAtei öfffen 
+                  if ($GetURL == false) {
+                      IPS_LogMessage("Wunderground", "FEHLER - Die Wunderground-API konnte nicht abgefragt werden!");
+                      exit;
+                  }
+                  return = Json_Decode($GetURL);  //Json Daten in String speichern
+              }  
+
+              
+        protected function Json_Download($URLString,$file)
+              {
+                  $GetURL = Sys_GetURLContent($URLString);  //Json DAtei öfffen
+                  if ($GetURL == false) {
+                      IPS_LogMessage("Wunderground", "FEHLER - Die Tankerkoenig-API konnte nicht abgefragt werden!");
+                      exit;
+                  }
+
+                  $data = json_decode($GetURL);  //Json Daten in String speichern
+ 						file_put_contents($file,json_encode($data)); //Json String in Datei speichern
+ 						return true;
+              }
+// Variablen profile erstellen        
         protected function Var_Pro_Erstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
             {
                 if (IPS_VariableProfileExists($name) == false){
@@ -275,7 +305,7 @@
                     IPS_SetVariableProfileAssociation("WD_UV_Index", 11, "%.1f","",0xA80080);
                  }          
             }
-
+// Aktvieren und Deaktivieren vom Varriable Logging 
         private function VarLogging($VarName,$LogStatus,$Type)
             {
                 $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
@@ -283,7 +313,8 @@
                 AC_SetLoggingStatus($archiveHandlerID, $this->GetIDForIdent($VarName), $this->ReadPropertyBoolean($LogStatus));
                 IPS_ApplyChanges($archiveHandlerID);
             }
-        //Timer erstllen alle X minuten 
+
+            //Timer erstllen alle X minuten 
         private function SetTimerMinutes($parentID, $name,$minutes)
             {
                 $eid = @IPS_GetEventIDByName($name, $parentID);
@@ -294,7 +325,7 @@
                  }
                 else{
                     IPS_SetEventCyclic($eid, 0 /* Keine Datumsüberprüfung */, 0, 0, 2, 2 /* Minütlich */ , $minutes/* Alle XX Minuten */);
-                    IPS_SetEventScript($eid, 'WD_Update($_IPS["TARGET"]);');
+                    IPS_SetEventScript($eid, 'WD_UpdateWetterDaten($_IPS["TARGET"]);');
                     IPS_SetEventActive($eid, true);
                     IPS_SetHidden($eid, true);
                  }
