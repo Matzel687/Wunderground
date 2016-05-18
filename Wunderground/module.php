@@ -119,7 +119,7 @@
 
                 $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",__DIR__ . "/_WetterdatenNaechsteTage.json");
                 //Wetterdaten für die nächsten  Stunden dowloaden 
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", __DIR__."/_WetterdatenNaechsteStunden.json");
+               // $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", __DIR__."/WetterdatenNaechsteStunden.json");
              
                 //Wetterdaten in Variable speichern
                 $this->SetValueByID($this->GetIDForIdent("Temp_now"),$WetterJetzt->current_observation->temp_c);
