@@ -114,11 +114,11 @@
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
 
                 //Wetterdaten vom aktuellen Wetter
-                $WetterJetzt = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json")
+                $WetterJetzt = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten für die nächsten  Tage downloaden
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json","WetterdatenNaechsteTage.json")
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json","WetterdatenNaechsteTage.json");
                 //Wetterdaten für die nächsten  Stunden dowloaden 
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json","WetterdatenNaechsteStunden.json")
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json","WetterdatenNaechsteStunden.json");
              
                 //Wetterdaten in Variable speichern
                 $this->SetValueByID($this->GetIDForIdent("Temp_now"),$jsonNow->current_observation->temp_c);
