@@ -143,6 +143,9 @@
         }
         public function UpdateWetterWarnung()
         {
+                $locationID =  $this->ReadPropertyString("Wetterstation");  // Location ID
+                $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
+                
                //Wetter Warnung
                 $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterWarnungen.json");
         }
