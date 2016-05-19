@@ -70,7 +70,8 @@
                     $this->RegisterVariableString("Wettervorhersage_Woche","Wettervorhersage Woche","HTMLBox",20);
                     $this->RegisterVariableString("Wettervorhersage_Stunden","Wettervorhersage Stunden","HTMLBox",20);
                     //Timer zeit setzen
-                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateInterval"));
+                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateInterval"),"'WD_UpdateWetterDaten($_IPS["TARGET"]);'");
+                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateInterval"),"'UpdateWetterWarnung($_IPS["TARGET"]);'");
                     //Instanz ist aktiv
                     $this->SetStatus(102);
                 }
@@ -119,7 +120,7 @@
 
                 $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
                 //Wetterdaten für die nächsten  Stunden dowloaden 
-               // $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", __DIR__."/WetterdatenNaechsteStunden.json");
+               $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteStunden.json");
              
                 //Wetterdaten in Variable speichern
                 $this->SetValueByID($this->GetIDForIdent("Temp_now"),$WetterJetzt->current_observation->temp_c);
@@ -142,9 +143,7 @@
         public function UpdateWetterWarnung()
         {
                //Wetter Warnung
-                $contentWarnung = Sys_GetURLContent("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json");
-                $jsonWarnung = json_decode($contentWarnung);
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json", __DIR__."/WetterWarnungen.json");
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterWarnungen.json");
         }
         
         public function WetterDatenTage($Tag,$Wert)
@@ -311,7 +310,7 @@
             }
 
             //Timer erstllen alle X minuten 
-        private function SetTimerMinutes($parentID, $name,$minutes)
+        private function SetTimerMinutes($parentID, $name,$minutes,$Event)
             {
                 $eid = @IPS_GetEventIDByName($name, $parentID);
                 if($eid === false){
@@ -321,7 +320,7 @@
                  }
                 else{
                     IPS_SetEventCyclic($eid, 0 /* Keine Datumsüberprüfung */, 0, 0, 2, 2 /* Minütlich */ , $minutes/* Alle XX Minuten */);
-                    IPS_SetEventScript($eid, 'WD_UpdateWetterDaten($_IPS["TARGET"]);');
+                    IPS_SetEventScript($eid, $Event);
                     IPS_SetEventActive($eid, true);
                     IPS_SetHidden($eid, true);
                  }
