@@ -3,7 +3,8 @@
     [
         { "type": "ValidationTextBox", "name": "Wetterstation", "caption": "Wetterstation ID" },
         { "type": "ValidationTextBox", "name": "API_Key", "caption": "API Key" },
-		{ "type": "IntervalBox", "name": "UpdateInterval", "caption": "Update alle X Minuten" },
+		{ "type": "IntervalBox", "name": "UpdateWetterInterval", "caption": "Update Wetterdaten alle X Minuten" },
+        { "type": "IntervalBox", "name": "UpdateWarnungInterval", "caption": "Update Wetterwarnungen alle X Minuten" },
         { "type": "Label", "label": "Variable Änderungen aufzeichnen" },
         { "type": "CheckBox", "name": "logTemp_now", "caption": "Temperatur" },
         { "type": "CheckBox", "name": "logTemp_feel", "caption": "Temperatur gefühlt" },
@@ -22,7 +23,8 @@
     ],
     "actions":
     [ 
-            { "type": "Button", "label": "Update", "onClick": "WD_Update($id);" } 
+            { "type": "Button", "label": "Update Wetter", "onClick": "WD_UpdateWetterDaten($id);" }, 
+            { "type": "Button", "label": "Update Warnung", "onClick": "WD_UpdateWetterWarnung($id);" }
     ],
     "status":
     [

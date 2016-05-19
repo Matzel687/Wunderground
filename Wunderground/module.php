@@ -20,7 +20,8 @@
 
                 $this->RegisterPropertyString("Wetterstation", "");
                 $this->RegisterPropertyString("API_Key", "");
-                $this->RegisterPropertyInteger("UpdateInterval", 10);
+                $this->RegisterPropertyInteger("UpdateWetterInterval", 10);
+                $this->RegisterPropertyInteger("UpdateWarnungInterval", 60);
   
                 //Variable Änderungen aufzeichnen
                 $this->RegisterPropertyBoolean("logTemp_now", false);
@@ -70,8 +71,8 @@
                     $this->RegisterVariableString("Wettervorhersage_Woche","Wettervorhersage Woche","HTMLBox",20);
                     $this->RegisterVariableString("Wettervorhersage_Stunden","Wettervorhersage Stunden","HTMLBox",20);
                     //Timer zeit setzen
-                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateInterval"),'WD_UpdateWetterDaten($_IPS["TARGET"]);');
-                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateInterval"),'UpdateWetterWarnung($_IPS["TARGET"]);');
+                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateWetterInterval"),'WD_UpdateWetterDaten($_IPS["TARGET"]);');
+                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateWarnungInterval"),'UpdateWetterWarnung($_IPS["TARGET"]);');
                     //Instanz ist aktiv
                     $this->SetStatus(102);
                 }
