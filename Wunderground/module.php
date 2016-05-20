@@ -166,10 +166,12 @@
         {
             $arrayName = array('Temp_now','Temp_feel', 'Temp_dewpoint');
             if (in_array($value, $arrayName)) {
-                GetValue($this->GetIDForIdent($value)); 
+                return GetValue($this->GetIDForIdent($value)); 
             }
             else {
                 echo "Variable ".$value." nicht gefunden !";
+                IPS_LogMessage("Wunderground", "FEHLER - Variable ".$value." nicht gefunden !");
+       				    exit;
             }
             
         }
