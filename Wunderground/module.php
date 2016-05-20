@@ -175,7 +175,7 @@
         
         public function Weathernextdays($day,$value)
         {
-            if (empty ($day) || $day > 3) {   
+            if (isset ($day) || $day > 3) {   
                 echo "Tag ".$day." nicht gefunden ! Gültige Werte 0 - 3";
                 IPS_LogMessage("Wunderground","FEHLER Tag ".$day." nicht gefunden ! Gültige Werte 0 - 3");
        		    exit;
