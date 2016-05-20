@@ -67,6 +67,7 @@
                     $this->RegisterVariableFloat("Solar_now","Sonnenstrahlung","WD_Sonnenstrahlung",11);
                     $this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
+                    $this->RegisterVariableString("Icon","WetterIcon","HTMLBox",14);
                     //Variablen erstellen Wettervorhersage
                     $this->RegisterVariableString("Wettervorhersage_Woche","Wettervorhersage Woche","HTMLBox",20);
                     $this->RegisterVariableString("Wettervorhersage_Stunden","Wettervorhersage Stunden","HTMLBox",20);
@@ -137,6 +138,7 @@
                 $this->SetValueByID($this->GetIDForIdent("Solar_now"), $WetterJetzt->current_observation->solarradiation);
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $WetterJetzt->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $WetterJetzt->current_observation->UV);
+                SetValue($this->GetIDForIdent("Icon"),'<img src="http://icons.wxug.com/i/c/k/'.$WetterJetzt->current_observation->icon_url.'.gif" style="float:left;">');
                // SetValue($this->GetIDForIdent("Wettervorhersage_Woche"), $this->String_Wetter_Now_And_Next_Days($WetterJetzt ,$jsonNextD,$jsonWarnung) );
               //  SetValue($this->GetIDForIdent("Wettervorhersage_Stunden"), $this->String_Wetter_Heute_Stunden($jsonNextH) );
 
