@@ -186,15 +186,15 @@
        				    exit;
     						}
             $jsonData = json_decode($GetData);
-            $data['Date'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->date->epoch;
-            $data['text'] = $jsonData->forecast->txt_forecast->forecastday[$Day]->fcttext_metric;
-            $data['Icon']  = 'http://icons.wxug.com/i/c/k/'. $jsonData->forecast->simpleforecast->forecastday[$Day]->icon.'.gif';
-            $data['TempHigh'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->high->celsius;
-            $data['TempLow'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->low->celsius;
-            $data['Humidity'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->avehumidity;
-            $data['Wind'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->avewind->kph;
-            $data['MaxWind'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->maxwind->kph;
-            $data['Rain'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->qpf_allday->mm;
+            $data['Date'] = $jsonData->forecast->simpleforecast->forecastday[$day]->date->epoch;
+            $data['text'] = $jsonData->forecast->txt_forecast->forecastday[$day]->fcttext_metric;
+            $data['Icon']  = 'http://icons.wxug.com/i/c/k/'. $jsonData->forecast->simpleforecast->forecastday[$day]->icon.'.gif';
+            $data['TempHigh'] = $jsonData->forecast->simpleforecast->forecastday[$day]->high->celsius;
+            $data['TempLow'] = $jsonData->forecast->simpleforecast->forecastday[$day]->low->celsius;
+            $data['Humidity'] = $jsonData->forecast->simpleforecast->forecastday[$day]->avehumidity;
+            $data['Wind'] = $jsonData->forecast->simpleforecast->forecastday[$day]->avewind->kph;
+            $data['MaxWind'] = $jsonData->forecast->simpleforecast->forecastday[$day]->maxwind->kph;
+            $data['Rain'] = $jsonData->forecast->simpleforecast->forecastday[$day]->qpf_allday->mm;
             
             if (empty ($value) || $value == "all") {   
                  return $data; 
