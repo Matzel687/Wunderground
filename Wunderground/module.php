@@ -188,7 +188,7 @@
             $jsonData = json_decode($GetData);
             $data['Date'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->date->epoch;
             $data['text'] = $jsonData->forecast->txt_forecast->forecastday[$Day]->fcttext_metric;
-            $data['Icon']  = 'http://icons.wxug.com/i/c/k/'. $jsonData->->forecast->simpleforecast->forecastday[$Day]->icon.'.gif';
+            $data['Icon']  = 'http://icons.wxug.com/i/c/k/'. $jsonData->forecast->simpleforecast->forecastday[$Day]->icon.'.gif';
             $data['TempHigh'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->high->celsius;
             $data['TempLow'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->low->celsius;
             $data['Humidity'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->avehumidity;
