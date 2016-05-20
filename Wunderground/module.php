@@ -165,7 +165,7 @@
         public function WetterJetzt($value)
         {
             $arrayName = array('Temp_now','Temp_feel', 'Temp_dewpoint');
-            if ($value == empty) {
+            if (empty ($value)) {
                 $i=0;
                 foreach ($arrayName as $value) {
                     $data[$i] = GetValue($this->GetIDForIdent($value))
