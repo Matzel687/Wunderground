@@ -169,7 +169,7 @@
                 GetValue($this->GetIDForIdent($value)); 
             }
             else {
-                echo "Variable ".$value." nicht gefunden !"
+                echo "Variable ".$value." nicht gefunden !";
             }
             
         }
