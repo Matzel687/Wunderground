@@ -156,7 +156,7 @@
         
         public function Weathernow($value = 'all')
         {
-            $Weathernow = array('Temp_now','Temp_feel', 'Temp_dewpoint','Hum_now','Pres_now','Wind_deg','Wind_now','Wind_gust','Rain_now','Rain_today','Solar_now','Vis_now','UV_now','Icon"');
+            $Weathernow = array('Temp_now','Temp_feel', 'Temp_dewpoint','Hum_now','Pres_now','Wind_deg','Wind_now','Wind_gust','Rain_now','Rain_today','Solar_now','Vis_now','UV_now','Icon');
             if (empty ($value) || $value == "all") {
                 foreach ($Weathernow as $value) {
                     $data[$value] = GetValue($this->GetIDForIdent($value));           
