@@ -168,7 +168,7 @@
             if (empty ($value)) {
                 $i=0;
                 foreach ($arrayName as $value) {
-                    $data[$i] = GetValue($this->GetIDForIdent($value))
+                    $data[$i] = GetValue($this->GetIDForIdent($value));
                     $i++;
                     return $data;
                 }       
