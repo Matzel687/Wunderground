@@ -117,7 +117,7 @@
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
 
                 //Wetterdaten vom aktuellen Wetter
-                $WetterJetzt = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
+                $Weathernow = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten für die nächsten  Tage downloaden
 
                 $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
@@ -125,21 +125,21 @@
                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteStunden.json");
              
                 //Wetterdaten in Variable speichern
-                $this->SetValueByID($this->GetIDForIdent("Temp_now"),$WetterJetzt->current_observation->temp_c);
-                $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $WetterJetzt->current_observation->feelslike_c);
-                $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $WetterJetzt->current_observation->dewpoint_c);
-                $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($WetterJetzt->current_observation->relative_humidity, 0, -1));
-                $this->SetValueByID($this->GetIDForIdent("Pres_now"), $WetterJetzt->current_observation->pressure_mb);
-                $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $WetterJetzt->current_observation->wind_degrees);
-                $this->SetValueByID($this->GetIDForIdent("Wind_now"), $WetterJetzt->current_observation->wind_kph);
-                $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $WetterJetzt->current_observation->wind_gust_kph);
-                $this->SetValueByID($this->GetIDForIdent("Rain_now"), $WetterJetzt->current_observation->precip_1hr_metric);
-                $this->SetValueByID($this->GetIDForIdent("Rain_today"), $WetterJetzt->current_observation->precip_today_metric);
-                $this->SetValueByID($this->GetIDForIdent("Solar_now"), $WetterJetzt->current_observation->solarradiation);
-                $this->SetValueByID($this->GetIDForIdent("Vis_now"), $WetterJetzt->current_observation->visibility_km);
-                $this->SetValueByID($this->GetIDForIdent("UV_now"), $WetterJetzt->current_observation->UV);
-                SetValue($this->GetIDForIdent("Icon"),'<img src="http://icons.wxug.com/i/c/k/'.$WetterJetzt->current_observation->icon_url.'.gif" style="float:left;">');
-               // SetValue($this->GetIDForIdent("Wettervorhersage_Woche"), $this->String_Wetter_Now_And_Next_Days($WetterJetzt ,$jsonNextD,$jsonWarnung) );
+                $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Weathernow->current_observation->temp_c);
+                $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Weathernow->current_observation->feelslike_c);
+                $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Weathernow->current_observation->dewpoint_c);
+                $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($Weathernow->current_observation->relative_humidity, 0, -1));
+                $this->SetValueByID($this->GetIDForIdent("Pres_now"), $Weathernow->current_observation->pressure_mb);
+                $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $Weathernow->current_observation->wind_degrees);
+                $this->SetValueByID($this->GetIDForIdent("Wind_now"), $Weathernow->current_observation->wind_kph);
+                $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $Weathernow->current_observation->wind_gust_kph);
+                $this->SetValueByID($this->GetIDForIdent("Rain_now"), $Weathernow->current_observation->precip_1hr_metric);
+                $this->SetValueByID($this->GetIDForIdent("Rain_today"), $Weathernow->current_observation->precip_today_metric);
+                $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weathernow->current_observation->solarradiation);
+                $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weathernow->current_observation->visibility_km);
+                $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weathernow->current_observation->UV);
+                SetValue($this->GetIDForIdent("Icon"),'<img src="http://icons.wxug.com/i/c/k/'.$Weathernow->current_observation->icon.'.gif" style="float:left;">');
+               // SetValue($this->GetIDForIdent("Wettervorhersage_Woche"), $this->String_Wetter_Now_And_Next_Days($Weathernow ,$jsonNextD,$jsonWarnung) );
               //  SetValue($this->GetIDForIdent("Wettervorhersage_Stunden"), $this->String_Wetter_Heute_Stunden($jsonNextH) );
 
         }
@@ -150,6 +150,28 @@
                 
                //Wetter Warnung
                 $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterWarnungen.json");
+        }
+        
+
+        
+        public function Weathernow($value = 'all')
+        {
+            $Weathernow = array('Temp_now','Temp_feel', 'Temp_dewpoint','Hum_now','Pres_now','Wind_deg','Wind_now','Wind_gust','Rain_now','Rain_today','Solar_now','Vis_now','UV_now','Icon"');
+            if (empty ($value) || $value == "all") {
+                foreach ($Weathernow as $value) {
+                    $data[$value] = GetValue($this->GetIDForIdent($value));           
+                }      
+                 return $data; 
+            }
+            elseif (in_array($value, $Weathernow)) {
+                return GetValue($this->GetIDForIdent($value)); 
+            }
+            else {
+                echo "Variable ".$value." nicht gefunden !";
+                IPS_LogMessage("Wunderground", "FEHLER - Variable ".$value." nicht gefunden !");
+       		    exit;
+            }
+            
         }
         
         public function WetterDatenTage($Tag,$Wert)
@@ -164,26 +186,8 @@
             
         }
         
-        public function WetterJetzt($value)
-        {
-            $arrayName = array('Temp_now','Temp_feel', 'Temp_dewpoint');
-            if (empty ($value) || $value == "all") {
-                foreach ($arrayName as $value) {
-                    $data[$value] = GetValue($this->GetIDForIdent($value));           
-                }      
-                 return $data; 
-            }
-            elseif (in_array($value, $arrayName)) {
-                return GetValue($this->GetIDForIdent($value)); 
-            }
-            else {
-                echo "Variable ".$value." nicht gefunden !";
-                IPS_LogMessage("Wunderground", "FEHLER - Variable ".$value." nicht gefunden !");
-       				    exit;
-            }
-            
-        }
-        protected function String_Wetter_Now_And_Next_Days($WetterJetzt, $WetterNextDays, $WetterWarnung)
+        
+        protected function String_Wetter_Now_And_Next_Days($Weathernow, $WetterNextDays, $WetterWarnung)
             {           
                 $html = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
                             <table >';
@@ -199,17 +203,17 @@
                         $html.= '<tr>
                                 <td align="center" valign="top"  style="width:130px;padding-left:20px;">
                                     Aktuell<br>
-                                    <img src="'.$WetterJetzt->current_observation->icon_url.'" style="float:left;">
+                                    <img src="'.$Weathernow->current_observation->icon_url.'" style="float:left;">
                                     <div style="float:right">
-                                         '.$WetterJetzt->current_observation->temp_c.' °C<br>
-                                        '.$WetterJetzt->current_observation->relative_humidity.'<br>
+                                         '.$Weathernow->current_observation->temp_c.' °C<br>
+                                        '.$Weathernow->current_observation->relative_humidity.'<br>
                                      </div>
                                     <div style="clear:both; font-size: 10px;">
-                                        Ø Wind: '.$WetterJetzt->current_observation->wind_kph.' km/h<br>
-                                        '.$WetterJetzt->current_observation->feelslike_c.' °C gefühlt<br>
-                                        '.$WetterJetzt->current_observation->pressure_mb.' hPa<br>
-                                        Regen 1h: '.$WetterJetzt->current_observation->precip_1hr_metric.' Liter/m²<br>
-                                        Sichtweite '.$WetterJetzt->current_observation->visibility_km.' km
+                                        Ø Wind: '.$Weathernow->current_observation->wind_kph.' km/h<br>
+                                        '.$Weathernow->current_observation->feelslike_c.' °C gefühlt<br>
+                                        '.$Weathernow->current_observation->pressure_mb.' hPa<br>
+                                        Regen 1h: '.$Weathernow->current_observation->precip_1hr_metric.' Liter/m²<br>
+                                        Sichtweite '.$Weathernow->current_observation->visibility_km.' km
                                      </div>
                                  </td>';
                 foreach($WetterNextDays->forecast->simpleforecast->forecastday as $name=> $day){
