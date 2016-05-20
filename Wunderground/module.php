@@ -119,10 +119,9 @@
                 //Wetterdaten vom aktuellen Wetter
                 $Weathernow = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten für die nächsten  Tage downloaden
-
                 $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
                 //Wetterdaten für die nächsten  Stunden dowloaden 
-               $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteStunden.json");
+                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteStunden.json");
              
                 //Wetterdaten in Variable speichern
                 $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Weathernow->current_observation->temp_c);
@@ -138,7 +137,7 @@
                 $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weathernow->current_observation->solarradiation);
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weathernow->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weathernow->current_observation->UV);
-                SetValue($this->GetIDForIdent("Icon"),'<img src="http://icons.wxug.com/i/c/k/'.$Weathernow->current_observation->icon.'.gif" style="float:left;">');
+                SetValue($this->GetIDForIdent("Icon"),'http://icons.wxug.com/i/c/k/'.$Weathernow->current_observation->icon.'.gif');
                // SetValue($this->GetIDForIdent("Wettervorhersage_Woche"), $this->String_Wetter_Now_And_Next_Days($Weathernow ,$jsonNextD,$jsonWarnung) );
               //  SetValue($this->GetIDForIdent("Wettervorhersage_Stunden"), $this->String_Wetter_Heute_Stunden($jsonNextH) );
 
@@ -154,7 +153,7 @@
         
 
         
-        public function Weathernow($value = 'all')
+        public function Weathernow($value)
         {
             $Weathernow = array('Temp_now','Temp_feel', 'Temp_dewpoint','Hum_now','Pres_now','Wind_deg','Wind_now','Wind_gust','Rain_now','Rain_today','Solar_now','Vis_now','UV_now','Icon');
             if (empty ($value) || $value == "all") {
@@ -174,16 +173,41 @@
             
         }
         
-        public function WetterDatenTage($Tag,$Wert)
+        public function Weathernextdays($Day,$value)
         {
+            if (empty ($day) || $day > 3) {   
+                echo "Tag ".$day." nicht gefunden ! Gültige Werte 0 - 3";
+                IPS_LogMessage("Tag ".$day." nicht gefunden ! Gültige Werte 0 - 3");
+       		    exit;
+            }               
             $GetData = file_get_contents(IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
                 if ($GetData === false) {
        			        IPS_LogMessage("Wunderground", "FEHLER - Die WetterdatenNaechsteTage.json konnte nicht geladen werden!");
        				    exit;
     						}
             $jsonData = json_decode($GetData);
-            return $jsonData->forecast->simpleforecast->forecastday[$Tag]->low->celsius;
+            $data['Date'] = $jsonData->->forecast->simpleforecast->forecastday[$Day]->date->epoch;
+            $data['text'] = $jsonData->->forecast->txt_forecast->forecastday[$Day]->fcttext_metric;
+            $data['Icon']  = 'http://icons.wxug.com/i/c/k/'. $jsonData->->forecast->simpleforecast->forecastday[$Day]->icon.'.gif';
+            $data['TempHigh'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->high->celsius;
+            $data['TempLow'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->low->celsius;
+            $data['Humidity'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->avehumidity;
+            $data['Wind'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->avewind->kph;
+            $data['MaxWind'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->maxwind->kph;
+            $data['Rain'] = $jsonData->forecast->simpleforecast->forecastday[$Day]->qpf_allday->mm;
             
+            if (empty ($value) || $value == "all") {   
+                 return $data; 
+            }
+            elseif (in_array($value, $data)) {
+                return $data[$value]); 
+            }
+            else {
+                echo "Variable ".$value." nicht gefunden !";
+                IPS_LogMessage("Wunderground", "FEHLER - Variable ".$value." nicht gefunden !");
+       		    exit;
+            }
+
         }
         
         
@@ -285,7 +309,6 @@
                       IPS_LogMessage("Wunderground", "FEHLER - Die Wunderground-API konnte nicht abgefragt werden!");
                       exit;
                   }
-                
                         $data = json_decode($GetURL);  //Json Daten in String speichern
  						file_put_contents($file,json_encode($data)); //Json String in Datei speichern
  						return true;
