@@ -200,7 +200,7 @@
                  return $data; 
             }
             elseif (in_array($value, $data)) {
-                return $data[$value]); 
+                return $data[$value]; 
             }
             else {
                 echo "Variable ".$value." nicht gefunden !";
