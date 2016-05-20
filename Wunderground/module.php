@@ -72,7 +72,7 @@
                     $this->RegisterVariableString("Wettervorhersage_Stunden","Wettervorhersage Stunden","HTMLBox",20);
                     //Timer zeit setzen
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateWetterInterval"),'WD_UpdateWetterDaten($_IPS["TARGET"]);');
-                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateWarnungInterval"),'UpdateWetterWarnung($_IPS["TARGET"]);');
+                    $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateWarnungInterval"),'WD_UpdateWetterWarnung($_IPS["TARGET"]);');
                     //Instanz ist aktiv
                     $this->SetStatus(102);
                 }
@@ -159,6 +159,18 @@
     						}
             $jsonData = json_decode($GetData);
             return $jsonData->forecast->simpleforecast->forecastday[$Tag]->low->celsius;
+            
+        }
+        
+        public function WetterJetzt($value)
+        {
+            $arrayName = array('Temp_now','Temp_feel', 'Temp_dewpoint');
+            if (in_array($value, $arrayName)) {
+                GetValue($this->GetIDForIdent($value)); 
+            }
+            else {
+                echo "Variable ".$value." nicht gefunden !"
+            }
             
         }
         protected function String_Wetter_Now_And_Next_Days($WetterJetzt, $WetterNextDays, $WetterWarnung)
@@ -305,7 +317,7 @@
                  }          
             }
 // Aktvieren und Deaktivieren vom Varriable Logging 
-        private function VarLogging($VarName,$LogStatus,$Type)
+        protected function VarLogging($VarName,$LogStatus,$Type)
             {
                 $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
                 AC_SetAggregationType($archiveHandlerID, $this->GetIDForIdent($VarName), $Type);
@@ -314,7 +326,7 @@
             }
 
             //Timer erstllen alle X minuten 
-        private function SetTimerMinutes($parentID, $name,$minutes,$Event)
+        protected function SetTimerMinutes($parentID, $name,$minutes,$Event)
             {
                 $eid = @IPS_GetEventIDByName($name, $parentID);
                 if($eid === false){
@@ -330,7 +342,7 @@
                  }
             }
     
-        private function isToday($time)
+        protected function isToday($time)
             {
                 $begin = mktime(0, 0, 0);
                 $end = mktime(23, 59, 59);
@@ -341,7 +353,7 @@
                     return false;
             }
 
-        private function SetValueByID($VariablenID,$Wert)
+        protected function SetValueByID($VariablenID,$Wert)
             {
                 // Überprüfen ob $Wert eine Zahl ist
                 if (is_numeric($Wert))
