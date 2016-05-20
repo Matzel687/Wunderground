@@ -169,9 +169,9 @@
                 $i=0;
                 foreach ($arrayName as $value) {
                     $data[$i] = GetValue($this->GetIDForIdent($value));
-                    $i++;
-                    return $data;
-                }       
+                    $i++;              
+                }      
+                 return $data; 
             }
             elseif (in_array($value, $arrayName)) {
                 return GetValue($this->GetIDForIdent($value)); 
