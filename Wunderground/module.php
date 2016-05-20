@@ -173,7 +173,7 @@
             
         }
         
-        public function Weathernextdays($Day,$value)
+        public function Weathernextdays($day,$value)
         {
             if (empty ($day) || $day > 3) {   
                 echo "Tag ".$day." nicht gefunden ! Gültige Werte 0 - 3";
