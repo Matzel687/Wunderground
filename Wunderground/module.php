@@ -187,7 +187,7 @@
     						}
             $jsonData = json_decode($GetData);
             for ($i=0; $i <4 ; $i++) { 
-             $data =  array($day => array(
+             $data =  array($i => array(
                 'Date' => $jsonData->forecast->simpleforecast->forecastday[$i]->date->epoch,
                 'text' => $jsonData->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
                 'Icon'  => 'http://icons.wxug.com/i/c/k/'. $jsonData->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
