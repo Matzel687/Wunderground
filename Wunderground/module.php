@@ -198,12 +198,7 @@
                 'MaxWind' => $jsonData->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
                 'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
             }
-            
-            
-$kunde1 = array(); // nicht notwendig, aber sauberer
-$kunde1['nachname'] = 'Müller';
-$kunde1['alter'] =
-            
+                        
               /*    if (empty ($value) || $value == "all") {   
                 foreach ($data[$day] as $value) {
                     $a = $data[$day][$value];
