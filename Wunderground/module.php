@@ -202,7 +202,6 @@
             if (empty ($value) || $value == "all") {   
                 foreach ($data[$day] as $value) {
                     $a = $data[$day][$value];
-                    echo $a;
                 }
                  return $a; 
             }
