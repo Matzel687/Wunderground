@@ -199,14 +199,14 @@
                 'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
             }
                         
-              /*    if (empty ($value) || $value == "all") {   
+            if (empty ($value) || $value == "all") {   
                 foreach ($data[$day] as $value) {
                     $a = $data[$day][$value];
                     echo $a;
                 }
                  return $a; 
             }
-      if (array_key_exists($value, $data[$day])) {
+            if (array_key_exists($value, $data[$day])) {
                 return $data[$day][$value]; 
             }
             else {
@@ -214,8 +214,8 @@
                 IPS_LogMessage("Wunderground", "FEHLER - Variable ".$value." nicht gefunden !");
        		    exit;
             }
-*/
-return $data;
+
+
 
         }
         
