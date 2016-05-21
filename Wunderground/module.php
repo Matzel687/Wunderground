@@ -199,7 +199,7 @@
                 'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm));              
             }
             if (empty ($value) || $value == "all") {   
-                 return $data[$day]; 
+                 return $data[$day][]; 
             }
             elseif (in_array($value, $data[$day])) {
                 return $data[$day][$value]; 
