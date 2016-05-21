@@ -204,7 +204,7 @@
                 }
                  return $a; 
             }*/
-            if (array_key_exists($value, $data)) {
+            if (array_key_exists($value, $data[$day])) {
                 return $data[$day][$value]; 
             }
             else {
