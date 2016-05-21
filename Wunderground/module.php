@@ -200,7 +200,7 @@
             }
             if (empty ($value) || $value == "all") {   
                 foreach ($data as $key => $value) {
-                    $a = $data[$key][$value]
+                    $a = $data[$key][$value];
                 }
                 
                  return $data; 
