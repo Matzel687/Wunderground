@@ -214,7 +214,7 @@
        		    exit;
             }
 */
-return $data[$day][$value];
+return $data;
 
         }
         
