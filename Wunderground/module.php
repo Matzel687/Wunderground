@@ -198,13 +198,12 @@
                 'MaxWind' => $jsonData->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
                 'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm));              
             }
-            if (empty ($value) || $value == "all") {   
+            /*if (empty ($value) || $value == "all") {   
                 foreach ($data[$day] as $value) {
                     $a = $data[$day][$value];
                 }
-                
                  return $a; 
-            }
+            }*/
             elseif (in_array($value, $data)) {
                 return $data[$day][$value]; 
             }
