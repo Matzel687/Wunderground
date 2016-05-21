@@ -201,7 +201,7 @@
             if (empty ($value) || $value == "all") {   
                  return $data[$day]; 
             }
-            elseif (in_array($value, $data)) {
+            elseif (in_array($value, $data[$day])) {
                 return $data[$day][$value]; 
             }
             else {
