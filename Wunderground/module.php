@@ -196,7 +196,7 @@
                 'Humidity' => $jsonData->forecast->simpleforecast->forecastday[$i]->avehumidity,       
                 'Wind' => $jsonData->forecast->simpleforecast->forecastday[$i]->avewind->kph,
                 'MaxWind' => $jsonData->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
-                'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm));              
+                'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
             }
             
             
