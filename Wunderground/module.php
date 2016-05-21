@@ -205,7 +205,7 @@
                 
                  return $data; 
             }
-            elseif (in_array($value, $data[$day])) {
+            elseif (in_array($value, $data)) {
                 return $data[$day][$value]; 
             }
             else {
