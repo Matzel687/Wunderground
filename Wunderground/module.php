@@ -186,22 +186,23 @@
        				    exit;
     						}
             $jsonData = json_decode($GetData);
-            $data =  array($day => array(
-            'Date' => $jsonData->forecast->simpleforecast->forecastday[$day]->date->epoch,
-            'text' => $jsonData->forecast->txt_forecast->forecastday[$day]->fcttext_metric,
-            'Icon'  => 'http://icons.wxug.com/i/c/k/'. $jsonData->forecast->simpleforecast->forecastday[$day]->icon.'.gif',
-            'TempHigh' => $jsonData->forecast->simpleforecast->forecastday[$day]->high->celsius,
-            'TempLow' => $jsonData->forecast->simpleforecast->forecastday[$day]->low->celsius,
-            'Humidity' => $jsonData->forecast->simpleforecast->forecastday[$day]->avehumidity,       
-            'Wind' => $jsonData->forecast->simpleforecast->forecastday[$day]->avewind->kph,
-            'MaxWind' => $jsonData->forecast->simpleforecast->forecastday[$day]->maxwind->kph,
-            'Rain' => $jsonData->forecast->simpleforecast->forecastday[$day]->qpf_allday->mm));
-            
+            for ($i=0; $i <4 ; $i++) { 
+             $data =  array($day => array(
+                'Date' => $jsonData->forecast->simpleforecast->forecastday[$i]->date->epoch,
+                'text' => $jsonData->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
+                'Icon'  => 'http://icons.wxug.com/i/c/k/'. $jsonData->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
+                'TempHigh' => $jsonData->forecast->simpleforecast->forecastday[$i]->high->celsius,
+                'TempLow' => $jsonData->forecast->simpleforecast->forecastday[$i]->low->celsius,
+                'Humidity' => $jsonData->forecast->simpleforecast->forecastday[$i]->avehumidity,       
+                'Wind' => $jsonData->forecast->simpleforecast->forecastday[$i]->avewind->kph,
+                'MaxWind' => $jsonData->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
+                'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm));              
+            }
             if (empty ($value) || $value == "all") {   
-                 return $data; 
+                 return $data[$day]; 
             }
             elseif (in_array($value, $data)) {
-                return $data[$value]; 
+                return $data[$day][$value]; 
             }
             else {
                 echo "Variable ".$value." nicht gefunden !";
