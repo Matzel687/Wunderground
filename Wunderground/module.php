@@ -68,9 +68,6 @@
                     $this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
                     $this->RegisterVariableString("Icon","WetterIcon","HTMLBox",14);
-                    //Variablen erstellen Wettervorhersage
-                    $this->RegisterVariableString("Wettervorhersage_Woche","Wettervorhersage Woche","HTMLBox",20);
-                    $this->RegisterVariableString("Wettervorhersage_Stunden","Wettervorhersage Stunden","HTMLBox",20);
                     //Timer zeit setzen
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateWetterInterval"),'WD_UpdateWetterDaten($_IPS["TARGET"]);');
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateWarnungInterval"),'WD_UpdateWetterWarnung($_IPS["TARGET"]);');
@@ -138,10 +135,8 @@
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weathernow->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weathernow->current_observation->UV);
                 SetValue($this->GetIDForIdent("Icon"),'http://icons.wxug.com/i/c/k/'.$Weathernow->current_observation->icon.'.gif');
-               // SetValue($this->GetIDForIdent("Wettervorhersage_Woche"), $this->String_Wetter_Now_And_Next_Days($Weathernow ,$jsonNextD,$jsonWarnung) );
-              //  SetValue($this->GetIDForIdent("Wettervorhersage_Stunden"), $this->String_Wetter_Heute_Stunden($jsonNextH) );
-
         }
+        
         public function UpdateWetterWarnung()
         {
                 $locationID =  $this->ReadPropertyString("Wetterstation");  // Location ID
@@ -169,8 +164,7 @@
                 echo "Variable ".$value." nicht gefunden !";
                 IPS_LogMessage("Wunderground", "FEHLER - Variable ".$value." nicht gefunden !");
        		    exit;
-            }
-            
+            }           
         }
         
         public function Weathernextdays()
@@ -196,61 +190,30 @@
             return $data;           
         }
         
-        
-        protected function String_Wetter_Now_And_Next_Days($Weathernow, $WetterNextDays, $WetterWarnung)
-            {           
-                $html = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-                            <table >';
-                           
-                            foreach($WetterWarnung->alerts as $Warnung=> $ID){
-                                $html.= '<tr>
-                                        <td style="color:'.$ID->level_meteoalarm_name.'" colspan="5"> <i class="fa fa-info-circle"></i>
-                                         '.$ID->description.'
-                                         </td>                              
-                                        </tr>';
-                              }
-                              
-                        $html.= '<tr>
-                                <td align="center" valign="top"  style="width:130px;padding-left:20px;">
-                                    Aktuell<br>
-                                    <img src="'.$Weathernow->current_observation->icon_url.'" style="float:left;">
-                                    <div style="float:right">
-                                         '.$Weathernow->current_observation->temp_c.' °C<br>
-                                        '.$Weathernow->current_observation->relative_humidity.'<br>
-                                     </div>
-                                    <div style="clear:both; font-size: 10px;">
-                                        Ø Wind: '.$Weathernow->current_observation->wind_kph.' km/h<br>
-                                        '.$Weathernow->current_observation->feelslike_c.' °C gefühlt<br>
-                                        '.$Weathernow->current_observation->pressure_mb.' hPa<br>
-                                        Regen 1h: '.$Weathernow->current_observation->precip_1hr_metric.' Liter/m²<br>
-                                        Sichtweite '.$Weathernow->current_observation->visibility_km.' km
-                                     </div>
-                                 </td>';
-                foreach($WetterNextDays->forecast->simpleforecast->forecastday as $name=> $day){
-                    if( $this->isToday($day->date->epoch))
-                        $Wochentag = "Heute";
-                    else {
-                        $tag = array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
-                        $Wochentag =$tag[date("w",intval($day->date->epoch))];
-                         }
-                     $html.= '<td align="center" valign="top"  style="width:130px;padding-left:20px;">
-                                '.$Wochentag.'<br>
-                                <img src="'.$day->icon_url.'" style="float:left;">
-                                <div style="float:right">
-                                    '.$day->low->celsius.' °C<br>
-                                    '.$day->high->celsius.' °C
-                                 </div>
-                                 <div style="clear:both; font-size: 10px;"> 
-                                    Ø Wind: '.$day->avewind->kph.' km/h<br>
-                                    Niederschlag: '.($day->qpf_allday->mm).' Liter/m²
-                                  </div>
-                               </td>';
-                       }
-                $html .= "</tr>
-                           </table>";
-                return $html;
+        public function Weathernexthours()
+        {         
+            $GetData = file_get_contents(IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteStunden.json");
+                if ($GetData === false) {
+       			        IPS_LogMessage("Wunderground", "FEHLER - Die WU_WetterdatenNaechsteStunden.json konnte nicht geladen werden!");
+       				    exit;
+    						}
+            $jsonData = json_decode($GetData);
+            for ($i=0; $i <24 ; $i++) { 
+             $data[$i] =   array(
+                'Date' => $jsonData->hourly_forecast[$i]->FCTTIME->epoch,
+                'Text' => $jsonData->hourly_forecast[$i]->condition,
+                'Icon'  => 'http://icons.wxug.com/i/c/k/'. $jsonData->hourly_forecast[$i]->icon.'.gif',
+                'Temp' => $jsonData->hourly_forecast[$i]->temp->metric,
+                'Tempfeel' => $jsonData->hourly_forecast[$i]->feelslike->metric,
+                'Tempdewpoint' => $jsonData->hourly_forecast[$i]->dewpoint->metric,
+                'Humidity' => $jsonData->hourly_forecast[$i]->humidity,       
+                'Wind' => $jsonData->hourly_forecast[$i]->wspd->metric,
+                'Pres' => $jsonData->hourly_forecast[$i]->mslp->metric,
+                'Rain' => $jsonData->hourly_forecast[$i]->qpf->metric);              
             }
-
+            return $data;           
+        }
+        
         protected function String_Wetter_Heute_Stunden($WetterStunden)
             {
                   $html = '<table >
