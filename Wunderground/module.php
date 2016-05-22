@@ -173,13 +173,8 @@
             
         }
         
-        public function Weathernextdays($day,$value)
-        {
-            if ($day < 0 || $day > 3) {   
-                echo "Tag ".$day." nicht gefunden ! Gültige Werte 0 - 3";
-                IPS_LogMessage("Wunderground","FEHLER Tag ".$day." nicht gefunden ! Gültige Werte 0 - 3");
-       		    exit;
-            }               
+        public function Weathernextdays()
+        {         
             $GetData = file_get_contents(IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
                 if ($GetData === false) {
        			        IPS_LogMessage("Wunderground", "FEHLER - Die WetterdatenNaechsteTage.json konnte nicht geladen werden!");
@@ -189,7 +184,7 @@
             for ($i=0; $i <4 ; $i++) { 
              $data[$i] =   array(
                 'Date' => $jsonData->forecast->simpleforecast->forecastday[$i]->date->epoch,
-                'text' => $jsonData->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
+                'Text' => $jsonData->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
                 'Icon'  => 'http://icons.wxug.com/i/c/k/'. $jsonData->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
                 'TempHigh' => $jsonData->forecast->simpleforecast->forecastday[$i]->high->celsius,
                 'TempLow' => $jsonData->forecast->simpleforecast->forecastday[$i]->low->celsius,
@@ -198,24 +193,7 @@
                 'MaxWind' => $jsonData->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
                 'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
             }
-                        
-            if (empty ($value) || $value == "all") {   
-                foreach ($data[$day] as $value) {
-                    $a = $data[$day][$value];
-                }
-                 return $a; 
-            }
-            if (array_key_exists($value, $data[$day])) {
-                return $data[$day][$value]; 
-            }
-            else {
-                echo "Variable ".$value." nicht gefunden !";
-                IPS_LogMessage("Wunderground", "FEHLER - Variable ".$value." nicht gefunden !");
-       		    exit;
-            }
-
-
-
+            return $data;           
         }
         
         
