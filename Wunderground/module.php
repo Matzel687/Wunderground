@@ -20,6 +20,7 @@
 
                 $this->RegisterPropertyString("Wetterstation", "");
                 $this->RegisterPropertyString("API_Key", "");
+                $this->RegisterPropertyString("Icon_Dir", "http://icons.wxug.com/i/c/k/");
                 $this->RegisterPropertyInteger("UpdateWetterInterval", 10);
                 $this->RegisterPropertyInteger("UpdateWarnungInterval", 60);
   
@@ -115,7 +116,7 @@
         {
                 $locationID =  $this->ReadPropertyString("Wetterstation");  // Location ID
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
-
+                $IconDir = $this->ReadPropertyString("Icon_Dir");  // Icon Pfad für die WetterIcons
                 //Wetterdaten vom aktuellen Wetter
                 $Weathernow = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten in Variable speichern
@@ -132,7 +133,7 @@
                 $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weathernow->current_observation->solarradiation);
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weathernow->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weathernow->current_observation->UV);
-                SetValue($this->GetIDForIdent("Icon"),'http://icons.wxug.com/i/c/k/'.$Weathernow->current_observation->icon.'.gif');
+                SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$Weathernow->current_observation->icon.'.gif');
               
                 //Wetterdaten für die nächsten  Tage
                 $Weathernextdays = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json");  

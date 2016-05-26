@@ -3,7 +3,10 @@
     [
         { "type": "ValidationTextBox", "name": "Wetterstation", "caption": "Wetterstation ID" },
         { "type": "ValidationTextBox", "name": "API_Key", "caption": "API Key" },
+        { "type": "ValidationTextBox", "name": "Icon_Dir", "caption": "Wetter Icon Pfad" },
+        { "type": "Label", "label": "Update Wetterdaten alle X Minuten" },
 		{ "type": "IntervalBox", "name": "UpdateWetterInterval", "caption": "Update Wetterdaten alle X Minuten" },
+        { "type": "Label", "label": "Update Wetterwarnungen alle X Minuten" },
         { "type": "IntervalBox", "name": "UpdateWarnungInterval", "caption": "Update Wetterwarnungen alle X Minuten" },
         { "type": "Label", "label": "Variable Änderungen aufzeichnen" },
         { "type": "CheckBox", "name": "logTemp_now", "caption": "Temperatur" },
