@@ -21,6 +21,7 @@
                 $this->RegisterPropertyString("Wetterstation", "");
                 $this->RegisterPropertyString("API_Key", "");
                 $this->RegisterPropertyString("Icon_Dir", "http://icons.wxug.com/i/c/k/");
+                $this->RegisterPropertyString("Icon_Data_Type", "gif");
                 $this->RegisterPropertyInteger("UpdateWetterInterval", 10);
                 $this->RegisterPropertyInteger("UpdateWarnungInterval", 60);
   
@@ -117,6 +118,7 @@
                 $locationID =  $this->ReadPropertyString("Wetterstation");  // Location ID
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
                 $IconDir = $this->ReadPropertyString("Icon_Dir");  // Icon Pfad für die WetterIcons
+                $IconDataType = $this->ReadPropertyString("Icon_Data_Type");// Icon Type jpeg,png,gif
                 //Wetterdaten vom aktuellen Wetter
                 $Weathernow = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten in Variable speichern
@@ -133,7 +135,7 @@
                 $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weathernow->current_observation->solarradiation);
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weathernow->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weathernow->current_observation->UV);
-                SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$Weathernow->current_observation->icon.'.gif');
+                SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$Weathernow->current_observation->icon.'.'.$IconDataType);
               
                 //Wetterdaten für die nächsten  Tage
                 $Weathernextdays = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json");  
@@ -141,7 +143,7 @@
                     $data[$i] =   array(
                         'Date' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->date->epoch,
                         'Text' =>  $Weathernextdays->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
-                        'Icon'  => ''.$IconDir.''.$Weathernextdays->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
+                        'Icon'  => ''.$IconDir.''.$Weathernextdays->forecast->simpleforecast->forecastday[$i]->icon.'.'.$IconDataType ,
                         'TempHigh' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->high->celsius,
                         'TempLow' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->low->celsius,
                         'Humidity' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avehumidity,       
@@ -159,7 +161,7 @@
                     $data[$i] =   array(
                         'Date' => $Weathernexthours->hourly_forecast[$i]->FCTTIME->epoch,
                         'Text' => $Weathernexthours->hourly_forecast[$i]->condition,
-                        'Icon'  => ''.$IconDir.''.$Weathernexthours->hourly_forecast[$i]->icon.'.gif',
+                        'Icon'  => ''.$IconDir.''.$Weathernexthours->hourly_forecast[$i]->icon.'.'.$IconDataType ,
                         'Temp' => $Weathernexthours->hourly_forecast[$i]->temp->metric,
                         'Tempfeel' => $Weathernexthours->hourly_forecast[$i]->feelslike->metric,
                         'Tempdewpoint' => $Weathernexthours->hourly_forecast[$i]->dewpoint->metric,
