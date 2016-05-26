@@ -220,21 +220,20 @@
         
         public function Weathernextdays()
         {         
-           $GetData = GetValue($this->GetIDForIdent("Weathernextdays")); 
-           $data = json_decode($GetData,TRUE);       
-           return $data;        
+           $GetData = GetValue($this->GetIDForIdent("Weathernextdays"));             
+           return json_decode($GetData,TRUE);         
         }
         
         public function Weathernexthours()
         {         
            $GetData = GetValue($this->GetIDForIdent("Weathernexthours"));        
-           return json_decode($GetData);            
+           return json_decode($GetData,TRUE);            
         }
         
             public function Weatheralerts()
         {         
            $GetData = GetValue($this->GetIDForIdent("Weatheralerts"));        
-           return json_decode($GetData);            
+           return json_decode($GetData,TRUE);            
         }
             
         protected function Json_String($URLString)
