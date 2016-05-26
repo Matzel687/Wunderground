@@ -155,16 +155,16 @@
                 $Weathernexthours = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json"); 
                 for ($i=0; $i <24 ; $i++) { 
                     $data[$i] =   array(
-                        'Date' => $jsonData->hourly_forecast[$i]->FCTTIME->epoch,
-                        'Text' => $jsonData->hourly_forecast[$i]->condition,
-                        'Icon'  => 'http://icons.wxug.com/i/c/k/'. $jsonData->hourly_forecast[$i]->icon.'.gif',
-                        'Temp' => $jsonData->hourly_forecast[$i]->temp->metric,
-                        'Tempfeel' => $jsonData->hourly_forecast[$i]->feelslike->metric,
-                        'Tempdewpoint' => $jsonData->hourly_forecast[$i]->dewpoint->metric,
-                        'Humidity' => $jsonData->hourly_forecast[$i]->humidity,       
-                        'Wind' => $jsonData->hourly_forecast[$i]->wspd->metric,
-                        'Pres' => $jsonData->hourly_forecast[$i]->mslp->metric,
-                        'Rain' => $jsonData->hourly_forecast[$i]->qpf->metric);              
+                        'Date' => $Weathernexthours->hourly_forecast[$i]->FCTTIME->epoch,
+                        'Text' => $Weathernexthours->hourly_forecast[$i]->condition,
+                        'Icon'  => 'http://icons.wxug.com/i/c/k/'. $Weathernexthours->hourly_forecast[$i]->icon.'.gif',
+                        'Temp' => $Weathernexthours->hourly_forecast[$i]->temp->metric,
+                        'Tempfeel' => $Weathernexthours->hourly_forecast[$i]->feelslike->metric,
+                        'Tempdewpoint' => $Weathernexthours->hourly_forecast[$i]->dewpoint->metric,
+                        'Humidity' => $Weathernexthours->hourly_forecast[$i]->humidity,       
+                        'Wind' => $Weathernexthours->hourly_forecast[$i]->wspd->metric,
+                        'Pres' => $Weathernexthours->hourly_forecast[$i]->mslp->metric,
+                        'Rain' => $Weathernexthours->hourly_forecast[$i]->qpf->metric);              
                 }
                 // Wetterdaten in String speichern
                 SetValue($this->GetIDForIdent("Weathernexthours"),json_encode($data)); 
