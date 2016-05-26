@@ -226,7 +226,7 @@
         
         public function Weathernexthours()
         {         
-           $GetData = GetValue($this->GetIDForIdent("WWeathernexthours"));        
+           $GetData = GetValue($this->GetIDForIdent("Weathernexthours"));        
            return json_decode($GetData);            
         }
         
