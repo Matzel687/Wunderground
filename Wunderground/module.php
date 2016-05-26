@@ -204,6 +204,11 @@
         
         public function Weathernextdays()
         {         
+           $GetData = GetValue($this->GetIDForIdent("Weathernextdays")
+           $data = json_decode($GetData);
+            
+            
+            /*
             $GetData = file_get_contents(IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
                 if ($GetData === false) {
        			        IPS_LogMessage("Wunderground", "FEHLER - Die WetterdatenNaechsteTage.json konnte nicht geladen werden!");
@@ -221,7 +226,7 @@
                 'Wind' => $jsonData->forecast->simpleforecast->forecastday[$i]->avewind->kph,
                 'MaxWind' => $jsonData->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
                 'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
-            }
+            }*/
             return $data;           
         }
         
