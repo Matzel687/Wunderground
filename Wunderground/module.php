@@ -68,6 +68,7 @@
                     $this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
                     $this->RegisterVariableString("Icon","WetterIcon","HTMLBox",14);
+                    $this->RegisterVariableString("Weathernextdays","WeatherNextDaysData","String",15);
                     //Timer zeit setzen
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateWetterInterval"),'WD_UpdateWetterDaten($_IPS["TARGET"]);');
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateWarnungInterval"),'WD_UpdateWetterWarnung($_IPS["TARGET"]);');
@@ -116,7 +117,9 @@
                 //Wetterdaten vom aktuellen Wetter
                 $Weathernow = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten für die nächsten  Tage downloaden
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
+               // $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
+                $Weathernextdays = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json");
+                
                 //Wetterdaten für die nächsten  Stunden dowloaden 
                 $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteStunden.json");
              
@@ -135,6 +138,27 @@
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weathernow->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weathernow->current_observation->UV);
                 SetValue($this->GetIDForIdent("Icon"),'http://icons.wxug.com/i/c/k/'.$Weathernow->current_observation->icon.'.gif');
+                
+            for ($i=0; $i <4 ; $i++) { 
+             $data[$i] =   array(
+                'Date' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->date->epoch,
+                'Text' =>  $Weathernextdays->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
+                'Icon'  => 'http://icons.wxug.com/i/c/k/'.  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
+                'TempHigh' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->high->celsius,
+                'TempLow' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->low->celsius,
+                'Humidity' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avehumidity,       
+                'Wind' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avewind->kph,
+                'MaxWind' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
+                'Rain' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
+            }
+            
+            SetValue($this->GetIDForIdent("Weathernextdays"),json_encode($data)); 
+            
+             
+                
+                
+                
+                
         }
         
         public function UpdateWetterWarnung()
@@ -214,32 +238,6 @@
             return $data;           
         }
         
-        protected function String_Wetter_Heute_Stunden($WetterStunden)
-            {
-                  $html = '<table >
-                            <tr>';
-                for ($i=0; $i < 24; $i=$i+4) {
-                       $html.= '<td align="center" valign="top"  style="width:130px;padding-left:20px;">
-                                '.$WetterStunden->hourly_forecast[$i]->FCTTIME->weekday_name.' '.$WetterStunden->hourly_forecast[$i]->FCTTIME->hour.' Uhr <br>
-                                
-                                <img src="'.$WetterStunden->hourly_forecast[$i]->icon_url.'" style="float:left;">
-                                <div style="float:right">
-                                    '.$WetterStunden->hourly_forecast[$i]->temp->metric.' °C<br>
-                                    '.$WetterStunden->hourly_forecast[$i]->humidity.' %
-                                 </div>
-
-                                 <div style="clear:both; font-size: 10px;">
-                                    '.$WetterStunden->hourly_forecast[$i]->wx.'<br>
-                                    Ø Wind: '.$WetterStunden->hourly_forecast[$i]->wspd->metric.' km/h<br>
-                                    Niederschlag: '.$WetterStunden->hourly_forecast[$i]->qpf->metric.' Liter/m²
-                                  </div>
-                               </td>';
-                       }
-                $html .= "</tr>
-                           </table>";
-                return $html;  
-                }
-
         protected function Json_String($URLString)
               {
                   $GetURL = Sys_GetURLContent($URLString);  //Json Daten öfffen
