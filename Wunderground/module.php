@@ -69,6 +69,7 @@
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
                     $this->RegisterVariableString("Icon","WetterIcon","HTMLBox",14);
                     $this->RegisterVariableString("Weathernextdays","WeatherNextDaysData","String",15);
+                    $this->RegisterVariableString("Weathernexthours","WeatherNextHoursData","String",16);
                     //Timer zeit setzen
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateWetterInterval"),'WD_UpdateWetterDaten($_IPS["TARGET"]);');
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateWarnungInterval"),'WD_UpdateWetterWarnung($_IPS["TARGET"]);');
@@ -116,13 +117,6 @@
 
                 //Wetterdaten vom aktuellen Wetter
                 $Weathernow = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
-                //Wetterdaten für die nächsten  Tage downloaden
-               // $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json",IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
-                $Weathernextdays = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json");
-                
-                //Wetterdaten für die nächsten  Stunden dowloaden 
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteStunden.json");
-             
                 //Wetterdaten in Variable speichern
                 $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Weathernow->current_observation->temp_c);
                 $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Weathernow->current_observation->feelslike_c);
@@ -138,27 +132,44 @@
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weathernow->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weathernow->current_observation->UV);
                 SetValue($this->GetIDForIdent("Icon"),'http://icons.wxug.com/i/c/k/'.$Weathernow->current_observation->icon.'.gif');
+              
+                //Wetterdaten für die nächsten  Tage
+                $Weathernextdays = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json");  
+                for ($i=0; $i <4 ; $i++) { 
+                    $data[$i] =   array(
+                        'Date' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->date->epoch,
+                        'Text' =>  $Weathernextdays->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
+                        'Icon'  => 'http://icons.wxug.com/i/c/k/'.  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
+                        'TempHigh' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->high->celsius,
+                        'TempLow' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->low->celsius,
+                        'Humidity' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avehumidity,       
+                        'Wind' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avewind->kph,
+                        'MaxWind' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
+                        'Rain' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
+                }
+                // Wetterdaten in String speichern
+                SetValue($this->GetIDForIdent("Weathernextdays"),json_encode($data)); 
+                $data = NULL;
                 
-            for ($i=0; $i <4 ; $i++) { 
-             $data[$i] =   array(
-                'Date' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->date->epoch,
-                'Text' =>  $Weathernextdays->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
-                'Icon'  => 'http://icons.wxug.com/i/c/k/'.  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
-                'TempHigh' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->high->celsius,
-                'TempLow' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->low->celsius,
-                'Humidity' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avehumidity,       
-                'Wind' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avewind->kph,
-                'MaxWind' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
-                'Rain' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
-            }
-            
-            SetValue($this->GetIDForIdent("Weathernextdays"),json_encode($data)); 
-            
-             
-                
-                
-                
-                
+                //Wetterdaten für die nächsten  Stunden         
+                $Weathernexthours = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json"); 
+                for ($i=0; $i <24 ; $i++) { 
+                    $data[$i] =   array(
+                        'Date' => $jsonData->hourly_forecast[$i]->FCTTIME->epoch,
+                        'Text' => $jsonData->hourly_forecast[$i]->condition,
+                        'Icon'  => 'http://icons.wxug.com/i/c/k/'. $jsonData->hourly_forecast[$i]->icon.'.gif',
+                        'Temp' => $jsonData->hourly_forecast[$i]->temp->metric,
+                        'Tempfeel' => $jsonData->hourly_forecast[$i]->feelslike->metric,
+                        'Tempdewpoint' => $jsonData->hourly_forecast[$i]->dewpoint->metric,
+                        'Humidity' => $jsonData->hourly_forecast[$i]->humidity,       
+                        'Wind' => $jsonData->hourly_forecast[$i]->wspd->metric,
+                        'Pres' => $jsonData->hourly_forecast[$i]->mslp->metric,
+                        'Rain' => $jsonData->hourly_forecast[$i]->qpf->metric);              
+                }
+                // Wetterdaten in String speichern
+                SetValue($this->GetIDForIdent("Weathernexthours"),json_encode($data)); 
+                $data = NULL;             
+                     
         }
         
         public function UpdateWetterWarnung()
