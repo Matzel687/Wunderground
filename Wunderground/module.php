@@ -70,6 +70,7 @@
                     $this->RegisterVariableString("Icon","WetterIcon","HTMLBox",14);
                     $this->RegisterVariableString("Weathernextdays","WeatherNextDaysData","String",15);
                     $this->RegisterVariableString("Weathernexthours","WeatherNextHoursData","String",16);
+                    $this->RegisterVariableString("Weatheralerts","WeatherAlerts","String",17);
                     //Timer zeit setzen
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateWetterInterval"),'WD_UpdateWetterDaten($_IPS["TARGET"]);');
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateWarnungInterval"),'WD_UpdateWetterWarnung($_IPS["TARGET"]);');
@@ -178,11 +179,21 @@
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
                 
                //Wetter Warnung
-                $this->Json_Download("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json", IPS_GetKernelDir()."\webfront\user\WU_WetterWarnungen.json");
+                $alerts = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json");
+                for ($i=0; $i <24 ; $i++) { 
+                    $data[$i] =   array(
+                        'Date' => $alerts->alerts[$i]->ddate_epoch,
+                        'Type' => $alerts->alerts[$i]->type,
+                        'Name' => $alerts->alerts[$i]->wtype_meteoalarm_name,
+                        'Farbe'  => $alerts->alerts[$i]->wtype_meteoalarm_name,
+                        'Text' => $alerts->alerts[$i]->description);
+                }
+                //Wetter Warnung speichern
+                SetValue($this->GetIDForIdent("Weatheralerts"),json_encode($data)); 
+                $data = NULL;     
+                
         }
-        
-
-        
+         
         public function Weathernow($value)
         {
             $Weathernow = array('Temp_now','Temp_feel', 'Temp_dewpoint','Hum_now','Pres_now','Wind_deg','Wind_now','Wind_gust','Rain_now','Rain_today','Solar_now','Vis_now','UV_now','Icon');
@@ -204,56 +215,22 @@
         
         public function Weathernextdays()
         {         
-           $GetData = GetValue($this->GetIDForIdent("Weathernextdays"));
-           $data = json_decode($GetData);
-            
-            
-            /*
-            $GetData = file_get_contents(IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteTage.json");
-                if ($GetData === false) {
-       			        IPS_LogMessage("Wunderground", "FEHLER - Die WetterdatenNaechsteTage.json konnte nicht geladen werden!");
-       				    exit;
-    						}
-            $jsonData = json_decode($GetData);
-            for ($i=0; $i <4 ; $i++) { 
-             $data[$i] =   array(
-                'Date' => $jsonData->forecast->simpleforecast->forecastday[$i]->date->epoch,
-                'Text' => $jsonData->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
-                'Icon'  => 'http://icons.wxug.com/i/c/k/'. $jsonData->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
-                'TempHigh' => $jsonData->forecast->simpleforecast->forecastday[$i]->high->celsius,
-                'TempLow' => $jsonData->forecast->simpleforecast->forecastday[$i]->low->celsius,
-                'Humidity' => $jsonData->forecast->simpleforecast->forecastday[$i]->avehumidity,       
-                'Wind' => $jsonData->forecast->simpleforecast->forecastday[$i]->avewind->kph,
-                'MaxWind' => $jsonData->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
-                'Rain' => $jsonData->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
-            }*/
-            return $data;           
+           $GetData = GetValue($this->GetIDForIdent("Weathernextdays"));        
+           return json_decode($GetData);         
         }
         
         public function Weathernexthours()
         {         
-            $GetData = file_get_contents(IPS_GetKernelDir()."\webfront\user\WU_WetterdatenNaechsteStunden.json");
-                if ($GetData === false) {
-       			        IPS_LogMessage("Wunderground", "FEHLER - Die WU_WetterdatenNaechsteStunden.json konnte nicht geladen werden!");
-       				    exit;
-    						}
-            $jsonData = json_decode($GetData);
-            for ($i=0; $i <24 ; $i++) { 
-             $data[$i] =   array(
-                'Date' => $jsonData->hourly_forecast[$i]->FCTTIME->epoch,
-                'Text' => $jsonData->hourly_forecast[$i]->condition,
-                'Icon'  => 'http://icons.wxug.com/i/c/k/'. $jsonData->hourly_forecast[$i]->icon.'.gif',
-                'Temp' => $jsonData->hourly_forecast[$i]->temp->metric,
-                'Tempfeel' => $jsonData->hourly_forecast[$i]->feelslike->metric,
-                'Tempdewpoint' => $jsonData->hourly_forecast[$i]->dewpoint->metric,
-                'Humidity' => $jsonData->hourly_forecast[$i]->humidity,       
-                'Wind' => $jsonData->hourly_forecast[$i]->wspd->metric,
-                'Pres' => $jsonData->hourly_forecast[$i]->mslp->metric,
-                'Rain' => $jsonData->hourly_forecast[$i]->qpf->metric);              
-            }
-            return $data;           
+           $GetData = GetValue($this->GetIDForIdent("WWeathernexthours"));        
+           return json_decode($GetData);            
         }
         
+            public function Weatheralerts()
+        {         
+           $GetData = GetValue($this->GetIDForIdent("Weatheralerts"));        
+           return json_decode($GetData);            
+        }
+            
         protected function Json_String($URLString)
               {
                   $GetURL = Sys_GetURLContent($URLString);  //Json Daten öfffen
@@ -264,18 +241,6 @@
                   return json_decode($GetURL);  //Json Daten in String speichern
               }  
 
-              
-        protected function Json_Download($URLString,$file)
-              {
-                  $GetURL = Sys_GetURLContent($URLString);  //Json Daten öfffen
-                  if ($GetURL == false) {
-                      IPS_LogMessage("Wunderground", "FEHLER - Die Wunderground-API konnte nicht abgefragt werden!");
-                      exit;
-                  }
-                        $data = json_decode($GetURL);  //Json Daten in String speichern
- 						file_put_contents($file,json_encode($data)); //Json String in Datei speichern
- 						return true;
-              }
 // Variablen profile erstellen        
         protected function Var_Pro_Erstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
             {
@@ -342,17 +307,6 @@
                  }
             }
     
-        protected function isToday($time)
-            {
-                $begin = mktime(0, 0, 0);
-                $end = mktime(23, 59, 59);
-                // check if given time is between begin and end
-                if($time >= $begin && $time <= $end)
-                    return true;
-                else 
-                    return false;
-            }
-
         protected function SetValueByID($VariablenID,$Wert)
             {
                 // Überprüfen ob $Wert eine Zahl ist
