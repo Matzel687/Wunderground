@@ -189,9 +189,14 @@
                         'Text' => $value->description);
                 }
                 //Wetter Warnung speichern
-                SetValue($this->GetIDForIdent("Weatheralerts"),json_encode($data)); 
-                $data = NULL;     
-                
+                if ($data == NULL) {
+                        SetValue($this->GetIDForIdent("Weatheralerts"),"[]"); 
+                }
+                else {
+                        SetValue($this->GetIDForIdent("Weatheralerts"),json_encode($data)); 
+                        $data = NULL;    
+                }
+
         }
          
         public function Weathernow($value)
