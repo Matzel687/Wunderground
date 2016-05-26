@@ -221,7 +221,7 @@
         public function Weathernextdays()
         {         
            $GetData = GetValue($this->GetIDForIdent("Weathernextdays")); 
-           $data = json_decode($GetData);       
+           $data = json_decode($GetData,TRUE);       
            return $data;        
         }
         
