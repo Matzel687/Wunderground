@@ -177,7 +177,7 @@
         {
                 $locationID =  $this->ReadPropertyString("Wetterstation");  // Location ID
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
-                $data == NULL;
+                $data = NULL;
                //Wetter Warnung
                 $alerts = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json");
                 foreach ($alerts->alerts  as $key => $value) {
