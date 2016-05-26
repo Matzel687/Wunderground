@@ -185,7 +185,7 @@
                         'Date' => $value->date_epoch,
                         'Type' => $value->type,
                         'Name' => $value->wtype_meteoalarm_name,
-                        'Farbe'  => $value->wtype_meteoalarm_name,
+                        'Color'  => $value->wtype_meteoalarm_name,
                         'Text' => $value->description);
                 }
                 //Wetter Warnung speichern
