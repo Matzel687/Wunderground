@@ -180,13 +180,13 @@
                 
                //Wetter Warnung
                 $alerts = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json");
-                for ($i=0; $i <24 ; $i++) { 
-                    $data[$i] =   array(
-                        'Date' => $alerts->alerts[$i]->ddate_epoch,
-                        'Type' => $alerts->alerts[$i]->type,
-                        'Name' => $alerts->alerts[$i]->wtype_meteoalarm_name,
-                        'Farbe'  => $alerts->alerts[$i]->wtype_meteoalarm_name,
-                        'Text' => $alerts->alerts[$i]->description);
+                foreach ($alerts->alerts  as $key => $value) {
+                    $data[$key] =   array(
+                        'Date' => $value->date_epoch,
+                        'Type' => $value->type,
+                        'Name' => $value->wtype_meteoalarm_name,
+                        'Farbe'  => $value->wtype_meteoalarm_name,
+                        'Text' => $value->description);
                 }
                 //Wetter Warnung speichern
                 SetValue($this->GetIDForIdent("Weatheralerts"),json_encode($data)); 
