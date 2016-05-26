@@ -141,7 +141,7 @@
                     $data[$i] =   array(
                         'Date' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->date->epoch,
                         'Text' =>  $Weathernextdays->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
-                        'Icon'  => 'http://icons.wxug.com/i/c/k/'.  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
+                        'Icon'  => ''.$IconDir.''.$Weathernextdays->forecast->simpleforecast->forecastday[$i]->icon.'.gif',
                         'TempHigh' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->high->celsius,
                         'TempLow' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->low->celsius,
                         'Humidity' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avehumidity,       
@@ -159,7 +159,7 @@
                     $data[$i] =   array(
                         'Date' => $Weathernexthours->hourly_forecast[$i]->FCTTIME->epoch,
                         'Text' => $Weathernexthours->hourly_forecast[$i]->condition,
-                        'Icon'  => 'http://icons.wxug.com/i/c/k/'. $Weathernexthours->hourly_forecast[$i]->icon.'.gif',
+                        'Icon'  => ''.$IconDir.''.$Weathernexthours->hourly_forecast[$i]->icon.'.gif',
                         'Temp' => $Weathernexthours->hourly_forecast[$i]->temp->metric,
                         'Tempfeel' => $Weathernexthours->hourly_forecast[$i]->feelslike->metric,
                         'Tempdewpoint' => $Weathernexthours->hourly_forecast[$i]->dewpoint->metric,
