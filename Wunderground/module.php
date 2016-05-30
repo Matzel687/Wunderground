@@ -123,56 +123,56 @@
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
                 $IconDir = $this->ReadPropertyString("Icon_Dir");  // Icon Pfad für die WetterIcons
                 $IconDataType = $this->ReadPropertyString("Icon_Data_Type");// Icon Type jpeg,png,gif
-                //Wetterdaten vom aktuellen Wetter
-                $Weathernow = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/lang:DL/q/CA/".$locationID.".json");
+                //Wetterdaten abrufen 
+                $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten in Variable speichern
-                $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Weathernow->current_observation->temp_c);
-                $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Weathernow->current_observation->feelslike_c);
-                $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Weathernow->current_observation->dewpoint_c);
-                $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($Weathernow->current_observation->relative_humidity, 0, -1));
-                $this->SetValueByID($this->GetIDForIdent("Pres_now"), $Weathernow->current_observation->pressure_mb);
-                $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $Weathernow->current_observation->wind_degrees);
-                $this->SetValueByID($this->GetIDForIdent("Wind_now"), $Weathernow->current_observation->wind_kph);
-                $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $Weathernow->current_observation->wind_gust_kph);
-                $this->SetValueByID($this->GetIDForIdent("Rain_now"), $Weathernow->current_observation->precip_1hr_metric);
-                $this->SetValueByID($this->GetIDForIdent("Rain_today"), $Weathernow->current_observation->precip_today_metric);
-                $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weathernow->current_observation->solarradiation);
-                $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weathernow->current_observation->visibility_km);
-                $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weathernow->current_observation->UV);
-                SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$Weathernow->current_observation->icon.'.'.$IconDataType);
+                $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Weather->current_observation->temp_c);
+                $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Weather->current_observation->feelslike_c);
+                $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Weather->current_observation->dewpoint_c);
+                $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($Weather->current_observation->relative_humidity, 0, -1));
+                $this->SetValueByID($this->GetIDForIdent("Pres_now"), $Weather->current_observation->pressure_mb);
+                $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $Weather->current_observation->wind_degrees);
+                $this->SetValueByID($this->GetIDForIdent("Wind_now"), $Weather->current_observation->wind_kph);
+                $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $Weather->current_observation->wind_gust_kph);
+                $this->SetValueByID($this->GetIDForIdent("Rain_now"), $Weather->current_observation->precip_1hr_metric);
+                $this->SetValueByID($this->GetIDForIdent("Rain_today"), $Weather->current_observation->precip_today_metric);
+                $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weather->current_observation->solarradiation);
+                $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weather->current_observation->visibility_km);
+                $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weather->current_observation->UV);
+                SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$Weather->current_observation->icon.'.'.$IconDataType);
               
                 //Wetterdaten für die nächsten  Tage
-                $Weathernextdays = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json");  
+                //$Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json");  
                 for ($i=0; $i <4 ; $i++) { 
                     $data[$i] =   array(
-                        'Date' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->date->epoch,
-                        'Text' =>  $Weathernextdays->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
-                        'Icon'  => ''.$IconDir.''.$Weathernextdays->forecast->simpleforecast->forecastday[$i]->icon.'.'.$IconDataType ,
-                        'TempHigh' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->high->celsius,
-                        'TempLow' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->low->celsius,
-                        'Humidity' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avehumidity,       
-                        'Wind' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->avewind->kph,
-                        'MaxWind' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
-                        'Rain' =>  $Weathernextdays->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
+                        'Date' =>  $Weather->forecast->simpleforecast->forecastday[$i]->date->epoch,
+                        'Text' =>  $Weather->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
+                        'Icon'  => ''.$IconDir.''.$Weather->forecast->simpleforecast->forecastday[$i]->icon.'.'.$IconDataType ,
+                        'TempHigh' =>  $Weather->forecast->simpleforecast->forecastday[$i]->high->celsius,
+                        'TempLow' =>  $Weather->forecast->simpleforecast->forecastday[$i]->low->celsius,
+                        'Humidity' =>  $Weather->forecast->simpleforecast->forecastday[$i]->avehumidity,       
+                        'Wind' =>  $Weather->forecast->simpleforecast->forecastday[$i]->avewind->kph,
+                        'MaxWind' =>  $Weather->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
+                        'Rain' =>  $Weather->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
                 }
                 // Wetterdaten in String speichern
                 SetValue($this->GetIDForIdent("Weathernextdays"),json_encode($data)); 
                 $data = NULL;
                 
                 //Wetterdaten für die nächsten  Stunden         
-                $Weathernexthours = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json"); 
+               // $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json"); 
                 for ($i=0; $i <24 ; $i++) { 
                     $data[$i] =   array(
-                        'Date' => $Weathernexthours->hourly_forecast[$i]->FCTTIME->epoch,
-                        'Text' => $Weathernexthours->hourly_forecast[$i]->condition,
-                        'Icon'  => ''.$IconDir.''.$Weathernexthours->hourly_forecast[$i]->icon.'.'.$IconDataType ,
-                        'Temp' => $Weathernexthours->hourly_forecast[$i]->temp->metric,
-                        'Tempfeel' => $Weathernexthours->hourly_forecast[$i]->feelslike->metric,
-                        'Tempdewpoint' => $Weathernexthours->hourly_forecast[$i]->dewpoint->metric,
-                        'Humidity' => $Weathernexthours->hourly_forecast[$i]->humidity,       
-                        'Wind' => $Weathernexthours->hourly_forecast[$i]->wspd->metric,
-                        'Pres' => $Weathernexthours->hourly_forecast[$i]->mslp->metric,
-                        'Rain' => $Weathernexthours->hourly_forecast[$i]->qpf->metric);              
+                        'Date' => $Weather->hourly_forecast[$i]->FCTTIME->epoch,
+                        'Text' => $Weather->hourly_forecast[$i]->condition,
+                        'Icon'  => ''.$IconDir.''.$Weather->hourly_forecast[$i]->icon.'.'.$IconDataType ,
+                        'Temp' => $Weather->hourly_forecast[$i]->temp->metric,
+                        'Tempfeel' => $Weather->hourly_forecast[$i]->feelslike->metric,
+                        'Tempdewpoint' => $Weather->hourly_forecast[$i]->dewpoint->metric,
+                        'Humidity' => $Weather->hourly_forecast[$i]->humidity,       
+                        'Wind' => $Weather->hourly_forecast[$i]->wspd->metric,
+                        'Pres' => $Weather->hourly_forecast[$i]->mslp->metric,
+                        'Rain' => $Weather->hourly_forecast[$i]->qpf->metric);              
                 }
                 // Wetterdaten in String speichern
                 SetValue($this->GetIDForIdent("Weathernexthours"),json_encode($data)); 
