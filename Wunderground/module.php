@@ -46,6 +46,10 @@
                 $this->Var_Pro_Erstellen("WD_Sichtweite",2,"km",0,0,0,2,"");
                 $this->Var_Pro_WD_WindSpeedkmh();
                 $this->Var_Pro_WD_UVIndex();
+                //Timer erstellen
+                $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateWetterInterval"),'WD_UpdateWetterDaten($_IPS["TARGET"]);');
+                $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateWarnungInterval"),'WD_UpdateWetterWarnung($_IPS["TARGET"]);');
+                
             }
 
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
