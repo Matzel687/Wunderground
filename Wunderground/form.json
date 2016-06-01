@@ -1,9 +1,8 @@
 {
     "elements":
     [
-        
-        { "type": "ValidationTextBox", "name": "Wetterstation", "caption": "Wetterstation" },
-        { "type": "Label", "label": "Wetterstationsname PWS:xxx oder Kordinaten zmw:xxxx oder Stadtname" },
+        { "type": "Label", "label": "Wetterstationsname  = PWS:xxx oder Kordinaten zmw:xxxx oder Stadtname" },
+        { "type": "ValidationTextBox", "name": "Wetterstation", "caption": "Wetterstation" },  
         { "type": "ValidationTextBox", "name": "API_Key", "caption": "API Key" },
         { "type": "ValidationTextBox", "name": "Icon_Dir", "caption": "Wetter Icon Pfad" },
         { "type": "ValidationTextBox", "name": "Icon_Data_Type", "caption": "Icon Datei Type" },

@@ -193,7 +193,7 @@
                         'Type' => $value->type,
                         'Name' => $value->wtype_meteoalarm_name,
                         'Color'  => $value->level_meteoalarm_name,
-                        'Text' => str_replace("%deutsch:%", "", $value->description));
+                        'Text' => str_replace("deutsch:", "", $value->description));
                 }
                 //Wetter Warnung speichern
                 if ($data == NULL) {
