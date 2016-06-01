@@ -201,7 +201,7 @@
                 }
                 else {
                         $sorted_data = $this->unique_multidim_array($data,"Text");
-                        SetValue($this->GetIDForIdent("Weatheralerts"),json_encode($sorted_data ); 
+                        SetValue($this->GetIDForIdent("Weatheralerts"),json_encode($sorted_data)); 
                         $data = NULL;    
                 }
 
