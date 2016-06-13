@@ -333,6 +333,7 @@
                     else{                                               // sonst nehme den alten Wert 
                          SetValue($VariablenID,$LastValue);
                     }
+                }
                 //Wenn $Wert keine Zahl ist setze den Wert auf 0
                 else 
                 SetValue($VariablenID,0);
