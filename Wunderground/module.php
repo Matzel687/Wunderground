@@ -336,7 +336,7 @@
                     }
                 }
                 elseif (is_numeric($Wert)){
-                    SetValue($VariablenID,$LastValue);
+                    SetValue($VariablenID,$Wert);
                 }
                 //Wenn $Wert keine Zahl ist setze den Wert auf 0
                 else 
