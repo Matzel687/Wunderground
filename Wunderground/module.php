@@ -328,7 +328,7 @@
                 if(AC_GetLoggingStatus($archiveHandlerID , $VariablenID) ==true){
                     $LastValues = AC_GetLoggedValues($archiveHandlerID, $VariablenID, strtotime("yesterday 00:00"), time(), 1);     // Letzten Wert auslesen
                     $LastValue = $LastValues [0]['Value'];
-                    if (($LastValue-$Wert+0.001)/$LastValue <= 7  && ($LastValue-$Wert+0.001)/$LastValue >= -7){            //Wenn der neue Wert nicht um +-700% größer/kleiner ist, schreibe den neuen Wert in die Variable
+                    if (($LastValue-$Wert+0.1)/$LastValue <= 7  && ($LastValue-$Wert+0.1)/$LastValue >= -7){            //Wenn der neue Wert nicht um +-700% größer/kleiner ist, schreibe den neuen Wert in die Variable
                         SetValue($VariablenID,$Wert);
                     }
                     else{                                               // sonst nehme den alten Wert 
