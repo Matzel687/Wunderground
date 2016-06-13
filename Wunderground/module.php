@@ -323,16 +323,20 @@
         protected function SetValueByID($VariablenID,$Wert)
             {
                 // Überprüfen ob $Wert eine Zahl ist
-                if (is_numeric($Wert)){
-                    $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];  //ID vom Archive Control ermitteln
+                $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];  //ID vom Archive Control ermitteln
+                    
+                if(AC_GetLoggingStatus($archiveHandlerID , $VariablenID) ==true){
                     $LastValues = AC_GetLoggedValues($archiveHandlerID, $VariablenID, strtotime("yesterday 00:00"), time(), 1);     // Letzten Wert auslesen
                     $LastValue = $LastValues [0]['Value'];
                     if (($LastValue-$Wert)/$LastValue <= 7  && ($LastValue-$Wert)/$LastValue >= -7){            //Wenn der neue Wert nicht um +-700% größer/kleiner ist, schreibe den neuen Wert in die Variable
-                       SetValue($VariablenID,$Wert);
+                        SetValue($VariablenID,$Wert);
                     }
                     else{                                               // sonst nehme den alten Wert 
-                         SetValue($VariablenID,$LastValue);
+                        SetValue($VariablenID,$LastValue);
                     }
+                }
+                elseif (is_numeric($Wert)){
+                    SetValue($VariablenID,$LastValue);
                 }
                 //Wenn $Wert keine Zahl ist setze den Wert auf 0
                 else 
