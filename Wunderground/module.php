@@ -327,8 +327,9 @@
                     SetValue($VariablenID,$Wert);
                 }
                 //Wenn $Wert keine Zahl ist setze den Wert auf 0
-                else 
-                SetValue($VariablenID,0);
+                else{
+                    SetValue($VariablenID,0);
+                }
             }
 
         protected function unique_multidim_array($array, $key)
