@@ -126,11 +126,11 @@
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten in Variable speichern
-                $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Weather->current_observation->temp_c);
-                $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Weather->current_observation->feelslike_c);
-                $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Weather->current_observation->dewpoint_c);
-                $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($Weather->current_observation->relative_humidity, 0, -1));
-                $this->SetValueByID($this->GetIDForIdent("Pres_now"), $Weather->current_observation->pressure_mb);
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Temp_now"),$Weather->current_observation->temp_c);
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Temp_feel"), $Weather->current_observation->feelslike_c);
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Weather->current_observation->dewpoint_c);
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Hum_now"), substr($Weather->current_observation->relative_humidity, 0, -1));
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Pres_now"), $Weather->current_observation->pressure_mb);
                 $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $Weather->current_observation->wind_degrees);
                 $this->SetValueByID($this->GetIDForIdent("Wind_now"), $Weather->current_observation->wind_kph);
                 $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $Weather->current_observation->wind_gust_kph);
@@ -323,19 +323,7 @@
         protected function SetValueByID($VariablenID,$Wert)
             {
                 // Überprüfen ob $Wert eine Zahl ist
-                $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];  //ID vom Archive Control ermitteln
-                    
-                if(AC_GetLoggingStatus($archiveHandlerID , $VariablenID) ==true){
-                    $LastValues = AC_GetLoggedValues($archiveHandlerID, $VariablenID, strtotime("yesterday 00:00"), time(), 1);     // Letzten Wert auslesen
-                    $LastValue = $LastValues [0]['Value'];
-                    if (($LastValue-$Wert)/($LastValue+0.001) <= 7  && ($LastValue-$Wert+1)/($LastValue+0.001) >= -7){            //Wenn der neue Wert nicht um +-700% größer/kleiner ist, schreibe den neuen Wert in die Variable
-                        SetValue($VariablenID,$Wert);
-                    }
-                    else{                                               // sonst nehme den alten Wert 
-                        SetValue($VariablenID,$LastValue);
-                    }
-                }
-                elseif (is_numeric($Wert)){
+                if (is_numeric($Wert)){
                     SetValue($VariablenID,$Wert);
                 }
                 //Wenn $Wert keine Zahl ist setze den Wert auf 0
@@ -357,6 +345,29 @@
                 }
                 return $temp_array;
              }
+
+        protected function CeckAndSetValueByID($VariablenID,$Wert)  // Prüfe Werte auf Extreme Werte über 700% 
+            {
+                // Überprüfen ob $Wert eine Zahl ist
+                $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];  //ID vom Archive Control ermitteln
+                    
+                if(AC_GetLoggingStatus($archiveHandlerID , $VariablenID) ==true){
+                    $LastValues = AC_GetLoggedValues($archiveHandlerID, $VariablenID, strtotime("yesterday 00:00"), time(), 1);     // Letzten Wert auslesen
+                    $LastValue = $LastValues [0]['Value'];
+                    if (($LastValue-$Wert)/($LastValue+1) <= 7  && ($LastValue-$Wert+1)/($LastValue+1) >= -7){            //Wenn der neue Wert nicht um +-700% größer/kleiner ist, schreibe den neuen Wert in die Variable
+                        SetValue($VariablenID,$Wert);
+                    }
+                    else{                                               // sonst nehme den alten Wert 
+                        SetValue($VariablenID,$LastValue);
+                    }
+                }
+                elseif (is_numeric($Wert)){
+                    SetValue($VariablenID,$Wert);
+                }
+                //Wenn $Wert keine Zahl ist setze den Wert auf 0
+                else 
+                SetValue($VariablenID,0);
+            }
 
      }
 ?>
