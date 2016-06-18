@@ -153,7 +153,8 @@
                         'Humidity' =>  $Weather->forecast->simpleforecast->forecastday[$i]->avehumidity,       
                         'Wind' =>  $Weather->forecast->simpleforecast->forecastday[$i]->avewind->kph,
                         'MaxWind' =>  $Weather->forecast->simpleforecast->forecastday[$i]->maxwind->kph,
-                        'Rain' =>  $Weather->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm);              
+                        'Rain' =>  $Weather->forecast->simpleforecast->forecastday[$i]->qpf_allday->mm, 
+                        'Pop'  =>  $Weather->forecast->simpleforecast->forecastday[$i]->pop);            
                 }
                 // Wetterdaten in String speichern
                 SetValue($this->GetIDForIdent("Weathernextdays"),json_encode($data)); 
@@ -172,7 +173,8 @@
                         'Humidity' => $Weather->hourly_forecast[$i]->humidity,       
                         'Wind' => $Weather->hourly_forecast[$i]->wspd->metric,
                         'Pres' => $Weather->hourly_forecast[$i]->mslp->metric,
-                        'Rain' => $Weather->hourly_forecast[$i]->qpf->metric);              
+                        'Rain' => $Weather->hourly_forecast[$i]->qpf->metric,
+                        'Pop'  => $Weather->hourly_forecast[$i]->pop);            
                 }
                 // Wetterdaten in String speichern
                 SetValue($this->GetIDForIdent("Weathernexthours"),json_encode($data)); 
