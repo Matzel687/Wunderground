@@ -150,7 +150,7 @@
                 $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weather->current_observation->solarradiation);
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weather->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weather->current_observation->UV);
-                SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$this->getDayTimeRelatedIcon($Weather->current_observation->icon, true).'.'.$IconDataType);
+                SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$this->getDayTimeRelatedIcon($Weather->current_observation->icon, $isDay).'.'.$IconDataType);
 
               
               
@@ -379,7 +379,7 @@
         protected function isDayTime($Sunrise,$Sunset,$time)
             {
                 // check if given time is between sunset and sunrise
-                if (($time >= GetValueInteger($Sunrise)) AND ($time <= GetValueInteger($Sunset))) {
+                if (($time <= GetValueInteger($Sunrise)) AND ($time <= GetValueInteger($Sunset))) {
                     return true;
                 } else {
                     return false;
