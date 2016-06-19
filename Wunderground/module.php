@@ -24,7 +24,9 @@
                 $this->RegisterPropertyString("Icon_Data_Type", "gif");
                 $this->RegisterPropertyInteger("UpdateWetterInterval", 10);
                 $this->RegisterPropertyInteger("UpdateWarnungInterval", 60);
-  
+                $this->RegisterPropertyInteger("SunriseVariableID", 0);
+                $this->RegisterPropertyInteger("SunsetVariableID", 0);
+
                 //Variable Änderungen aufzeichnen
                 $this->RegisterPropertyBoolean("logTemp_now", false);
                 $this->RegisterPropertyBoolean("logTemp_feel", false);
@@ -123,6 +125,9 @@
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
                 $IconDir = $this->ReadPropertyString("Icon_Dir");  // Icon Pfad für die WetterIcons
                 $IconDataType = $this->ReadPropertyString("Icon_Data_Type");// Icon Type jpeg,png,gif
+                $Sunrise = $this->ReadPropertyInteger("SunriseVariableID");
+                $Sunset = $this->ReadPropertyInteger("SunsetVariableID");
+                echo $Sunrise;
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten in Variable speichern
@@ -159,7 +164,7 @@
                 // Wetterdaten in String speichern
                 SetValue($this->GetIDForIdent("Weathernextdays"),json_encode($data)); 
                 $data = NULL;
-                
+                  
                 //Wetterdaten für die nächsten  Stunden         
                // $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json"); 
                 for ($i=0; $i <24 ; $i++) { 
@@ -333,7 +338,8 @@
                     SetValue($VariablenID,0);
                 }
             }
-
+        
+        //doppelte Array Einträge löschen 
         protected function unique_multidim_array($array, $key)
             {
                 $temp_array = array();
@@ -348,6 +354,26 @@
                 }
                 return $temp_array;
              }
+
+        
+        protected function getDayTimeRelatedIcon($icon, $DayTime)
+            {
+                if ($DayTime){
+                    $new_icon = $icon;
+                } else {
+                    $basename = basename($icon);
+                    $new_icon = str_replace($basename, 'nt_'.$basename, $icon);
+                }
+                    return $new_icon;
+                }       
+
+        protected function isDayTime($SunPhase, $time)
+            {
+                $sunrise = mktime($SunPhase['sunrise']['hour'], $SunPhase['sunrise']['minute']);
+                $sunset = mktime($SunPhase['sunset']['hour'], $SunPhase['sunset']['minute']);
+                // check if given time is between sunset and sunrise
+                return (($time >= $sunrise) && ($time <= $sunset));
+            }
 
         protected function CeckAndSetValueByID($VariablenID,$Wert)  // Prüfe Werte auf Extreme Werte über 700% 
             {
