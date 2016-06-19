@@ -129,6 +129,7 @@
                 $Sunrise = $this->ReadPropertyInteger("SunriseVariableID");
                 $Sunset = $this->ReadPropertyInteger("SunsetVariableID");
                 $isDay = $this->isDayTime($Sunrise, $Sunset, time());
+                echo $isDay;
  
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
