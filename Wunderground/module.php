@@ -376,7 +376,11 @@
         protected function isDayTime($Sunrise, $Sunset, $time)
             {
                 // check if given time is between sunset and sunrise
-                return (($time >= $Sunrise) && ($time <= $Sunset));
+                if (($time >= $Sunrise) && ($time <= $Sunset)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
 
         protected function CeckAndSetValueByID($VariablenID,$Wert)  // Prüfe Werte auf Extreme Werte über 700% 
