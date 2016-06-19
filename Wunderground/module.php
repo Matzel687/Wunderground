@@ -131,7 +131,7 @@
               
                 $Sunset = $this->ReadPropertyInteger("SunsetVariableID");
                   echo  $Sunset ;
-                $isDay = $this->isDayTime($Sunrise, $Sunset, time());
+                $isDay = $this->isDayTime($Sunrise,$Sunset,time());
                 echo $isDay;
  
                 //Wetterdaten abrufen 
@@ -376,7 +376,7 @@
             }  
 
         //Prüfe ob Tag oder Nacht 
-        protected function isDayTime($Sunrise, $Sunset, $time)
+        protected function isDayTime($Sunrise,$Sunset,$time)
             {
                 // check if given time is between sunset and sunrise
                 if (($time >= GetValueInteger($Sunrise)) AND ($time <= GetValueInteger($Sunset))) {
