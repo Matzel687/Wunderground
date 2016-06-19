@@ -60,7 +60,8 @@
                 // Diese Zeile nicht löschen
                parent::ApplyChanges();
 
-                if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != "")){
+                if (($this->ReadPropertyString("API_Key") != "") AND ($this->ReadPropertyString("Wetterstation") != "")
+                    AND ($this->ReadPropertyInteger("SunriseVariableID") != "") AND ($this->ReadPropertyInteger("SunsetVariableID") != "")){
                     //Variablen erstellen Wetter jetzt
                     $this->RegisterVariableFloat("Temp_now","Temperatur","Temperature",1);
                     $this->RegisterVariableFloat("Temp_feel","Temperatur gefühlt","Temperature",2);
@@ -127,7 +128,7 @@
                 $IconDataType = $this->ReadPropertyString("Icon_Data_Type");// Icon Type jpeg,png,gif
                 $Sunrise = $this->ReadPropertyInteger("SunriseVariableID");
                 $Sunset = $this->ReadPropertyInteger("SunsetVariableID");
-                echo $Sunrise;
+ 
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten in Variable speichern
