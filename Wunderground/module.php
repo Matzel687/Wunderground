@@ -127,7 +127,10 @@
                 $IconDir = $this->ReadPropertyString("Icon_Dir");  // Icon Pfad für die WetterIcons
                 $IconDataType = $this->ReadPropertyString("Icon_Data_Type");// Icon Type jpeg,png,gif
                 $Sunrise = $this->ReadPropertyInteger("SunriseVariableID");
+                echo  $Sunrise ;
+              
                 $Sunset = $this->ReadPropertyInteger("SunsetVariableID");
+                  echo  $Sunset ;
                 $isDay = $this->isDayTime($Sunrise, $Sunset, time());
                 echo $isDay;
  
