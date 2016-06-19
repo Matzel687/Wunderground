@@ -127,12 +127,8 @@
                 $IconDir = $this->ReadPropertyString("Icon_Dir");  // Icon Pfad für die WetterIcons
                 $IconDataType = $this->ReadPropertyString("Icon_Data_Type");// Icon Type jpeg,png,gif
                 $Sunrise = $this->ReadPropertyInteger("SunriseVariableID");
-                echo  $Sunrise ;
-              
                 $Sunset = $this->ReadPropertyInteger("SunsetVariableID");
-                  echo  $Sunset ;
-                $isDay = $this->isDayTime($Sunrise,$Sunset,time());
-                echo $isDay;
+                $isDay = $this->isDayTime($Sunrise,$Sunset,time());;
  
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
