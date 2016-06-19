@@ -128,6 +128,7 @@
                 $IconDataType = $this->ReadPropertyString("Icon_Data_Type");// Icon Type jpeg,png,gif
                 $Sunrise = $this->ReadPropertyInteger("SunriseVariableID");
                 $Sunset = $this->ReadPropertyInteger("SunsetVariableID");
+                $isDay = $this->isDayTime($Sunrise, $Sunset, time());
  
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
@@ -145,7 +146,9 @@
                 $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weather->current_observation->solarradiation);
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weather->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weather->current_observation->UV);
-                SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$Weather->current_observation->icon.'.'.$IconDataType);
+                SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$this->getDayTimeRelatedIcon($Weather->current_observation->icon, $isDay).'.'.$IconDataType);
+
+              
               
                 //Wetterdaten für die nächsten  Tage
                 //$Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json");  
@@ -262,7 +265,7 @@
                   return json_decode($GetURL);  //Json Daten in String speichern
               }  
 
-// Variablen profile erstellen        
+        // Variablen profile erstellen        
         protected function Var_Pro_Erstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
             {
                 if (IPS_VariableProfileExists($name) == false){
@@ -302,7 +305,7 @@
                     IPS_SetVariableProfileAssociation("WD_UV_Index", 11, "%.1f","",0xA80080);
                  }          
             }
-// Aktvieren und Deaktivieren vom Varriable Logging 
+        // Aktvieren und Deaktivieren vom Varriable Logging 
         protected function VarLogging($VarName,$LogStatus,$Type)
             {
                 $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
@@ -311,7 +314,7 @@
                 IPS_ApplyChanges($archiveHandlerID);
             }
 
-            //Timer erstllen alle X minuten 
+        //Timer erstllen alle X minuten 
         protected function SetTimerMinutes($parentID, $name,$minutes,$Event)
             {
                 $eid = @IPS_GetEventIDByName($name, $parentID);
@@ -366,14 +369,13 @@
                     $new_icon = str_replace($basename, 'nt_'.$basename, $icon);
                 }
                     return $new_icon;
-                }       
+            }  
 
-        protected function isDayTime($SunPhase, $time)
+        //Prüfe ob Tag oder Nacht 
+        protected function isDayTime($Sunrise, $Sunset, $time)
             {
-                $sunrise = mktime($SunPhase['sunrise']['hour'], $SunPhase['sunrise']['minute']);
-                $sunset = mktime($SunPhase['sunset']['hour'], $SunPhase['sunset']['minute']);
                 // check if given time is between sunset and sunrise
-                return (($time >= $sunrise) && ($time <= $sunset));
+                return (($time >= $Sunrise) && ($time <= $Sunset));
             }
 
         protected function CeckAndSetValueByID($VariablenID,$Wert)  // Prüfe Werte auf Extreme Werte über 700% 
