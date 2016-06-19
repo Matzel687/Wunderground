@@ -363,7 +363,7 @@
         
         protected function getDayTimeRelatedIcon($icon, $DayTime)
             {
-                if ($DayTime){
+                if ($DayTime == true){
                     $new_icon = $icon;
                 } else {
                     $basename = basename($icon);
@@ -376,7 +376,7 @@
         protected function isDayTime($Sunrise, $Sunset, $time)
             {
                 // check if given time is between sunset and sunrise
-                if (($time >= $Sunrise) && ($time <= $Sunset)) {
+                if (($time >= GetValueInteger($Sunrise)) && ($time <= GetValueInteger($Sunset))) {
                     return true;
                 } else {
                     return false;
