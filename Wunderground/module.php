@@ -379,7 +379,7 @@
         protected function isDayTime($Sunrise, $Sunset, $time)
             {
                 // check if given time is between sunset and sunrise
-                if (($time >= GetValueInteger($Sunrise)) && ($time <= GetValueInteger($Sunset))) {
+                if (($time >= GetValueInteger($Sunrise)) AND ($time <= GetValueInteger($Sunset))) {
                     return true;
                 } else {
                     return false;
