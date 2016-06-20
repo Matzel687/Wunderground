@@ -76,7 +76,7 @@
                     $this->RegisterVariableFloat("Solar_now","Sonnenstrahlung","WD_Sonnenstrahlung",11);
                     $this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
-                    $this->RegisterVariableInteger("Text","WetterText","String",18);
+                    $this->RegisterVariableString("Text","WetterText","String",18);
                     $this->RegisterVariableString("Icon","WetterIcon","HTMLBox",14);
                     IPS_SetHidden($this->GetIDForIdent("Icon"), true); //Objekt verstecken
                     $this->RegisterVariableString("Weathernextdays","WeatherNextDaysData","String",15);
