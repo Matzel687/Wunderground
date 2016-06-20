@@ -126,9 +126,9 @@
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
                 $IconDir = $this->ReadPropertyString("Icon_Dir");  // Icon Pfad für die WetterIcons
                 $IconDataType = $this->ReadPropertyString("Icon_Data_Type");// Icon Type jpeg,png,gif
-                $Sunrise = $this->ReadPropertyInteger("SunriseVariableID");
-                $Sunset = $this->ReadPropertyInteger("SunsetVariableID");
-                $isDay = $this->isDayTime($Sunrise,$Sunset,time());;
+                $SunriseVarID = $this->ReadPropertyInteger("SunriseVariableID");
+                $SunsetVarID = $this->ReadPropertyInteger("SunsetVariableID");
+                $isDay = $this->isDayTime($SunriseVarID,$SunsetVarID,time());;
  
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
@@ -358,7 +358,6 @@
                 }
                 return $temp_array;
              }
-
         
         protected function getDayTimeRelatedIcon($icon, $DayTime)
             {
@@ -372,10 +371,14 @@
             }  
 
         //Prüfe ob Tag oder Nacht 
-        protected function isDayTime($Sunrise,$Sunset,$time)
+        protected function isDayTime($SunriseVarID,$SunsetVarID,$time)
             {
+                $Sunrisedate = getdate(GetValueInteger($SunriseVarID));
+                $Sunsetdate = getdate(GetValueInteger($SunsetVarID)); 
+                $Sunrise = mktime($Sunrisedate[hours],$Sunrisedate[minutes]);
+                $Sunset = mktime($Sunsetdate[hours], $Sunsetdate[minutes]);
                 // check if given time is between sunset and sunrise
-                if (($time <= GetValueInteger($Sunrise)) AND ($time <= GetValueInteger($Sunset))) {
+                if (($time >= $Sunrise) AND ($time <= $Sunset)) {
                     return true;
                 } else {
                     return false;
