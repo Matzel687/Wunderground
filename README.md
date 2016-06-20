@@ -45,7 +45,6 @@ Name                              | Beschreibung
 --------------------------------- | ---------------------------------
 Wetterstation                     | Wetterstation, von der die Daten entnommen werden sollen. Den Namen der Wetterstation könnt Ihr auf der www.wunderground.com Seite herausfinden. Zulässig sind Stationsnamen pws:XXXXXX , Koordinaten zws:XXXXXX oder Städte Namen.
 API Key                           | Wunderground API-Key. Kann auf der Wunderground Homepage nach Registrierung angefordert werden. "More"->"Weather API for Developers".
-Aktuelle Daten abfragen           | Aktiviert die Abfrage der aktuellen Wetterdaten.
 Wetter Icon Pfad                  | Hier könnt ihr den Pfad zu euren eigenen Wetter Icons angeben oder die Icons von [Wunderground](https://www.wunderground.com/weather/api/d/docs?d=resources/icon-sets) nutzen. Bei eigenen Icons müssen diese im  "\IP-Symcon\webfront\user" Ordner liegen.
 Icon Datei Type                   | Dateityp von euren eigenen Icons z.B. Jpeg, Png, Gif. Wenn die Wunderground Icons verwendet werden muss hier "Gif" eingetragen werden.
 Update Wetterdaten alle X Minuten | Hier könnt ihr einstellen in welchen Zeitraum die Wetterdaten abgerufen werden sollen. (Ihr habt 500 abrufe pro Tag umsonst)
