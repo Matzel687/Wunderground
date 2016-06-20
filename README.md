@@ -117,8 +117,31 @@ $Key                    | Beschreibung
 'UV_now',               | UV Wert 
 'Icon'                  | Icon
 
+// Beispiel Ausgabe
+`print_r(WD_Weathernow($ModulID, "all"));`
 
-####*2. Funktion um die Wetterdaten für die nächsten 3 tage auszugeben
+```
+Array
+(
+    
+    [Temp_now] => 15.8
+    [Temp_feel] => 15.8
+    [Temp_dewpoint] => 15
+    [Hum_now] => 94
+    [Pres_now] => 1015
+    [Wind_deg] => 161
+    [Wind_now] => 8
+    [Wind_gust] => 17.7
+    [Rain_now] => 3
+    [Rain_today] => 5
+    [Solar_now] => 33
+    [Vis_now] => 9
+    [UV_now] => 1
+    [Icon] => user\Wetter_Icons\rain.png
+)
+```
+
+####*2. Funktion um die Wetterdaten für die nächsten 3 Tage auszugeben
 `Array WD_Weathernextdays(integer $ModulID,);`
 
 // Beispiel Ausgabe
