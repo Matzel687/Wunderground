@@ -18,7 +18,7 @@ Informationen zur API findet ihr hier. [Klick](https://www.wunderground.com/weat
 * Abrufen der aktuellen Wetterdaten und speichern in Variablen
 * Aktivieren bzw. Deaktivierung des Variablen Loggins direkt aus dem Modul heraus.
 * Eigene Icon Sets oder die von [Wunderground](https://www.wunderground.com/weather/api/d/docs?d=resources/icon-sets).
-* Unterscheidung der Icons (TAG/Nacht) ***IN PLANUNG***
+* Unterscheidung der Icons (TAG/Nacht)
 * Abrufen der Wetterdaten für die nächsten 24 Stunden (Stundenweise) Daten werden in einem Array gespeichert welches JSON decodiert ist.
   Zur eigenen Nutzung in Skripten.
 * Abrufen der Wetterdaten für die nächsten 3 Tage (Tagesweise) Daten werden in einem Array gespeichert welches JSON decodiert ist.
