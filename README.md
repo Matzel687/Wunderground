@@ -79,6 +79,7 @@ WetterIcon              | String    | Icon Link für das Aktuelle Wetter.
 WeatherNextDaysData     | String    | Wetterdaten für die nächsten 3 Tage. Die Daten sind JSON decodiert. 
 WeatherNextHoursData    | String    | Wetterdaten für die nächsten 24 Stunden. Die Daten sind JSON decodiert.
 WeatherAlerts           | String    | Wetterwarnungen. Die Daten sind JSON decodiert.
+Text                    | String    | Wettertext z.B. "Leichter Regen"
 
 ##### Profile:
 
@@ -116,6 +117,7 @@ $Key                    | Beschreibung
 'Vis_now'               | Sichtweite 
 'UV_now',               | UV Wert 
 'Icon'                  | Icon
+'Text'                  | Wetter Text
 
 // Beispiel Ausgabe
 `print_r(WD_Weathernow($ModulID, "all"));`
@@ -138,6 +140,7 @@ Array
     [Vis_now] => 9
     [UV_now] => 1
     [Icon] => user\Wetter_Icons\rain.png
+    [Text] => Leichter Regen
 )
 ```
 

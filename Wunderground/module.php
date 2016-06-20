@@ -133,7 +133,7 @@
                 $IconDataType = $this->ReadPropertyString("Icon_Data_Type");// Icon Type jpeg,png,gif
                 $SunriseVarID = $this->ReadPropertyInteger("SunriseVariableID");
                 $SunsetVarID = $this->ReadPropertyInteger("SunsetVariableID");
-                $isDay = $this->isDayTime($SunriseVarID,$SunsetVarID,time());;
+                $isDay = $this->isDayTime($SunriseVarID,$SunsetVarID,time());
  
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
@@ -159,10 +159,11 @@
                 //Wetterdaten für die nächsten  Tage
                 //$Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/forecast/lang:DL/q/".$locationID.".json");  
                 for ($i=0; $i <4 ; $i++) { 
+
                     $data[$i] =   array(
                         'Date' =>  $Weather->forecast->simpleforecast->forecastday[$i]->date->epoch,
                         'Text' =>  $Weather->forecast->txt_forecast->forecastday[$i]->fcttext_metric,
-                        'Icon'  => ''.$IconDir.''.$Weather->forecast->simpleforecast->forecastday[$i]->icon.'.'.$IconDataType ,
+                        'Icon'  => ''.$IconDir.''.$this->getDayTimeRelatedIcon($Weather->forecast->simpleforecast->forecastday[$i]->icon, $isDay).'.'.$IconDataType ,
                         'TempHigh' =>  $Weather->forecast->simpleforecast->forecastday[$i]->high->celsius,
                         'TempLow' =>  $Weather->forecast->simpleforecast->forecastday[$i]->low->celsius,
                         'Humidity' =>  $Weather->forecast->simpleforecast->forecastday[$i]->avehumidity,       
@@ -178,10 +179,15 @@
                 //Wetterdaten für die nächsten  Stunden         
                // $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/hourly/lang:DL/q/".$locationID.".json"); 
                 for ($i=0; $i <24 ; $i++) { 
+
+                    //Prüfe ob Tag oder Nacht ist 
+                    $time = $Weather->hourly_forecast[$i]->FCTTIME->epoch;
+                    $isDaynexthours = $this->isDayTime($SunriseVarID,$SunsetVarID,$time);
+
                     $data[$i] =   array(
-                        'Date' => $Weather->hourly_forecast[$i]->FCTTIME->epoch,
+                        'Date' => $time,
                         'Text' => $Weather->hourly_forecast[$i]->condition,
-                        'Icon'  => ''.$IconDir.''.$Weather->hourly_forecast[$i]->icon.'.'.$IconDataType ,
+                        'Icon'  => ''.$IconDir.''.$this->getDayTimeRelatedIcon($Weather->hourly_forecast[$i]->icon,$isDaynexthours).'.'.$IconDataType ,
                         'Temp' => $Weather->hourly_forecast[$i]->temp->metric,
                         'Tempfeel' => $Weather->hourly_forecast[$i]->feelslike->metric,
                         'Tempdewpoint' => $Weather->hourly_forecast[$i]->dewpoint->metric,
