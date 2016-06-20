@@ -122,6 +122,7 @@
 
         public function UpdateWetterDaten()
         {
+                echo $this->GetIDForIdent('logUV_now');
                 $locationID =  $this->ReadPropertyString("Wetterstation");  // Location ID
                 $APIkey = $this->ReadPropertyString("API_Key");  // API Key Wunderground
                 $IconDir = $this->ReadPropertyString("Icon_Dir");  // Icon Pfad für die WetterIcons

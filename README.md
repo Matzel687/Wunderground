@@ -193,9 +193,7 @@ Array
             [Pop] => 100
         )
         ....
-        ....
-        ....
-            [23] => Array
+      [23] => Array
         (
             [Date] => 1466524800
             [Text] => Wolkig
