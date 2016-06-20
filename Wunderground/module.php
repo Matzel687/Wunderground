@@ -76,10 +76,15 @@
                     $this->RegisterVariableFloat("Solar_now","Sonnenstrahlung","WD_Sonnenstrahlung",11);
                     $this->RegisterVariableFloat("Vis_now","Sichtweite","WD_Sichtweite",12);
                     $this->RegisterVariableInteger("UV_now","UV Strahlung","WD_UV_Index",13);
+                    $this->RegisterVariableInteger("Text","WetterText","String",18);
                     $this->RegisterVariableString("Icon","WetterIcon","HTMLBox",14);
+                    IPS_SetHidden($this->GetIDForIdent("Icon"), true); //Objekt verstecken
                     $this->RegisterVariableString("Weathernextdays","WeatherNextDaysData","String",15);
+                    IPS_SetHidden($this->GetIDForIdent("Weathernextdays"), true); //Objekt verstecken
                     $this->RegisterVariableString("Weathernexthours","WeatherNextHoursData","String",16);
+                    IPS_SetHidden($this->GetIDForIdent("Weathernexthours"), true); //Objekt verstecken
                     $this->RegisterVariableString("Weatheralerts","WeatherAlerts","String",17);
+                    IPS_SetHidden($this->GetIDForIdent("Weatheralerts"), true); //Objekt verstecken
                     //Timer zeit setzen
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterDaten",$this->ReadPropertyInteger("UpdateWetterInterval"),'WD_UpdateWetterDaten($_IPS["TARGET"]);');
                     $this->SetTimerMinutes($this->InstanceID,"UpdateWetterWarnung",$this->ReadPropertyInteger("UpdateWarnungInterval"),'WD_UpdateWetterWarnung($_IPS["TARGET"]);');
@@ -146,6 +151,7 @@
                 $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weather->current_observation->solarradiation);
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weather->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weather->current_observation->UV);
+                $this->SetValueByID($this->GetIDForIdent("Text"),  $Weather->current_observation->weather);
                 SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$this->getDayTimeRelatedIcon($Weather->current_observation->icon, $isDay).'.'.$IconDataType);
 
               
@@ -220,7 +226,7 @@
          
         public function Weathernow($value)
         {
-            $Weathernow = array('Temp_now','Temp_feel', 'Temp_dewpoint','Hum_now','Pres_now','Wind_deg','Wind_now','Wind_gust','Rain_now','Rain_today','Solar_now','Vis_now','UV_now','Icon');
+            $Weathernow = array('Temp_now','Temp_feel', 'Temp_dewpoint','Hum_now','Pres_now','Wind_deg','Wind_now','Wind_gust','Rain_now','Rain_today','Solar_now','Vis_now','UV_now','Icon','Text');
             if (empty ($value) || $value == "all") {
                 foreach ($Weathernow as $value) {
                     $data[$value] = GetValue($this->GetIDForIdent($value));           
