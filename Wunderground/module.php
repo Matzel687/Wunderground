@@ -375,8 +375,8 @@
             {
                 $Sunrisedate = getdate(GetValueInteger($SunriseVarID));
                 $Sunsetdate = getdate(GetValueInteger($SunsetVarID)); 
-                $Sunrise = mktime($Sunrisedate[hours],$Sunrisedate[minutes]);
-                $Sunset = mktime($Sunsetdate[hours], $Sunsetdate[minutes]);
+                $Sunrise = mktime($Sunrisedate['hours'],$Sunrisedate['minutes']);
+                $Sunset = mktime($Sunsetdate['hours'], $Sunsetdate['minutes']);
                 // check if given time is between sunset and sunrise
                 if (($time >= $Sunrise) AND ($time <= $Sunset)) {
                     return true;
