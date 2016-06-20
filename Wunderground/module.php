@@ -151,7 +151,7 @@
                 $this->SetValueByID($this->GetIDForIdent("Solar_now"), $Weather->current_observation->solarradiation);
                 $this->SetValueByID($this->GetIDForIdent("Vis_now"), $Weather->current_observation->visibility_km);
                 $this->SetValueByID($this->GetIDForIdent("UV_now"), $Weather->current_observation->UV);
-                $this->SetValueByID($this->GetIDForIdent("Text"),  $Weather->current_observation->weather);
+                SetValue($this->GetIDForIdent("Text"),  $Weather->current_observation->weather);
                 SetValue($this->GetIDForIdent("Icon"),''.$IconDir.''.$this->getDayTimeRelatedIcon($Weather->current_observation->icon, $isDay).'.'.$IconDataType);
 
               
