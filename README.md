@@ -97,7 +97,7 @@ WD_UV_Index      | Integer
 ### 7. PHP-Befehlsreferenz
 
 ####*1. Funktion um die aktuellen Wetterdaten auszugeben
-'Array WD_Weathernow(integer $ModulID, String $Key);'
+`Array WD_Weathernow(integer $ModulID, String $Key);`
 
 $Key                    | Beschreibung
 ----------------------- | --------- 
@@ -119,10 +119,10 @@ $Key                    | Beschreibung
 
 
 ####*2. Funktion um die Wetterdaten für die nächsten 3 tage auszugeben
-'Array WD_Weathernextdays(integer $ModulID,);'
+`Array WD_Weathernextdays(integer $ModulID,);`
 
 // Beispiel Ausgabe
-'print_r(WD_Weathernextdays($ModulID));'
+`print_r(WD_Weathernextdays($ModulID));`
 ```
 Array
 (
@@ -148,10 +148,10 @@ Array
 )
 ```
 ####*3. Funktion um die Wetterdaten für die nächsten 24 Stunden auszugeben
-'Array WD_Weathernexthours(integer $ModulID,);'
+`Array WD_Weathernexthours(integer $ModulID,);`
 
 // Beispiel Ausgabe
-'print_r(WD_Weathernexthours($ModulID));'
+`print_r(WD_Weathernexthours($ModulID));`
 ```
 Array
 (
@@ -189,10 +189,10 @@ Array
 )
 ```
 ####*4. Funktion um die Wetter Warnungen auszugeben
-'Array WD_Weatheralerts(integer $ModulID,);'
+`Array WD_Weatheralerts(integer $ModulID,);`
 
 // Beispiel Ausgabe
-'print_r(WD_Weatheralerts($ModulID));'
+`print_r(WD_Weatheralerts($ModulID));`
 ```
 
 ```
