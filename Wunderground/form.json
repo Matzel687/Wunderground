@@ -12,22 +12,7 @@
         { "type": "IntervalBox", "name": "UpdateWarnungInterval", "caption": "Update Wetterwarnungen alle X Minuten" },
         { "type": "Label", "label": "Variablen für Sonnenaufgang und Untergang" },
         { "type": "SelectVariable", "name": "SunriseVariableID", "caption": "Sunrise" },
-        { "type": "SelectVariable", "name": "SunsetVariableID", "caption": "Sunset" },
-        { "type": "Label", "label": "Variable Änderungen aufzeichnen" },
-        { "type": "CheckBox", "name": "logTemp_now", "caption": "Temperatur" },
-        { "type": "CheckBox", "name": "logTemp_feel", "caption": "Temperatur gefühlt" },
-        { "type": "CheckBox", "name": "logTemp_dewpoint", "caption": "Temperatur Taupunkt" },
-        { "type": "CheckBox", "name": "logHum_now", "caption": "Luftfeuchtigkeit" },
-        { "type": "CheckBox", "name": "logPres_now", "caption": "Luftdruck" },
-        { "type": "CheckBox", "name": "logWind_deg", "caption": "Windrichtung °" },
-        { "type": "CheckBox", "name": "logWind_now", "caption": "Windgeschwindigkeit" },
-        { "type": "CheckBox", "name": "logWind_gust", "caption": "Windböe" },
-        { "type": "CheckBox", "name": "logRain_now", "caption": "Niederschlag/h" },
-        { "type": "CheckBox", "name": "logRain_today", "caption": "Niederschlag Tag" },
-        { "type": "CheckBox", "name": "logSolar_now", "caption": "Sonnenstrahlung" },
-        { "type": "CheckBox", "name": "logVis_now", "caption": "Sichtweite" },
-        { "type": "CheckBox", "name": "logUV_now", "caption": "UV Strahlung" }
-
+        { "type": "SelectVariable", "name": "SunsetVariableID", "caption": "Sunset" }
     ],
     "actions":
     [ 
