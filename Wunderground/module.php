@@ -1,6 +1,5 @@
 <?
 
-//require_once(__DIR__ . "/../OnkyoAVRClass.php");  // diverse Klassen
     // Klassendefinition
     class WundergroundWetter extends IPSModule
      {
@@ -97,31 +96,18 @@
                 }
                 
                 // Variable Logging Aktivieren/Deaktivieren
-                if ($this->ReadPropertyBoolean("logTemp_now") === true)
                     $this-> VarLogging("Temp_now","logTemp_now",0);
-                if ($this->ReadPropertyBoolean("logTemp_feel") === true)
                     $this-> VarLogging("Temp_feel","logTemp_feel",0);
-                if ($this->ReadPropertyBoolean("logTemp_dewpoint") === true)
                     $this-> VarLogging("Temp_dewpoint","logTemp_dewpoint",0);
-                if ($this->ReadPropertyBoolean("logHum_now") === true)
                     $this-> VarLogging("Hum_now","logHum_now",0);
-                if ($this->ReadPropertyBoolean("logPres_now") === true)
                     $this-> VarLogging("Pres_now","logPres_now",0);
-                if ($this->ReadPropertyBoolean("logWind_deg") === true)
                     $this-> VarLogging("Wind_deg","logWind_deg",0);
-                if ($this->ReadPropertyBoolean("logWind_now") === true)
                     $this-> VarLogging("Wind_now","logWind_now",0);
-                if ($this->ReadPropertyBoolean("logWind_gust") === true)
                     $this-> VarLogging("Wind_gust","logWind_gust",0);
-                if ($this->ReadPropertyBoolean("logRain_now") === true)
                     $this-> VarLogging("Rain_now","logRain_now",1);
-                if ($this->ReadPropertyBoolean("logRain_today") === true)
                     $this-> VarLogging("Rain_today","logRain_today",1);
-                if ($this->ReadPropertyBoolean("logSolar_now") === true)
                     $this-> VarLogging("Solar_now","logSolar_now",1);
-                if ($this->ReadPropertyBoolean("logVis_now") === true)
                     $this-> VarLogging("Vis_now","logVis_now",0);
-                if ($this->ReadPropertyBoolean("logUV_now") === true)
                     $this-> VarLogging("UV_now","logUV_now",0);
             }
 
