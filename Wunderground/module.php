@@ -96,7 +96,11 @@
                    $this->SetStatus(104); 
                 }
                 
+<<<<<<< HEAD
                     // Variable Logging Aktivieren/Deaktivieren
+=======
+                // Variable Logging Aktivieren/Deaktivieren
+>>>>>>> parent of 69ebfa6... Version2.06
                     $this-> VarLogging("Temp_now","logTemp_now",0);
                     $this-> VarLogging("Temp_feel","logTemp_feel",0);
                     $this-> VarLogging("Temp_dewpoint","logTemp_dewpoint",0);
