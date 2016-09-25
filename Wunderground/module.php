@@ -97,9 +97,19 @@
                 }
                 
                 // Variable Logging Aktivieren/Deaktivieren
-
-
-
+                    $this-> VarLogging("Temp_now","logTemp_now",0);
+                    $this-> VarLogging("Temp_feel","logTemp_feel",0);
+                    $this-> VarLogging("Temp_dewpoint","logTemp_dewpoint",0);
+                    $this-> VarLogging("Hum_now","logHum_now",0);
+                    $this-> VarLogging("Pres_now","logPres_now",0);
+                    $this-> VarLogging("Wind_deg","logWind_deg",0);
+                    $this-> VarLogging("Wind_now","logWind_now",0);
+                    $this-> VarLogging("Wind_gust","logWind_gust",0);
+                    $this-> VarLogging("Rain_now","logRain_now",1);
+                    $this-> VarLogging("Rain_today","logRain_today",1);
+                    $this-> VarLogging("Solar_now","logSolar_now",1);
+                    $this-> VarLogging("Vis_now","logVis_now",0);
+                    $this-> VarLogging("UV_now","logUV_now",0);
             }
 
         public function UpdateWetterDaten()
