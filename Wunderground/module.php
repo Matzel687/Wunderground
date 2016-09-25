@@ -97,6 +97,7 @@
                    $this->SetStatus(104); 
                 }
                 
+            }
         public function UpdateWetterDaten()
         {
                 $locationID =  $this->ReadPropertyString("Wetterstation");  // Location ID
