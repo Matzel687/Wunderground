@@ -216,5 +216,17 @@ Array
 // Beispiel Ausgabe
 `print_r(WD_Weatheralerts($ModulID));`
 ```
+Array
+(
+    [0] => Array
+        (
+            [Date] => 2017-04-22 07:00:15 GMT
+            [Expires] => 2017-04-22 17:00:00 GMT
+            [Type] => WND
+            [Name] => Wind
+            [Color] => Yellow
+            [Text] => Potential disruption due to wind from 8AM CEST SAT until 7PM CEST SAT
+        )
 
+)
 ```
