@@ -111,11 +111,11 @@
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten in Variable speichern
-                $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Weather->current_observation->temp_c);
-                $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Weather->current_observation->feelslike_c);
-                $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Weather->current_observation->dewpoint_c);
-                $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($Weather->current_observation->relative_humidity, 0, -1));
-                $this->SetValueByID($this->GetIDForIdent("Pres_now"), $Weather->current_observation->pressure_mb);
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Temp_now"),$Weather->current_observation->temp_c);
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Temp_feel"), $Weather->current_observation->feelslike_c);
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Weather->current_observation->dewpoint_c);
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Hum_now"), substr($Weather->current_observation->relative_humidity, 0, -1));
+                $this->CeckAndSetValueByID($this->GetIDForIdent("Pres_now"), $Weather->current_observation->pressure_mb);
                 $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $Weather->current_observation->wind_degrees);
                 $this->SetValueByID($this->GetIDForIdent("Wind_now"), $Weather->current_observation->wind_kph);
                 $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $Weather->current_observation->wind_gust_kph);
@@ -241,14 +241,24 @@
         }
             
         protected function Json_String($URLString)
-              {
-                  $GetURL = Sys_GetURLContent($URLString);  //Json Daten öfffen
-                  if ($GetURL == false) {
-                      IPS_LogMessage("Wunderground", "FEHLER - Die Wunderground-API konnte nicht abgefragt werden!");
-                      exit;
-                  }
-                  return json_decode($GetURL);  //Json Daten in String speichern
-              }  
+        { 
+            $GetURL = Sys_GetURLContent($URLString);  //Json Daten öfffen
+            if ($GetURL == false) {
+                IPS_LogMessage("Wunderground", "FEHLER - Die Wunderground-API konnte nicht abgefragt werden!");
+                exit;
+            } 
+            $decode=json_decode($GetURL);
+            if(array_key_exists('error',$decode->response) == true) {  //Suche nach error im Json String. Wenn gefunden breche die Abfrage ab
+                IPS_LogMessage("Wunderground", "FEHLER - Der Json String enthält einen Fehler!"); 
+			    exit;
+            }
+            else{
+            IPS_LogMessage("Wunderground", "Json String decodiert");    
+            return $decode;        
+            }
+        }
+
+
 
         // Variablen profile erstellen        
         protected function Var_Pro_Erstellen($name,$ProfileType,$Suffix,$MinValue,$MaxValue,$StepSize,$Digits,$Icon)
@@ -373,28 +383,32 @@
                 }
             }
 
-        protected function CeckAndSetValueByID($VariablenID,$Wert)  // Prüfe Werte auf Extreme Werte über 700% 
+        protected function CeckAndSetValueByID($VariablenID,$Wert)  // Prüfe auf Extreme Werte, über 2000%. Von der Mittleren absoluten Abweichung der letzten 7 Messwerte 
             {
-                // Überprüfen ob $Wert eine Zahl ist
-                $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];  //ID vom Archive Control ermitteln
-                    
+			    $Anz_Mess = 7;
+                $archiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];  //ID vom Archive Control ermitteln    
                 if(AC_GetLoggingStatus($archiveHandlerID , $VariablenID) ==true){
-                    $LastValues = AC_GetLoggedValues($archiveHandlerID, $VariablenID, strtotime("yesterday 00:00"), time(), 1);     // Letzten Wert auslesen
-                    $LastValue = $LastValues [0]['Value'];
-                    if (($LastValue-$Wert)/($LastValue+1) <= 7  && ($LastValue-$Wert+1)/($LastValue+1) >= -7){            //Wenn der neue Wert nicht um +-700% größer/kleiner ist, schreibe den neuen Wert in die Variable
+                    $Letze_Werte = AC_GetLoggedValues($archiveHandlerID, $VariablenID, strtotime("yesterday 00:00"), time(),  $Anz_Mess);     // Letzten Wert auslesen		 
+					//Messwerte in ein Array schreiben 
+                    for ($i=0; $i <  $Anz_Mess; $i++) {
+                        $Werte[$i]= $Letze_Werte[$i]['Value'];
+                    }					
+                    //Mittelwert berechnen
+					$Mittelwert= array_sum($Werte) / count($Werte);
+					///Mittlere absolute Abweichung berechnen
+                    for ($i=0; $i <  $Anz_Mess; $i++) { 
+                        $Abweichung[$i]=abs($Werte[$i]-$Mittelwert);       
+                    }
+                    $AbsoluteAbweichung = 1/ $Anz_Mess * array_sum($Abweichung);
+					//Abweichung Neuer Wert - Letzer Alter Wert 
+					$Abw = $Letze_Werte[0]['Value'] - $Wert;
+                    if (abs($Abw -  $AbsoluteAbweichung)/$AbsoluteAbweichung <= 15  ){            //Wenn der neue Wert nicht um 1500% größer ist, schreibe den neuen Wert in die Variable
                         SetValue($VariablenID,$Wert);
                     }
                     else{                                               // sonst nehme den alten Wert 
-                        SetValue($VariablenID,$LastValue);
+                       SetValue($VariablenID,$Letze_Werte[0]['Value']);
                     }
                 }
-                elseif (is_numeric($Wert)){
-                    SetValue($VariablenID,$Wert);
-                }
-                //Wenn $Wert keine Zahl ist setze den Wert auf 0
-                else 
-                SetValue($VariablenID,0);
-            }
-
      }
+ }
 ?>

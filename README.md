@@ -1,4 +1,4 @@
-# Wunderground
+﻿# Wunderground
 Modul um Wetterdaten von Wunderground.com mittels Json abzurufen.
 Informationen zur API findet ihr hier. [Klick](https://www.wunderground.com/weather/api/d/docs)
 
@@ -51,8 +51,6 @@ Update Wetterdaten alle X Minuten | Hier könnt ihr einstellen in welchen Zeitra
 Update Wetterwarnung alle X Minuten | Hier könnt ihr einstellen in welchen Zeitraum die Wetterwarnungen abgerufen werden sollen. (Dies ist ein separater Abruf der API und wird extra von eurem Tageskontingent abgezogen)
 Sunrise                           | Variable für den Sonnenaufgang z.B.  aus der Location Control. Wird benötigt um die Icons umzuschalten Tag/Nacht Modus
 Sunset                            | Variable für den Sonnenuntergang z.B.  aus der Location Control. Wird benötigt um die Icons umzuschalten Tag/Nacht Modus
-Variable Änderung aufzeichnen       | Wenn der Hacken bei der entsprechenden Variable gesetzt ist, wird diese mit geloggt.
-
 
 ### 5. Statusvariablen und Profile
 
