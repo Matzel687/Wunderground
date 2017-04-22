@@ -185,7 +185,8 @@
                 $alerts = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/alerts/lang:DL/q/".$locationID.".json");
                 foreach ($alerts->alerts  as $key => $value) {
                     $data[$key] =   array(
-                        'Date' => $value->date_epoch,
+                        'Date' => $value->date,
+                        'Expires' => $value->expires,
                         'Type' => $value->type,
                         'Name' => $value->wtype_meteoalarm_name,
                         'Color'  => $value->level_meteoalarm_name,
