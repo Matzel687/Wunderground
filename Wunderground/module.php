@@ -410,11 +410,7 @@
                        SetValue($VariablenID,$Letze_Werte[0]['Value']);
                     }
                 }
-<<<<<<< HEAD
+
             }
     }
-=======
-     }
- 
->>>>>>> origin/Version2.0
 ?>
