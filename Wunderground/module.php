@@ -111,11 +111,11 @@
                 //Wetterdaten abrufen 
                 $Weather = $this->Json_String("http://api.wunderground.com/api/".$APIkey."/conditions/forecast/hourly/lang:DL/q/CA/".$locationID.".json");
                 //Wetterdaten in Variable speichern
-                $this->CeckAndSetValueByID($this->GetIDForIdent("Temp_now"),$Weather->current_observation->temp_c);
-                $this->CeckAndSetValueByID($this->GetIDForIdent("Temp_feel"), $Weather->current_observation->feelslike_c);
-                $this->CeckAndSetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Weather->current_observation->dewpoint_c);
-                $this->CeckAndSetValueByID($this->GetIDForIdent("Hum_now"), substr($Weather->current_observation->relative_humidity, 0, -1));
-                $this->CeckAndSetValueByID($this->GetIDForIdent("Pres_now"), $Weather->current_observation->pressure_mb);
+                $this->SetValueByID($this->GetIDForIdent("Temp_now"),$Weather->current_observation->temp_c);
+                $this->SetValueByID($this->GetIDForIdent("Temp_feel"), $Weather->current_observation->feelslike_c);
+                $this->SetValueByID($this->GetIDForIdent("Temp_dewpoint"), $Weather->current_observation->dewpoint_c);
+                $this->SetValueByID($this->GetIDForIdent("Hum_now"), substr($Weather->current_observation->relative_humidity, 0, -1));
+                $this->SetValueByID($this->GetIDForIdent("Pres_now"), $Weather->current_observation->pressure_mb);
                 $this->SetValueByID($this->GetIDForIdent("Wind_deg"), $Weather->current_observation->wind_degrees);
                 $this->SetValueByID($this->GetIDForIdent("Wind_now"), $Weather->current_observation->wind_kph);
                 $this->SetValueByID($this->GetIDForIdent("Wind_gust"), $Weather->current_observation->wind_gust_kph);
@@ -410,6 +410,6 @@
                        SetValue($VariablenID,$Letze_Werte[0]['Value']);
                     }
                 }
-     }
- }
+            }
+    }
 ?>
